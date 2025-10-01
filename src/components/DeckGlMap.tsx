@@ -3,13 +3,15 @@ import DeckGL from "@deck.gl/react";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { GeoJsonFeatureProperties } from "./types/types";
+import { LayerControl } from "./LayerControl";
 
 // Initial camera position - Sembawang waterfront area, Singapore
 const INITIAL_VIEW_STATE = {
-  longitude: 103.8198, // Sembawang waterfront
+  longitude: 103.8198,
   latitude: 1.4554,
   zoom: 15,
-  pitch: 45, // Set pitch for 3D view
+  pitch: 45,
   bearing: -20,
 };
 
@@ -17,7 +19,6 @@ const INITIAL_VIEW_STATE = {
 const GEOJSON_DATA = {
   type: "FeatureCollection",
   features: [
-    // High-rise residential towers
     {
       type: "Feature",
       geometry: {
@@ -56,7 +57,6 @@ const GEOJSON_DATA = {
         type: "residential",
       },
     },
-    // Mid-rise commercial buildings
     {
       type: "Feature",
       geometry: {
@@ -95,7 +95,6 @@ const GEOJSON_DATA = {
         type: "commercial",
       },
     },
-    // Waterfront development
     {
       type: "Feature",
       geometry: {
@@ -115,7 +114,6 @@ const GEOJSON_DATA = {
         type: "mixed_use",
       },
     },
-    // Low-rise shophouses
     {
       type: "Feature",
       geometry: {
@@ -154,7 +152,6 @@ const GEOJSON_DATA = {
         type: "shophouse",
       },
     },
-    // Industrial/warehouse buildings
     {
       type: "Feature",
       geometry: {
@@ -177,65 +174,78 @@ const GEOJSON_DATA = {
   ],
 };
 
-// Type for the GeoJSON feature properties
-interface GeoJsonFeatureProperties {
-  elevation: number;
-  type: string;
-}
-
-// Function to get color based on building type
 const getBuildingColor = (type: string) => {
   switch (type) {
     case "residential":
-      return [70, 130, 180, 150]; // Steel blue
+      return [70, 130, 180, 150];
     case "commercial":
-      return [255, 165, 0, 150]; // Orange
+      return [255, 165, 0, 150];
     case "mixed_use":
-      return [147, 112, 219, 150]; // Medium slate blue
+      return [147, 112, 219, 150];
     case "shophouse":
-      return [255, 69, 0, 150]; // Red orange
+      return [255, 69, 0, 150];
     case "industrial":
-      return [128, 128, 128, 150]; // Gray
+      return [128, 128, 128, 150];
     default:
-      return [255, 0, 0, 150]; // Red fallback
+      return [255, 0, 0, 150];
   }
 };
 
+// Main Map Component
 export default function DeckGlMap() {
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [layersVisible, setLayersVisible] = useState({
+    urbanMassing: true,
+  });
 
-  // Create the deck.gl layer for 3D GeoJSON visualization
-  const layers = [
-    new GeoJsonLayer<GeoJsonFeatureProperties>({
-      id: "geojson-layer",
-      data: GEOJSON_DATA,
-      // 3D properties
-      extruded: true,
-      wireframe: true,
-      filled: true,
-      // Accessors for 3D height and color
-      getElevation: (f) => f.properties.elevation,
-      getFillColor: (f) => getBuildingColor(f.properties.type),
-      getLineColor: [255, 255, 255, 255], // White wireframe
-      lineWidthMinPixels: 1,
-      pickable: true, // Enable interaction
-    }),
-  ];
+  const toggleLayer = (layerName: string) => {
+    setLayersVisible((prev) => ({
+      ...prev,
+      [layerName]: !prev[layerName],
+    }));
+  };
+
+  // Create layers based on visibility state
+  const layers = layersVisible.urbanMassing
+    ? [
+        new GeoJsonLayer<GeoJsonFeatureProperties>({
+          id: "geojson-layer",
+          data: GEOJSON_DATA,
+          extruded: true,
+          wireframe: true,
+          filled: true,
+          getElevation: (f) => f.properties.elevation,
+          getFillColor: (f) => getBuildingColor(f.properties.type),
+          getLineColor: [255, 255, 255, 255],
+          lineWidthMinPixels: 1,
+          pickable: true,
+        }),
+      ]
+    : [];
 
   return (
-    <DeckGL
-      initialViewState={INITIAL_VIEW_STATE}
-      controller={true} // Allows map interaction (pan, zoom, pitch)
-      layers={layers}
-      onViewStateChange={({ viewState }) => setViewState(viewState)}
-    >
-      {/* Base map layer (using MapLibre GL for the background map) */}
-      <Map
-        {...viewState}
-        style={{ width: "100%", height: "100%" }}
-        mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
-        mapLib={import("maplibre-gl")}
+    <div className="relative w-full h-screen">
+      <LayerControl
+        isOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        layersVisible={layersVisible}
+        onLayerToggle={toggleLayer}
       />
-    </DeckGL>
+
+      <DeckGL
+        initialViewState={INITIAL_VIEW_STATE}
+        controller={true}
+        layers={layers}
+        onViewStateChange={({ viewState }) => setViewState(viewState)}
+      >
+        <Map
+          {...viewState}
+          style={{ width: "100%", height: "100%" }}
+          mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+          mapLib={import("maplibre-gl")}
+        />
+      </DeckGL>
+    </div>
   );
 }
