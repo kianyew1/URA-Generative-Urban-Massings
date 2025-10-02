@@ -35,10 +35,11 @@ export default function DeckGlMap() {
   // Replace forceUpdate with a revision counter
   const [layerRevision, setLayerRevision] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [editableData, setEditableData] = useState({
+  const [editableData, setEditableData] = useState<any>({
     type: "FeatureCollection",
     features: [],
   });
+
   const [selectedFeatureIndexes] = useState<number[]>([]);
   const [drawnFeatureCounter, setDrawnFeatureCounter] = useState(0);
 
@@ -48,15 +49,20 @@ export default function DeckGlMap() {
   );
 
   const handleEdit = useCallback((updatedData: any) => {
-    setEditableData(updatedData);
+    if (updatedData && updatedData.type === "FeatureCollection") {
+      setEditableData(updatedData);
+    }
   }, []);
 
   const handleStartDrawing = useCallback(() => {
     setIsDrawing(true);
-    setEditableData({
-      type: "FeatureCollection",
+    // Ensure we have a proper FeatureCollection structure
+    const emptyFeatureCollection = {
+      type: "FeatureCollection" as const,
       features: [],
-    });
+    };
+    setEditableData(emptyFeatureCollection);
+
     // Add editable layer
     if (!layerManager.getLayer("editable-layer")) {
       layerManager.addLayer({
@@ -71,16 +77,17 @@ export default function DeckGlMap() {
 
   const handleCancelDrawing = useCallback(() => {
     setIsDrawing(false);
-    setEditableData({
-      type: "FeatureCollection",
+    const emptyFeatureCollection = {
+      type: "FeatureCollection" as const,
       features: [],
-    });
+    };
+    setEditableData(emptyFeatureCollection);
     layerManager.removeLayer("editable-layer");
     setLayerRevision((prev) => prev + 1);
   }, [layerManager]);
 
   const handleSaveDrawing = useCallback(() => {
-    if (editableData.features.length > 0) {
+    if (editableData?.features?.length > 0) {
       const newLayerId = `drawn-polygon-${drawnFeatureCounter}`;
       layerManager.addLayer({
         id: newLayerId,
@@ -144,7 +151,7 @@ export default function DeckGlMap() {
         onStartDrawing={handleStartDrawing}
         onCancelDrawing={handleCancelDrawing}
         onSaveDrawing={handleSaveDrawing}
-        hasDrawnFeature={editableData.features.length > 0}
+        hasDrawnFeature={editableData?.features?.length > 0}
       />
 
       <DeckGL
