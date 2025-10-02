@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import DeckGL from "@deck.gl/react";
-import { GeoJsonLayer } from "@deck.gl/layers";
 import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { GeoJsonFeatureProperties } from "./types/types";
 import { LayerControl } from "./LayerControl";
+import { DrawToolbar } from "./DrawToolbar";
+import { LayerManager, LayerConfig } from "./LayerManager";
+import { GEOJSON_DATA } from "./consts/const";
+import { DrawPolygonMode, ViewMode } from "@deck.gl-community/editable-layers";
 
 // Initial camera position - Sembawang waterfront area, Singapore
 const INITIAL_VIEW_STATE = {
@@ -15,222 +17,134 @@ const INITIAL_VIEW_STATE = {
   bearing: -20,
 };
 
-// Urban massing for Sembawang waterfront area
-const GEOJSON_DATA = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [103.819, 1.456],
-            [103.819, 1.4565],
-            [103.8195, 1.4565],
-            [103.8195, 1.456],
-            [103.819, 1.456],
-          ],
-        ],
-      },
-      properties: {
-        elevation: 120,
-        type: "residential",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [103.82, 1.4558],
-            [103.82, 1.4563],
-            [103.8205, 1.4563],
-            [103.8205, 1.4558],
-            [103.82, 1.4558],
-          ],
-        ],
-      },
-      properties: {
-        elevation: 135,
-        type: "residential",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [103.8185, 1.4548],
-            [103.8185, 1.4552],
-            [103.8192, 1.4552],
-            [103.8192, 1.4548],
-            [103.8185, 1.4548],
-          ],
-        ],
-      },
-      properties: {
-        elevation: 60,
-        type: "commercial",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [103.8198, 1.4545],
-            [103.8198, 1.455],
-            [103.8203, 1.455],
-            [103.8203, 1.4545],
-            [103.8198, 1.4545],
-          ],
-        ],
-      },
-      properties: {
-        elevation: 45,
-        type: "commercial",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [103.8205, 1.4552],
-            [103.8205, 1.4557],
-            [103.8215, 1.4557],
-            [103.8215, 1.4552],
-            [103.8205, 1.4552],
-          ],
-        ],
-      },
-      properties: {
-        elevation: 80,
-        type: "mixed_use",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [103.818, 1.454],
-            [103.818, 1.4544],
-            [103.8188, 1.4544],
-            [103.8188, 1.454],
-            [103.818, 1.454],
-          ],
-        ],
-      },
-      properties: {
-        elevation: 15,
-        type: "shophouse",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [103.819, 1.4538],
-            [103.819, 1.4542],
-            [103.8197, 1.4542],
-            [103.8197, 1.4538],
-            [103.819, 1.4538],
-          ],
-        ],
-      },
-      properties: {
-        elevation: 18,
-        type: "shophouse",
-      },
-    },
-    {
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: [
-          [
-            [103.8175, 1.4535],
-            [103.8175, 1.4542],
-            [103.8185, 1.4542],
-            [103.8185, 1.4535],
-            [103.8175, 1.4535],
-          ],
-        ],
-      },
-      properties: {
-        elevation: 25,
-        type: "industrial",
-      },
-    },
-  ],
-};
-
-const getBuildingColor = (type: string) => {
-  switch (type) {
-    case "residential":
-      return [70, 130, 180, 150];
-    case "commercial":
-      return [255, 165, 0, 150];
-    case "mixed_use":
-      return [147, 112, 219, 150];
-    case "shophouse":
-      return [255, 69, 0, 150];
-    case "industrial":
-      return [128, 128, 128, 150];
-    default:
-      return [255, 0, 0, 150];
-  }
-};
-
 // Main Map Component
 export default function DeckGlMap() {
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [layersVisible, setLayersVisible] = useState({
-    urbanMassing: true,
+  const [layerManager] = useState(() => {
+    const manager = new LayerManager();
+    manager.addLayer({
+      id: "urban-massing",
+      name: "Urban Massing",
+      visible: true,
+      type: "geojson",
+    });
+    return manager;
   });
 
-  const toggleLayer = (layerName: string) => {
-    setLayersVisible((prev) => ({
-      ...prev,
-      [layerName]: !prev[layerName],
-    }));
-  };
+  // Replace forceUpdate with a revision counter
+  const [layerRevision, setLayerRevision] = useState(0);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [editableData, setEditableData] = useState({
+    type: "FeatureCollection",
+    features: [],
+  });
+  const [selectedFeatureIndexes] = useState<number[]>([]);
+  const [drawnFeatureCounter, setDrawnFeatureCounter] = useState(0);
 
-  // Create layers based on visibility state
-  const layers = layersVisible.urbanMassing
-    ? [
-        new GeoJsonLayer<GeoJsonFeatureProperties>({
-          id: "geojson-layer",
-          data: GEOJSON_DATA,
-          extruded: true,
-          wireframe: true,
-          filled: true,
-          getElevation: (f) => f.properties.elevation,
-          getFillColor: (f) => getBuildingColor(f.properties.type),
-          getLineColor: [255, 255, 255, 255],
-          lineWidthMinPixels: 1,
-          pickable: true,
-        }),
-      ]
-    : [];
+  const mode = useMemo(
+    () => (isDrawing ? DrawPolygonMode : ViewMode),
+    [isDrawing]
+  );
+
+  const handleEdit = useCallback((updatedData: any) => {
+    setEditableData(updatedData);
+  }, []);
+
+  const handleStartDrawing = useCallback(() => {
+    setIsDrawing(true);
+    setEditableData({
+      type: "FeatureCollection",
+      features: [],
+    });
+    // Add editable layer
+    if (!layerManager.getLayer("editable-layer")) {
+      layerManager.addLayer({
+        id: "editable-layer",
+        name: "Drawing Layer",
+        visible: true,
+        type: "editable",
+      });
+    }
+    setLayerRevision((prev) => prev + 1);
+  }, [layerManager]);
+
+  const handleCancelDrawing = useCallback(() => {
+    setIsDrawing(false);
+    setEditableData({
+      type: "FeatureCollection",
+      features: [],
+    });
+    layerManager.removeLayer("editable-layer");
+    setLayerRevision((prev) => prev + 1);
+  }, [layerManager]);
+
+  const handleSaveDrawing = useCallback(() => {
+    if (editableData.features.length > 0) {
+      const newLayerId = `drawn-polygon-${drawnFeatureCounter}`;
+      layerManager.addLayer({
+        id: newLayerId,
+        name: `Polygon ${drawnFeatureCounter + 1}`,
+        visible: true,
+        type: "drawn",
+        data: editableData,
+      });
+      setDrawnFeatureCounter((prev) => prev + 1);
+      handleCancelDrawing();
+    }
+  }, [editableData, drawnFeatureCounter, layerManager, handleCancelDrawing]);
+
+  const handleLayerToggle = useCallback(
+    (id: string) => {
+      layerManager.toggleLayer(id);
+      setLayerRevision((prev) => prev + 1);
+    },
+    [layerManager]
+  );
+
+  const handleLayerRemove = useCallback(
+    (id: string) => {
+      layerManager.removeLayer(id);
+      setLayerRevision((prev) => prev + 1);
+    },
+    [layerManager]
+  );
+
+  const layers = useMemo(
+    () =>
+      layerManager.createDeckLayers(
+        GEOJSON_DATA,
+        editableData,
+        selectedFeatureIndexes,
+        handleEdit,
+        mode
+      ),
+    [
+      layerManager,
+      editableData,
+      selectedFeatureIndexes,
+      handleEdit,
+      mode,
+      layerRevision,
+    ]
+  );
 
   return (
     <div className="relative w-full h-screen">
       <LayerControl
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
-        layersVisible={layersVisible}
-        onLayerToggle={toggleLayer}
+        layers={layerManager.getAllLayers()}
+        onLayerToggle={handleLayerToggle}
+        onLayerRemove={handleLayerRemove}
+      />
+
+      <DrawToolbar
+        isDrawing={isDrawing}
+        onStartDrawing={handleStartDrawing}
+        onCancelDrawing={handleCancelDrawing}
+        onSaveDrawing={handleSaveDrawing}
+        hasDrawnFeature={editableData.features.length > 0}
       />
 
       <DeckGL
@@ -238,6 +152,9 @@ export default function DeckGlMap() {
         controller={true}
         layers={layers}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
+        getCursor={({ isDragging }) =>
+          isDragging ? "grabbing" : isDrawing ? "crosshair" : "grab"
+        }
       >
         <Map
           {...viewState}

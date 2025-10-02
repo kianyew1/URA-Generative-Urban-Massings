@@ -1,62 +1,90 @@
-import { Layers, ChevronLeft, ChevronRight } from "lucide-react";
-import { LayerControlProps } from "./types/types";
+import React from "react";
+import { LayerConfig } from "./LayerManager";
 
-export function LayerControl({
+interface LayerControlProps {
+  isOpen: boolean;
+  onToggle: () => void;
+  layers: LayerConfig[];
+  onLayerToggle: (id: string) => void;
+  onLayerRemove?: (id: string) => void;
+}
+
+export const LayerControl: React.FC<LayerControlProps> = ({
   isOpen,
   onToggle,
-  layersVisible,
+  layers,
   onLayerToggle,
-}: LayerControlProps) {
+  onLayerRemove,
+}) => {
   return (
-    <>
-      {/* Sidebar */}
-      <div
-        className={`absolute top-0 left-0 h-full bg-white shadow-lg transition-transform duration-300 z-10 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{ width: "280px" }}
-      >
-        <div className="p-4 border-b border-gray-200">
-          <div className="flex items-center gap-2">
-            <Layers className="w-5 h-5 text-gray-700" />
-            <h2 className="text-lg font-semibold text-gray-800">
-              Layer Control
-            </h2>
-          </div>
-        </div>
-
-        <div className="p-4">
-          <div className="space-y-3">
-            <label className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors">
-              <input
-                type="checkbox"
-                checked={layersVisible.urbanMassing}
-                onChange={() => onLayerToggle("urbanMassing")}
-                className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-              />
-              <span className="text-sm font-medium text-gray-700">
-                Urban Massing
-              </span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      {/* Toggle Button */}
+    <div
+      className={`absolute top-4 right-4 bg-white rounded-lg shadow-lg transition-all duration-300 z-10 ${
+        isOpen ? "w-64" : "w-12"
+      }`}
+    >
       <button
         onClick={onToggle}
-        className="absolute top-4 left-4 z-20 bg-white rounded-lg shadow-lg p-2 hover:bg-gray-50 transition-colors"
-        style={{
-          transform: isOpen ? "translateX(280px)" : "translateX(0)",
-          transition: "transform 0.3s",
-        }}
+        className="w-full p-3 flex items-center justify-between hover:bg-gray-50"
       >
-        {isOpen ? (
-          <ChevronLeft className="w-5 h-5 text-gray-700" />
-        ) : (
-          <ChevronRight className="w-5 h-5 text-gray-700" />
-        )}
+        <span className={`font-semibold ${!isOpen && "hidden"}`}>Layers</span>
+        <svg
+          className={`w-5 h-5 transition-transform ${
+            isOpen ? "rotate-0" : "rotate-180"
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
       </button>
-    </>
+
+      {isOpen && (
+        <div className="p-4 border-t border-gray-200">
+          {layers.map((layer) => (
+            <div
+              key={layer.id}
+              className="flex items-center justify-between py-2 hover:bg-gray-50 rounded px-2"
+            >
+              <label className="flex items-center cursor-pointer flex-1">
+                <input
+                  type="checkbox"
+                  checked={layer.visible}
+                  onChange={() => onLayerToggle(layer.id)}
+                  className="mr-2 cursor-pointer"
+                />
+                <span className="text-sm">{layer.name}</span>
+              </label>
+              {layer.type === "drawn" && onLayerRemove && (
+                <button
+                  onClick={() => onLayerRemove(layer.id)}
+                  className="ml-2 text-red-500 hover:text-red-700"
+                  title="Remove layer"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
-}
+};
