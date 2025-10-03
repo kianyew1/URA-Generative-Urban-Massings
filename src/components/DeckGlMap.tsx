@@ -3,8 +3,8 @@ import DeckGL from "@deck.gl/react";
 import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { LayerControl } from "./LayerControl";
-import { DrawToolbar } from "./DrawToolbar";
-import { LayerManager, LayerConfig } from "./LayerManager";
+// import { DrawToolbar } from "./DrawToolbar";
+import { LayerManager } from "./LayerManager";
 import { GEOJSON_DATA } from "./consts/const";
 import { DrawPolygonMode, ViewMode } from "@deck.gl-community/editable-layers";
 
@@ -32,74 +32,54 @@ export default function DeckGlMap() {
     return manager;
   });
 
-  // Replace forceUpdate with a revision counter
   const [layerRevision, setLayerRevision] = useState(0);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [editableData, setEditableData] = useState<any>({
+
+  const [features, setFeatures] = useState({
     type: "FeatureCollection",
     features: [],
   });
+  const [mode, setMode] = useState(() => new ViewMode());
+  const [selectedFeatureIndexes] = useState([]);
 
-  const [selectedFeatureIndexes] = useState<number[]>([]);
-  const [drawnFeatureCounter, setDrawnFeatureCounter] = useState(0);
+  const handleEdit = useCallback(
+    ({ updatedData, editType }: any) => {
+      setFeatures(updatedData);
 
-  const mode = useMemo(
-    () => (isDrawing ? DrawPolygonMode : ViewMode),
-    [isDrawing]
+      // When a feature is added (polygon completed), save it as a new layer
+      if (editType === "addFeature" && updatedData.features.length > 0) {
+        const newFeature =
+          updatedData.features[updatedData.features.length - 1];
+        const layerId = `drawn-polygon-${Date.now()}`;
+
+        layerManager.addLayer({
+          id: layerId,
+          name: `Polygon ${
+            layerManager.getAllLayers().filter((l) => l.type === "drawn")
+              .length + 1
+          }`,
+          visible: true,
+          type: "drawn",
+          data: {
+            type: "FeatureCollection",
+            features: [newFeature],
+          },
+        });
+
+        // Clear the drawing layer
+        setFeatures({
+          type: "FeatureCollection",
+          features: [],
+        });
+
+        // Exit drawing mode
+        setMode(new ViewMode());
+
+        // Trigger re-render
+        setLayerRevision((prev) => prev + 1);
+      }
+    },
+    [layerManager]
   );
-
-  const handleEdit = useCallback((updatedData: any) => {
-    if (updatedData && updatedData.type === "FeatureCollection") {
-      setEditableData(updatedData);
-    }
-  }, []);
-
-  const handleStartDrawing = useCallback(() => {
-    setIsDrawing(true);
-    // Ensure we have a proper FeatureCollection structure
-    const emptyFeatureCollection = {
-      type: "FeatureCollection" as const,
-      features: [],
-    };
-    setEditableData(emptyFeatureCollection);
-
-    // Add editable layer
-    if (!layerManager.getLayer("editable-layer")) {
-      layerManager.addLayer({
-        id: "editable-layer",
-        name: "Drawing Layer",
-        visible: true,
-        type: "editable",
-      });
-    }
-    setLayerRevision((prev) => prev + 1);
-  }, [layerManager]);
-
-  const handleCancelDrawing = useCallback(() => {
-    setIsDrawing(false);
-    const emptyFeatureCollection = {
-      type: "FeatureCollection" as const,
-      features: [],
-    };
-    setEditableData(emptyFeatureCollection);
-    layerManager.removeLayer("editable-layer");
-    setLayerRevision((prev) => prev + 1);
-  }, [layerManager]);
-
-  const handleSaveDrawing = useCallback(() => {
-    if (editableData?.features?.length > 0) {
-      const newLayerId = `drawn-polygon-${drawnFeatureCounter}`;
-      layerManager.addLayer({
-        id: newLayerId,
-        name: `Polygon ${drawnFeatureCounter + 1}`,
-        visible: true,
-        type: "drawn",
-        data: editableData,
-      });
-      setDrawnFeatureCounter((prev) => prev + 1);
-      handleCancelDrawing();
-    }
-  }, [editableData, drawnFeatureCounter, layerManager, handleCancelDrawing]);
 
   const handleLayerToggle = useCallback(
     (id: string) => {
@@ -121,20 +101,22 @@ export default function DeckGlMap() {
     () =>
       layerManager.createDeckLayers(
         GEOJSON_DATA,
-        editableData,
+        features,
         selectedFeatureIndexes,
         handleEdit,
         mode
       ),
     [
       layerManager,
-      editableData,
+      features,
       selectedFeatureIndexes,
       handleEdit,
       mode,
       layerRevision,
     ]
   );
+
+  // const isDrawing = mode === DrawPolygonMode;
 
   return (
     <div className="relative w-full h-screen">
@@ -146,22 +128,33 @@ export default function DeckGlMap() {
         onLayerRemove={handleLayerRemove}
       />
 
-      <DrawToolbar
-        isDrawing={isDrawing}
-        onStartDrawing={handleStartDrawing}
-        onCancelDrawing={handleCancelDrawing}
-        onSaveDrawing={handleSaveDrawing}
-        hasDrawnFeature={editableData?.features?.length > 0}
-      />
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+        <button
+          className={`px-4 py-2 rounded shadow-lg ${
+            mode instanceof DrawPolygonMode
+              ? "bg-blue-500 text-white"
+              : "bg-white text-gray-700"
+          }`}
+          onClick={() => {
+            setMode((prevMode) =>
+              prevMode instanceof DrawPolygonMode
+                ? new ViewMode()
+                : new DrawPolygonMode()
+            );
+          }}
+        >
+          {mode instanceof DrawPolygonMode ? "Stop Drawing" : "Draw Polygon"}
+        </button>
+      </div>
 
       <DeckGL
         initialViewState={INITIAL_VIEW_STATE}
-        controller={true}
+        controller={{
+          doubleClickZoom: false,
+        }}
         layers={layers}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
-        getCursor={({ isDragging }) =>
-          isDragging ? "grabbing" : isDrawing ? "crosshair" : "grab"
-        }
+        getCursor={({ isDragging }) => (isDragging ? "grabbing" : "grab")}
       >
         <Map
           {...viewState}

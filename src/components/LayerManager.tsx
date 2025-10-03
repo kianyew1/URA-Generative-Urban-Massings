@@ -117,6 +117,20 @@ export class LayerManager {
           break;
       }
     });
+    // Always add the editable layer for drawing
+    deckLayers.push(
+      new EditableGeoJsonLayer({
+        id: "drawing-layer",
+        data: editableData,
+        mode: mode,
+        selectedFeatureIndexes: selectedFeatureIndexes,
+        onEdit: onEdit,
+        getFillColor: [200, 200, 200, 100],
+        getLineColor: [0, 0, 0, 255],
+        lineWidthMinPixels: 2,
+        pickable: true,
+      })
+    );
 
     return deckLayers;
   }

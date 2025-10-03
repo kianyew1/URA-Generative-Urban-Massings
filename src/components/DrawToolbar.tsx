@@ -3,17 +3,15 @@ import React from "react";
 interface DrawToolbarProps {
   isDrawing: boolean;
   onStartDrawing: () => void;
-  onCancelDrawing: () => void;
-  onSaveDrawing: () => void;
-  hasDrawnFeature: boolean;
+  onStopDrawing: () => void;
+  features: any;
 }
 
 export const DrawToolbar: React.FC<DrawToolbarProps> = ({
   isDrawing,
   onStartDrawing,
-  onCancelDrawing,
-  onSaveDrawing,
-  hasDrawnFeature,
+  onStopDrawing,
+  features,
 }) => {
   return (
     <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-white rounded-lg shadow-lg px-6 py-4 flex items-center gap-4 z-10">
@@ -27,24 +25,19 @@ export const DrawToolbar: React.FC<DrawToolbarProps> = ({
       ) : (
         <>
           <span className="text-sm text-gray-600 font-medium">
-            Click to add points, double-click to finish
+            Click to add points • Double-click to finish polygon
           </span>
-          <div className="flex gap-2">
-            <button
-              onClick={onCancelDrawing}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition-colors font-medium"
-            >
-              Cancel
-            </button>
-            {hasDrawnFeature && (
-              <button
-                onClick={onSaveDrawing}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-medium"
-              >
-                Save Polygon
-              </button>
-            )}
-          </div>
+          <button
+            onClick={onStopDrawing}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors font-medium"
+          >
+            Exit Drawing Mode
+          </button>
+          {features.features.length > 0 && (
+            <span className="text-sm text-green-600 font-medium">
+              {features.features.length} polygon(s) drawn
+            </span>
+          )}
         </>
       )}
     </div>
