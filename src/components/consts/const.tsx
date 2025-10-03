@@ -173,3 +173,484 @@ export const GEOJSON_DATA = {
     },
   ],
 };
+
+export const THIRD_GENERATION = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.823, 1.461],
+            [103.823, 1.4615],
+            [103.8237, 1.4615],
+            [103.8237, 1.461],
+            [103.823, 1.461],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 20,
+        type: "shophouse",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.824, 1.4612],
+            [103.824, 1.4617],
+            [103.8247, 1.4617],
+            [103.8247, 1.4612],
+            [103.824, 1.4612],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 18,
+        type: "shophouse",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.825, 1.4614],
+            [103.825, 1.462],
+            [103.8258, 1.462],
+            [103.8258, 1.4614],
+            [103.825, 1.4614],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 55,
+        type: "commercial",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8261, 1.4616],
+            [103.8261, 1.4622],
+            [103.8268, 1.4622],
+            [103.8268, 1.4616],
+            [103.8261, 1.4616],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 95,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8271, 1.4618],
+            [103.8271, 1.4624],
+            [103.8278, 1.4624],
+            [103.8278, 1.4618],
+            [103.8271, 1.4618],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 88,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8281, 1.462],
+            [103.8281, 1.4626],
+            [103.829, 1.4626],
+            [103.829, 1.462],
+            [103.8281, 1.462],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 75,
+        type: "mixed_use",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8293, 1.4622],
+            [103.8293, 1.4628],
+            [103.83, 1.4628],
+            [103.83, 1.4622],
+            [103.8293, 1.4622],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 110,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8303, 1.4624],
+            [103.8303, 1.463],
+            [103.831, 1.463],
+            [103.831, 1.4624],
+            [103.8303, 1.4624],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 105,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8313, 1.4626],
+            [103.8313, 1.4632],
+            [103.8322, 1.4632],
+            [103.8322, 1.4626],
+            [103.8313, 1.4626],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 68,
+        type: "mixed_use",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8325, 1.4628],
+            [103.8325, 1.4634],
+            [103.8332, 1.4634],
+            [103.8332, 1.4628],
+            [103.8325, 1.4628],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 92,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.826, 1.4608],
+            [103.826, 1.4613],
+            [103.8268, 1.4613],
+            [103.8268, 1.4608],
+            [103.826, 1.4608],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 48,
+        type: "commercial",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8271, 1.461],
+            [103.8271, 1.4615],
+            [103.828, 1.4615],
+            [103.828, 1.461],
+            [103.8271, 1.461],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 65,
+        type: "mixed_use",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8283, 1.4612],
+            [103.8283, 1.4617],
+            [103.829, 1.4617],
+            [103.829, 1.4612],
+            [103.8283, 1.4612],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 72,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8293, 1.4614],
+            [103.8293, 1.4619],
+            [103.8301, 1.4619],
+            [103.8301, 1.4614],
+            [103.8293, 1.4614],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 58,
+        type: "commercial",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8304, 1.4616],
+            [103.8304, 1.4621],
+            [103.8312, 1.4621],
+            [103.8312, 1.4616],
+            [103.8304, 1.4616],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 82,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8315, 1.4618],
+            [103.8315, 1.4623],
+            [103.8323, 1.4623],
+            [103.8323, 1.4618],
+            [103.8315, 1.4618],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 78,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.825, 1.4602],
+            [103.825, 1.4607],
+            [103.8258, 1.4607],
+            [103.8258, 1.4602],
+            [103.825, 1.4602],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 42,
+        type: "commercial",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8261, 1.46],
+            [103.8261, 1.4605],
+            [103.827, 1.4605],
+            [103.827, 1.46],
+            [103.8261, 1.46],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 38,
+        type: "commercial",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8273, 1.4598],
+            [103.8273, 1.4603],
+            [103.8281, 1.4603],
+            [103.8281, 1.4598],
+            [103.8273, 1.4598],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 85,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8284, 1.4596],
+            [103.8284, 1.4601],
+            [103.8292, 1.4601],
+            [103.8292, 1.4596],
+            [103.8284, 1.4596],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 100,
+        type: "residential",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8295, 1.4594],
+            [103.8295, 1.4599],
+            [103.8303, 1.4599],
+            [103.8303, 1.4594],
+            [103.8295, 1.4594],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 70,
+        type: "mixed_use",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8306, 1.4592],
+            [103.8306, 1.4597],
+            [103.8315, 1.4597],
+            [103.8315, 1.4592],
+            [103.8306, 1.4592],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 50,
+        type: "commercial",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8318, 1.459],
+            [103.8318, 1.4595],
+            [103.8326, 1.4595],
+            [103.8326, 1.459],
+            [103.8318, 1.459],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 65,
+        type: "mixed_use",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.824, 1.4585],
+            [103.824, 1.459],
+            [103.8248, 1.459],
+            [103.8248, 1.4585],
+            [103.824, 1.4585],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 28,
+        type: "industrial",
+      },
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.8251, 1.4583],
+            [103.8251, 1.4588],
+            [103.826, 1.4588],
+            [103.826, 1.4583],
+            [103.8251, 1.4583],
+          ],
+        ],
+      },
+      properties: {
+        elevation: 32,
+        type: "industrial",
+      },
+    },
+  ],
+};

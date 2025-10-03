@@ -5,7 +5,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { LayerControl } from "./LayerControl";
 // import { DrawToolbar } from "./DrawToolbar";
 import { LayerManager } from "./LayerManager";
-import { GEOJSON_DATA } from "./consts/const";
+import { GEOJSON_DATA, THIRD_GENERATION } from "./consts/const";
 import { DrawPolygonMode, ViewMode } from "@deck.gl-community/editable-layers";
 
 // Initial camera position - Sembawang waterfront area, Singapore
@@ -26,6 +26,13 @@ export default function DeckGlMap() {
     manager.addLayer({
       id: "urban-massing",
       name: "Urban Massing",
+      visible: true,
+      type: "geojson",
+    });
+
+    manager.addLayer({
+      id: "generation-three",
+      name: "Generation Three",
       visible: true,
       type: "geojson",
     });
@@ -63,6 +70,7 @@ export default function DeckGlMap() {
             type: "FeatureCollection",
             features: [newFeature],
           },
+          geometry: newFeature.geometry, // Add the geometry
         });
 
         // Clear the drawing layer
@@ -100,7 +108,10 @@ export default function DeckGlMap() {
   const layers = useMemo(
     () =>
       layerManager.createDeckLayers(
-        GEOJSON_DATA,
+        {
+          "urban-massing": GEOJSON_DATA,
+          "generation-three": THIRD_GENERATION,
+        },
         features,
         selectedFeatureIndexes,
         handleEdit,

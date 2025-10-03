@@ -10,6 +10,7 @@ export interface LayerConfig {
   visible: boolean;
   type: "geojson" | "editable" | "drawn";
   data?: any;
+  geometry?: any;
 }
 
 export class LayerManager {
@@ -55,7 +56,7 @@ export class LayerManager {
   }
 
   createDeckLayers(
-    staticData: any,
+    dataMap: Record<string, any>,
     editableData: any,
     selectedFeatureIndexes: number[],
     onEdit: (updatedData: any) => void,
@@ -68,20 +69,25 @@ export class LayerManager {
 
       switch (config.type) {
         case "geojson":
-          deckLayers.push(
-            new GeoJsonLayer<GeoJsonFeatureProperties>({
-              id: config.id,
-              data: staticData,
-              extruded: true,
-              wireframe: true,
-              filled: true,
-              getElevation: (f) => f.properties.elevation,
-              getFillColor: (f) => getBuildingColor(f.properties.type),
-              getLineColor: [255, 255, 255, 255],
-              lineWidthMinPixels: 1,
-              pickable: true,
-            })
-          );
+          const layerData = dataMap[config.id] || config.data;
+          if (layerData) {
+            deckLayers.push(
+              new GeoJsonLayer<GeoJsonFeatureProperties>({
+                id: config.id,
+                data: layerData,
+                extruded: true,
+                wireframe: true,
+                filled: true,
+                getElevation: (f) =>
+                  f.properties.elevation || f.properties.height || 0,
+                getFillColor: (f) =>
+                  getBuildingColor(f.properties.type || f.properties.use),
+                getLineColor: [255, 255, 255, 255],
+                lineWidthMinPixels: 1,
+                pickable: true,
+              })
+            );
+          }
           break;
 
         case "editable":

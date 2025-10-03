@@ -49,38 +49,48 @@ export const LayerControl: React.FC<LayerControlProps> = ({
           {layers.map((layer) => (
             <div
               key={layer.id}
-              className="flex items-center justify-between py-2 hover:bg-gray-50 rounded px-2"
+              className="group flex items-center justify-between p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
             >
-              <label className="flex items-center cursor-pointer flex-1">
+              <div className="flex items-center space-x-3 flex-1">
                 <input
                   type="checkbox"
                   checked={layer.visible}
                   onChange={() => onLayerToggle(layer.id)}
-                  className="mr-2 cursor-pointer"
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                 />
-                <span className="text-sm">{layer.name}</span>
-              </label>
-              {layer.type === "drawn" && onLayerRemove && (
-                <button
-                  onClick={() => onLayerRemove(layer.id)}
-                  className="ml-2 text-red-500 hover:text-red-700"
-                  title="Remove layer"
+                <div className="flex-1">
+                  <div className="font-medium text-gray-900">{layer.name}</div>
+                  {layer.geometry && (
+                    <details className="mt-1">
+                      <summary className="text-xs text-gray-500 cursor-pointer hover:text-gray-700">
+                        View GeoJSON
+                      </summary>
+                      <pre className="mt-2 p-2 bg-gray-50 rounded text-xs overflow-auto max-h-40">
+                        {JSON.stringify(layer.geometry, null, 2)}
+                      </pre>
+                    </details>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={() => onLayerRemove(layer.id)}
+                className="opacity-0 group-hover:opacity-100 p-1 text-red-600 hover:bg-red-50 rounded transition-opacity"
+                title="Remove layer"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              )}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
             </div>
           ))}
         </div>
