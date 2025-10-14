@@ -2,7 +2,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, download the URA masterplan geojson from https://data.gov.sg/datasets/d_90d86daa5bfaa371668b84fa5f01424f/view and add it to your public folder.
+
+Second, run the development server:
 
 ```bash
 npm run dev

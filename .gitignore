@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# big URA masterplan geojson
+public/MasterPlan2019LandUselayer.geojson
