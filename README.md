@@ -1,12 +1,18 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+Fullstack GIS webapp built using deck.gl.
+
 ## Getting Started
 
-First, download the URA masterplan geojson from https://data.gov.sg/datasets/d_90d86daa5bfaa371668b84fa5f01424f/view and add it to your public folder.
+First, download the URA masterplan geojson from https://data.gov.sg/datasets/d_90d86daa5bfaa371668b84fa5f01424f/view and add it to your public folder. (the folder with file.svg, globe.svg etc).
+
+Second, run
 
 Second, run the development server:
 
 ```bash
+npm install
+
 npm run dev
 # or
 yarn dev
@@ -17,8 +23,6 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

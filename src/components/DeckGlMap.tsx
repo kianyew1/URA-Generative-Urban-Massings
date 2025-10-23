@@ -3,14 +3,15 @@ import DeckGL from "@deck.gl/react";
 import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { LayerControl } from "./LayerControl";
-// import { DrawToolbar } from "./DrawToolbar";
 import { LayerManager } from "./LayerManager";
 import {
   GEOJSON_DATA,
   THIRD_GENERATION,
   CLAUDE_GENERATION,
+  HUBERT_GENERATION,
 } from "./consts/const";
 import { DrawPolygonMode, ViewMode } from "@deck.gl-community/editable-layers";
+import { BASEMAPS } from "./consts/const";
 
 // Initial camera position - Sembawang waterfront area, Singapore
 const INITIAL_VIEW_STATE = {
@@ -28,6 +29,10 @@ export default function DeckGlMap() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [hoverInfo, setHoverInfo] = useState<any>(null);
+  const [currentBasemap, setCurrentBasemap] =
+    useState<keyof typeof BASEMAPS>("positron");
+  const [basemapSelectorOpen, setBasemapSelectorOpen] = useState(false);
+
   // function to parse HTML description from URA masterplan .geojson
   const parseDescription = useCallback((description: string) => {
     const parser = new DOMParser();
@@ -48,6 +53,7 @@ export default function DeckGlMap() {
 
     return properties;
   }, []);
+
   const [layerManager] = useState(() => {
     const manager = new LayerManager();
     manager.addLayer({
@@ -70,6 +76,14 @@ export default function DeckGlMap() {
       visible: true,
       type: "geojson",
     });
+
+    manager.addLayer({
+      id: "hubert-generation",
+      name: "Hubert Generation",
+      visible: true,
+      type: "geojson",
+    });
+
     // Add Master Plan layer
     manager.addLayer({
       id: "master-plan",
@@ -192,6 +206,7 @@ export default function DeckGlMap() {
           "generation-three": THIRD_GENERATION,
           "claude-generation": CLAUDE_GENERATION,
           "master-plan": masterPlanData,
+          "hubert-generation": HUBERT_GENERATION,
         },
         features,
         selectedFeatureIndexes,
@@ -315,6 +330,52 @@ export default function DeckGlMap() {
         onLayerRemove={handleLayerRemove}
       />
 
+      {/* Basemap Selector */}
+      <div className="absolute bottom-4 right-4 z-10">
+        <div className="relative">
+          <button
+            className="bg-white text-gray-700 px-4 py-2 rounded shadow-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+            onClick={() => setBasemapSelectorOpen(!basemapSelectorOpen)}
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+              />
+            </svg>
+            {BASEMAPS[currentBasemap].name}
+          </button>
+
+          {basemapSelectorOpen && (
+            <div className="absolute bottom-full mb-2 right-0 bg-white rounded shadow-lg overflow-hidden min-w-[200px]">
+              {Object.entries(BASEMAPS).map(([key, basemap]) => (
+                <button
+                  key={key}
+                  className={`w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors ${
+                    currentBasemap === key
+                      ? "bg-blue-50 text-blue-600 font-medium"
+                      : "text-gray-700"
+                  }`}
+                  onClick={() => {
+                    setCurrentBasemap(key as keyof typeof BASEMAPS);
+                    setBasemapSelectorOpen(false);
+                  }}
+                >
+                  {basemap.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
         <button
           className={`px-4 py-2 rounded shadow-lg ${
@@ -347,7 +408,7 @@ export default function DeckGlMap() {
         <Map
           {...viewState}
           style={{ width: "100%", height: "100%" }}
-          mapStyle="https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json"
+          mapStyle={BASEMAPS[currentBasemap].url}
           mapLib={import("maplibre-gl")}
         />
       </DeckGL>
