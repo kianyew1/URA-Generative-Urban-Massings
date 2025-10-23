@@ -81,6 +81,14 @@ export const LayerControl: React.FC<LayerControlProps> = ({
                         </pre>
                       </details>
                     )}
+                    {layer.bounds && (
+                      <div className="text-xs text-zinc-950 mt-1 font-mono">
+                        <div>N: {layer.bounds.maxLat.toFixed(6)}</div>
+                        <div>S: {layer.bounds.minLat.toFixed(6)}</div>
+                        <div>E: {layer.bounds.maxLng.toFixed(6)}</div>
+                        <div>W: {layer.bounds.minLng.toFixed(6)}</div>
+                      </div>
+                    )}
                   </div>
                   {onLayerRemove && (
                     <button

@@ -10,7 +10,11 @@ import {
   CLAUDE_GENERATION,
   HUBERT_GENERATION,
 } from "./consts/const";
-import { DrawPolygonMode, ViewMode } from "@deck.gl-community/editable-layers";
+import {
+  DrawPolygonMode,
+  DrawRectangleMode,
+  ViewMode,
+} from "@deck.gl-community/editable-layers";
 import { BASEMAPS } from "./consts/const";
 
 // Initial camera position - Sembawang waterfront area, Singapore
@@ -145,25 +149,51 @@ export default function DeckGlMap() {
     ({ updatedData, editType }: any) => {
       setFeatures(updatedData);
 
-      // When a feature is added (polygon completed), save it as a new layer
+      // When a feature is added (polygon or bounding box completed), save it as a new layer
       if (editType === "addFeature" && updatedData.features.length > 0) {
         const newFeature =
           updatedData.features[updatedData.features.length - 1];
-        const layerId = `drawn-polygon-${Date.now()}`;
+
+        // Determine if it's a bounding box (rectangle) or polygon
+        const isRectangle = mode instanceof DrawRectangleMode;
+        const layerId = `drawn-${
+          isRectangle ? "bbox" : "polygon"
+        }-${Date.now()}`;
+
+        // Calculate bounding box coordinates
+        const coordinates = newFeature.geometry.coordinates[0];
+        const lngs = coordinates.map((coord: number[]) => coord[0]);
+        const lats = coordinates.map((coord: number[]) => coord[1]);
+        const bounds = {
+          minLng: Math.min(...lngs),
+          maxLng: Math.max(...lngs),
+          minLat: Math.min(...lats),
+          maxLat: Math.max(...lats),
+        };
 
         layerManager.addLayer({
           id: layerId,
-          name: `Polygon ${
-            layerManager.getAllLayers().filter((l) => l.type === "drawn")
-              .length + 1
-          }`,
+          name: isRectangle
+            ? `Bounding Box ${
+                layerManager
+                  .getAllLayers()
+                  .filter((l) => l.type === "drawn" && l.id.includes("bbox"))
+                  .length + 1
+              }`
+            : `Polygon ${
+                layerManager
+                  .getAllLayers()
+                  .filter((l) => l.type === "drawn" && l.id.includes("polygon"))
+                  .length + 1
+              }`,
           visible: true,
           type: "drawn",
           data: {
             type: "FeatureCollection",
             features: [newFeature],
           },
-          geometry: newFeature.geometry, // Add the geometry
+          geometry: newFeature.geometry,
+          bounds: isRectangle ? bounds : undefined, // Store bounds for bounding boxes
         });
 
         // Clear the drawing layer
@@ -179,7 +209,7 @@ export default function DeckGlMap() {
         setLayerRevision((prev) => prev + 1);
       }
     },
-    [layerManager]
+    [layerManager, mode]
   );
 
   const handleLayerToggle = useCallback(
@@ -223,8 +253,6 @@ export default function DeckGlMap() {
       layerRevision,
     ]
   );
-
-  // const isDrawing = mode === DrawPolygonMode;
 
   return (
     <div className="relative w-full h-screen">
@@ -376,7 +404,7 @@ export default function DeckGlMap() {
         </div>
       </div>
 
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
         <button
           className={`px-4 py-2 rounded shadow-lg ${
             mode instanceof DrawPolygonMode
@@ -392,6 +420,24 @@ export default function DeckGlMap() {
           }}
         >
           {mode instanceof DrawPolygonMode ? "Stop Drawing" : "Draw Polygon"}
+        </button>
+        <button
+          className={`px-4 py-2 rounded shadow-lg ${
+            mode instanceof DrawRectangleMode
+              ? "bg-green-500 text-white"
+              : "bg-white text-gray-700"
+          }`}
+          onClick={() => {
+            setMode((prevMode) =>
+              prevMode instanceof DrawRectangleMode
+                ? new ViewMode()
+                : new DrawRectangleMode()
+            );
+          }}
+        >
+          {mode instanceof DrawRectangleMode
+            ? "Stop Drawing"
+            : "Draw Bounding Box"}
         </button>
       </div>
 
