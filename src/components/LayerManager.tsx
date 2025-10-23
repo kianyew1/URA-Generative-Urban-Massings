@@ -8,9 +8,10 @@ export interface LayerConfig {
   id: string;
   name: string;
   visible: boolean;
-  type: "geojson" | "editable" | "drawn";
+  type: "geojson" | "editable" | "drawn" | "imported";
   data?: any;
   geometry?: any;
+  bounds?: any;
 }
 
 // Color mapping for Singapore URA Master Plan land use types [R, G, B, OPACITY]
@@ -135,10 +136,8 @@ export class LayerManager {
                   getLineColor: [80, 80, 80, 150],
                   getLineWidth: 1,
                   lineWidthMinPixels: 1,
-                  // Tooltip configuration
                   autoHighlight: true,
                   highlightColor: [255, 255, 0, 150],
-                  // Performance optimization
                   updateTriggers: {
                     getFillColor: layer.visible,
                   },
@@ -168,7 +167,32 @@ export class LayerManager {
           }
           break;
 
-        // ...existing editable and drawn cases...
+        case "imported":
+          if (layer.data) {
+            deckLayers.push(
+              new GeoJsonLayer({
+                id: layer.id,
+                data: layer.data,
+                extruded: true,
+                wireframe: true,
+                filled: true,
+                stroked: true,
+                pickable: true,
+                getElevation: (f: any) =>
+                  f.properties?.elevation || f.properties?.height || 50,
+                getFillColor: (f: any) =>
+                  getBuildingColor(f.properties?.type || f.properties?.use) || [
+                    255, 200, 100, 200,
+                  ],
+                getLineColor: [255, 140, 0, 255],
+                lineWidthMinPixels: 2,
+                autoHighlight: true,
+                highlightColor: [255, 255, 0, 150],
+              })
+            );
+          }
+          break;
+
         case "editable":
           deckLayers.push(
             new EditableGeoJsonLayer({
@@ -204,7 +228,6 @@ export class LayerManager {
           break;
       }
     });
-
     // Always add the editable layer for drawing
     deckLayers.push(
       new EditableGeoJsonLayer({

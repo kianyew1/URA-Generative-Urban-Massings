@@ -212,6 +212,45 @@ export default function DeckGlMap() {
     [layerManager, mode]
   );
 
+  const handleGeoJsonImport = useCallback(
+    (geojson: any, name: string) => {
+      console.log("Importing GeoJSON:", geojson);
+      const layerId = `imported-${Date.now()}`;
+
+      // Wrap single features in a FeatureCollection
+      const data =
+        geojson.type === "FeatureCollection"
+          ? geojson
+          : {
+              type: "FeatureCollection",
+              features:
+                geojson.type === "Feature"
+                  ? [geojson]
+                  : [
+                      {
+                        type: "Feature",
+                        geometry: geojson,
+                        properties: {},
+                      },
+                    ],
+            };
+
+      console.log("Processed data:", data);
+
+      layerManager.addLayer({
+        id: layerId,
+        name: name,
+        visible: true,
+        type: "imported",
+        data: data,
+      });
+
+      console.log("All layers:", layerManager.getAllLayers());
+      setLayerRevision((prev) => prev + 1);
+    },
+    [layerManager]
+  );
+
   const handleLayerToggle = useCallback(
     (id: string) => {
       layerManager.toggleLayer(id);
@@ -356,6 +395,7 @@ export default function DeckGlMap() {
         layers={layerManager.getAllLayers()}
         onLayerToggle={handleLayerToggle}
         onLayerRemove={handleLayerRemove}
+        onGeoJsonImport={handleGeoJsonImport}
       />
 
       {/* Basemap Selector */}
