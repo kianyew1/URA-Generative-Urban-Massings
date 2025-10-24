@@ -115,25 +115,37 @@ export default function DeckGlMap() {
       try {
         setIsLoading(true);
 
-        // Use GitHub Releases for production, local file for development
+        // Use data.gov.sg API for production, local file for development
         const url =
           process.env.NODE_ENV === "production"
-            ? "https://github.com/kianyew1/URA-Generative-Urban-Massings/releases/download/v1.0.0/MasterPlan2019LandUselayer.geojson"
+            ? "https://data.gov.sg/api/action/datastore_search?resource_id=d_90d86daa5bfaa371668b84fa5f01424f&limit=100000"
             : "/MasterPlan2019LandUselayer.geojson";
 
-        // Fetch with streaming to handle large file
         const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Parse JSON in chunks if possible, or as a whole
-        const data = await response.json();
+        const apiResponse = await response.json();
+
+        // Convert data.gov.sg format to GeoJSON if needed
+        let data;
+        if (process.env.NODE_ENV === "production") {
+          // data.gov.sg returns a different format, may need conversion
+          // Check the actual response structure and convert accordingly
+          data = apiResponse.result || apiResponse;
+        } else {
+          data = apiResponse;
+        }
 
         if (!isCancelled) {
           setMasterPlanData(data);
-          console.log(`Loaded ${data.features.length} Master Plan features`);
+          console.log(
+            `Loaded ${
+              data.features?.length || data.records?.length
+            } Master Plan features`
+          );
         }
       } catch (error) {
         console.error("Error loading Master Plan:", error);
