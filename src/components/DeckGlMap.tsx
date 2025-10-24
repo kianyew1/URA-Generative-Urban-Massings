@@ -60,12 +60,12 @@ export default function DeckGlMap() {
 
   const [layerManager] = useState(() => {
     const manager = new LayerManager();
-    manager.addLayer({
-      id: "urban-massing",
-      name: "Urban Massing",
-      visible: true,
-      type: "geojson",
-    });
+    // manager.addLayer({
+    //   id: "urban-massing",
+    //   name: "Urban Massing",
+    //   visible: true,
+    //   type: "geojson",
+    // });
 
     manager.addLayer({
       id: "generation-three",
@@ -74,12 +74,12 @@ export default function DeckGlMap() {
       type: "geojson",
     });
 
-    manager.addLayer({
-      id: "claude-generation",
-      name: "Claude Generation",
-      visible: true,
-      type: "geojson",
-    });
+    // manager.addLayer({
+    //   id: "claude-generation",
+    //   name: "Claude Generation",
+    //   visible: true,
+    //   type: "geojson",
+    // });
 
     manager.addLayer({
       id: "hubert-generation",
@@ -115,8 +115,14 @@ export default function DeckGlMap() {
       try {
         setIsLoading(true);
 
+        // Use GitHub Releases for production, local file for development
+        const url =
+          process.env.NODE_ENV === "production"
+            ? "https://github.com/kianyew1/URA-Generative-Urban-Massings/releases/download/v1.0.0/MasterPlan2019LandUselayer.geojson"
+            : "/MasterPlan2019LandUselayer.geojson";
+
         // Fetch with streaming to handle large file
-        const response = await fetch("/MasterPlan2019LandUselayer.geojson");
+        const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
