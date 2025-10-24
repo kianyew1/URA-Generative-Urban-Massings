@@ -115,10 +115,10 @@ export default function DeckGlMap() {
       try {
         setIsLoading(true);
 
-        // Use data.gov.sg API for production, local file for development
+        // Use Cloudflare R2 for production, local file for development
         const url =
           process.env.NODE_ENV === "production"
-            ? "https://data.gov.sg/api/action/datastore_search?resource_id=d_90d86daa5bfaa371668b84fa5f01424f&limit=100000"
+            ? "https://pub-11f00423b1754a1fac8d8ed39c0f472c.r2.dev/MasterPlan2019LandUselayer.geojson"
             : "/MasterPlan2019LandUselayer.geojson";
 
         const response = await fetch(url);
@@ -127,24 +127,12 @@ export default function DeckGlMap() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const apiResponse = await response.json();
-
-        // Convert data.gov.sg format to GeoJSON if needed
-        let data;
-        if (process.env.NODE_ENV === "production") {
-          // data.gov.sg returns a different format, may need conversion
-          // Check the actual response structure and convert accordingly
-          data = apiResponse.result || apiResponse;
-        } else {
-          data = apiResponse;
-        }
+        const data = await response.json();
 
         if (!isCancelled) {
           setMasterPlanData(data);
           console.log(
-            `Loaded ${
-              data.features?.length || data.records?.length
-            } Master Plan features`
+            `Loaded ${data.features?.length || 0} Master Plan features`
           );
         }
       } catch (error) {
