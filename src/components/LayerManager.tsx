@@ -3,6 +3,7 @@ import { GeoJsonLayer } from "@deck.gl/layers";
 import { EditableGeoJsonLayer } from "@deck.gl-community/editable-layers";
 import { GeoJsonFeatureProperties } from "./types/types";
 import { getBuildingColor } from "./consts/const";
+import { LAND_USE_COLORS } from "./consts/const";
 
 export interface LayerConfig {
   id: string;
@@ -13,35 +14,6 @@ export interface LayerConfig {
   geometry?: any;
   bounds?: any;
 }
-
-// Color mapping for Singapore URA Master Plan land use types [R, G, B, OPACITY]
-const LAND_USE_COLORS: Record<string, [number, number, number, number]> = {
-  RESIDENTIAL: [252, 141, 98, 255],
-  "RESIDENTIAL WITH COMMERCIAL AT 1ST STOREY": [252, 141, 98, 255],
-  COMMERCIAL: [141, 160, 203, 255],
-  "COMMERCIAL & RESIDENTIAL": [180, 120, 150, 255],
-  "BUSINESS 1": [65, 182, 196, 255],
-  "BUSINESS 2": [65, 182, 196, 255],
-  "BUSINESS PARK": [44, 162, 95, 255],
-  HOTEL: [153, 112, 171, 255],
-  WHITE: [255, 255, 255, 255],
-  "EDUCATIONAL INSTITUTION": [254, 217, 118, 255],
-  "PLACE OF WORSHIP": [229, 196, 148, 255],
-  "CIVIC & COMMUNITY INSTITUTION": [204, 235, 197, 255],
-  "HEALTH & MEDICAL CARE": [247, 104, 161, 255],
-  "OPEN SPACE": [102, 194, 165, 255],
-  PARK: [35, 139, 69, 255],
-  "RESERVE SITE": [254, 224, 144, 255],
-  WATERBODY: [44, 127, 184, 255],
-  ROAD: [200, 200, 200, 255],
-  "RAPID TRANSIT SYSTEM": [128, 128, 128, 255],
-  "PORT / AIRPORT": [0, 0, 0, 255],
-  UTILITY: [255, 237, 160, 255],
-  CEMETERY: [166, 97, 26, 255],
-  "SPECIAL USE": [223, 194, 125, 255],
-  AGRICULTURE: [140, 81, 10, 255],
-  "SPORTS & RECREATION": [255, 0, 255, 255],
-};
 
 export class LayerManager {
   private layers: Map<string, LayerConfig> = new Map();
@@ -156,7 +128,12 @@ export class LayerManager {
                   getElevation: (f) =>
                     f.properties.elevation || f.properties.height || 0,
                   getFillColor: (f) =>
-                    getBuildingColor(f.properties.type || f.properties.use),
+                    getBuildingColor(f.properties.type || f.properties.use) as [
+                      number,
+                      number,
+                      number,
+                      number
+                    ],
                   getLineColor: [255, 255, 255, 255],
                   lineWidthMinPixels: 1,
                   autoHighlight: true,
@@ -181,8 +158,13 @@ export class LayerManager {
                 getElevation: (f: any) =>
                   f.properties?.elevation || f.properties?.height || 50,
                 getFillColor: (f: any) =>
-                  getBuildingColor(f.properties?.type || f.properties?.use) || [
-                    255, 200, 100, 200,
+                  (getBuildingColor(
+                    f.properties?.type || f.properties?.use
+                  ) || [255, 200, 100, 200]) as [
+                    number,
+                    number,
+                    number,
+                    number
                   ],
                 getLineColor: [255, 140, 0, 255],
                 lineWidthMinPixels: 2,

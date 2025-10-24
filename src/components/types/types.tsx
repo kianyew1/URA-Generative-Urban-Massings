@@ -1,6 +1,8 @@
 export interface GeoJsonFeatureProperties {
   elevation: number;
   type: string;
+  height: any;
+  use: any;
 }
 
 // Layer Control Sidebar Component

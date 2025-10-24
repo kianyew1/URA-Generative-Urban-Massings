@@ -28,7 +28,7 @@ const INITIAL_VIEW_STATE = {
 
 // Main Map Component
 export default function DeckGlMap() {
-  const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
+  const [viewState, setViewState] = useState<any>(INITIAL_VIEW_STATE);
   const [masterPlanData, setMasterPlanData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
