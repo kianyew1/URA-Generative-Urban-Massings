@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  useRef,
+} from "react";
 import DeckGL from "@deck.gl/react";
 import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -22,8 +28,8 @@ const INITIAL_VIEW_STATE = {
   longitude: 103.8198,
   latitude: 1.4554,
   zoom: 15,
-  pitch: 45,
-  bearing: -20,
+  pitch: 0,
+  bearing: 0,
 };
 
 // Main Map Component
@@ -37,6 +43,183 @@ export default function DeckGlMap() {
     useState<keyof typeof BASEMAPS>("positron");
   const [basemapSelectorOpen, setBasemapSelectorOpen] = useState(false);
 
+  // layers
+  const [layerManager] = useState(() => {
+    const manager = new LayerManager();
+
+    manager.addLayer({
+      id: "generation-three",
+      name: "Generation Three",
+      visible: true,
+      type: "geojson",
+    });
+
+    manager.addLayer({
+      id: "hubert-generation",
+      name: "Hubert Generation",
+      visible: true,
+      type: "geojson",
+    });
+
+    // Add Master Plan layer
+    manager.addLayer({
+      id: "master-plan",
+      name: "URA Master Plan 2019",
+      visible: false,
+      type: "geojson",
+    });
+    return manager;
+  });
+
+  const [layerRevision, setLayerRevision] = useState(0);
+
+  // screenshot functionality consts
+  const deckRef = useRef<any>(null);
+  const mapRef = useRef<any>(null);
+
+  const captureScreenshot = useCallback(
+    async (layerId: string) => {
+      const layer = layerManager.getLayer(layerId);
+      if (!layer?.bounds || !deckRef.current) {
+        console.error(
+          "Cannot capture screenshot: missing bounds or deck reference"
+        );
+        return;
+      }
+
+      const deck = deckRef.current.deck;
+      if (!deck) {
+        console.error("Deck instance not available");
+        return;
+      }
+
+      const { minLng, maxLng, minLat, maxLat } = layer.bounds;
+
+      // Temporarily hide the bounding box layer for screenshot
+      const originalVisibility = layer.visible;
+      layerManager.toggleLayer(layerId);
+      setLayerRevision((prev) => prev + 1);
+
+      // Wait for deck to re-render with layer hidden
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
+      // Force a redraw to ensure the layer is hidden
+      deck.redraw(true);
+
+      // Wait a bit more for the redraw to complete
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      try {
+        const padding = 20; // pixels of padding around bbox
+        const scale = 5; // Higher resolution multiplier (2x or 3x for better quality)
+
+        // Get the viewport
+        const viewport = deck.getViewports()[0];
+
+        // Project the bounds to get pixel coordinates
+        const nw = viewport.project([minLng, maxLat]);
+        const se = viewport.project([maxLng, minLat]);
+        const ne = viewport.project([maxLng, maxLat]);
+        const sw = viewport.project([minLng, minLat]);
+
+        // Calculate dimensions - use min/max to handle all orientations
+        const minX = Math.min(nw[0], se[0], ne[0], sw[0]);
+        const maxX = Math.max(nw[0], se[0], ne[0], sw[0]);
+        const minY = Math.min(nw[1], se[1], ne[1], sw[1]);
+        const maxY = Math.max(nw[1], se[1], ne[1], sw[1]);
+
+        const width = maxX - minX;
+        const height = maxY - minY;
+
+        console.log("Crop area:", {
+          minX,
+          minY,
+          width,
+          height,
+          padding,
+          scale,
+        });
+
+        // Get the canvas
+        const canvas = deck.canvas;
+
+        // Create a high-resolution cropped canvas
+        const cropCanvas = document.createElement("canvas");
+        cropCanvas.width = (width + padding * 2) * scale;
+        cropCanvas.height = (height + padding * 2) * scale;
+        const ctx = cropCanvas.getContext("2d", {
+          willReadFrequently: false,
+          alpha: false,
+        });
+
+        if (ctx && canvas) {
+          // Scale the context for high resolution
+          ctx.scale(scale, scale);
+
+          // Enable image smoothing for better quality
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+
+          // Fill with white background first
+          ctx.fillStyle = "white";
+          ctx.fillRect(0, 0, width + padding * 2, height + padding * 2);
+
+          // Draw the cropped area
+          ctx.drawImage(
+            canvas,
+            minX - padding,
+            minY - padding,
+            width + padding * 2,
+            height + padding * 2,
+            0,
+            0,
+            width + padding * 2,
+            height + padding * 2
+          );
+
+          // Download the image
+          cropCanvas.toBlob(
+            (blob) => {
+              if (!blob) return;
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.download = `${
+                layer.name
+              }-screenshot-${new Date().getTime()}.png`;
+              link.href = url;
+              link.click();
+              URL.revokeObjectURL(url);
+            },
+            "image/png",
+            1.0
+          );
+
+          // Store the coordinates
+          const bboxData = {
+            layerId,
+            coordinates: {
+              topLeft: [minLng, maxLat],
+              topRight: [maxLng, maxLat],
+              bottomRight: [maxLng, minLat],
+              bottomLeft: [minLng, minLat],
+            },
+            bounds: layer.bounds,
+            timestamp: new Date().toISOString(),
+          };
+
+          console.log("Captured bounding box data:", bboxData);
+          localStorage.setItem(`bbox-${layerId}`, JSON.stringify(bboxData));
+        }
+      } finally {
+        // Restore layer visibility
+        if (originalVisibility !== layer.visible) {
+          layerManager.toggleLayer(layerId);
+          setLayerRevision((prev) => prev + 1);
+        }
+      }
+    },
+    [layerManager]
+  );
   // function to parse HTML description from URA masterplan .geojson
   const parseDescription = useCallback((description: string) => {
     const parser = new DOMParser();
@@ -58,48 +241,6 @@ export default function DeckGlMap() {
     return properties;
   }, []);
 
-  const [layerManager] = useState(() => {
-    const manager = new LayerManager();
-    // manager.addLayer({
-    //   id: "urban-massing",
-    //   name: "Urban Massing",
-    //   visible: true,
-    //   type: "geojson",
-    // });
-
-    manager.addLayer({
-      id: "generation-three",
-      name: "Generation Three",
-      visible: true,
-      type: "geojson",
-    });
-
-    // manager.addLayer({
-    //   id: "claude-generation",
-    //   name: "Claude Generation",
-    //   visible: true,
-    //   type: "geojson",
-    // });
-
-    manager.addLayer({
-      id: "hubert-generation",
-      name: "Hubert Generation",
-      visible: true,
-      type: "geojson",
-    });
-
-    // Add Master Plan layer
-    manager.addLayer({
-      id: "master-plan",
-      name: "URA Master Plan 2019",
-      visible: false, // Start hidden due to size
-      type: "geojson",
-    });
-    return manager;
-  });
-
-  const [layerRevision, setLayerRevision] = useState(0);
-
   const [features, setFeatures] = useState({
     type: "FeatureCollection",
     features: [],
@@ -115,7 +256,6 @@ export default function DeckGlMap() {
       try {
         setIsLoading(true);
 
-        // Use Cloudflare R2 for production, local file for development
         const url =
           process.env.NODE_ENV === "production"
             ? "https://pub-11f00423b1754a1fac8d8ed39c0f472c.r2.dev/MasterPlan2019LandUselayer.geojson"
@@ -155,18 +295,15 @@ export default function DeckGlMap() {
     ({ updatedData, editType }: any) => {
       setFeatures(updatedData);
 
-      // When a feature is added (polygon or bounding box completed), save it as a new layer
       if (editType === "addFeature" && updatedData.features.length > 0) {
         const newFeature =
           updatedData.features[updatedData.features.length - 1];
 
-        // Determine if it's a bounding box (rectangle) or polygon
         const isRectangle = mode instanceof DrawRectangleMode;
         const layerId = `drawn-${
           isRectangle ? "bbox" : "polygon"
         }-${Date.now()}`;
 
-        // Calculate bounding box coordinates
         const coordinates = newFeature.geometry.coordinates[0];
         const lngs = coordinates.map((coord: number[]) => coord[0]);
         const lats = coordinates.map((coord: number[]) => coord[1]);
@@ -199,19 +336,15 @@ export default function DeckGlMap() {
             features: [newFeature],
           },
           geometry: newFeature.geometry,
-          bounds: isRectangle ? bounds : undefined, // Store bounds for bounding boxes
+          bounds: isRectangle ? bounds : undefined,
         });
 
-        // Clear the drawing layer
         setFeatures({
           type: "FeatureCollection",
           features: [],
         });
 
-        // Exit drawing mode
         setMode(new ViewMode());
-
-        // Trigger re-render
         setLayerRevision((prev) => prev + 1);
       }
     },
@@ -223,7 +356,6 @@ export default function DeckGlMap() {
       console.log("Importing GeoJSON:", geojson);
       const layerId = `imported-${Date.now()}`;
 
-      // Wrap single features in a FeatureCollection
       const data =
         geojson.type === "FeatureCollection"
           ? geojson
@@ -277,9 +409,7 @@ export default function DeckGlMap() {
     () =>
       layerManager.createDeckLayers(
         {
-          "urban-massing": GEOJSON_DATA,
           "generation-three": THIRD_GENERATION,
-          "claude-generation": CLAUDE_GENERATION,
           "master-plan": masterPlanData,
           "hubert-generation": HUBERT_GENERATION,
         },
@@ -402,6 +532,7 @@ export default function DeckGlMap() {
         onLayerToggle={handleLayerToggle}
         onLayerRemove={handleLayerRemove}
         onGeoJsonImport={handleGeoJsonImport}
+        onCaptureScreenshot={captureScreenshot}
       />
 
       {/* Basemap Selector */}
@@ -488,6 +619,7 @@ export default function DeckGlMap() {
       </div>
 
       <DeckGL
+        ref={deckRef}
         initialViewState={INITIAL_VIEW_STATE}
         controller={{
           doubleClickZoom: false,
@@ -498,6 +630,7 @@ export default function DeckGlMap() {
         onHover={(info) => setHoverInfo(info)}
       >
         <Map
+          ref={mapRef}
           {...viewState}
           style={{ width: "100%", height: "100%" }}
           mapStyle={BASEMAPS[currentBasemap].url}

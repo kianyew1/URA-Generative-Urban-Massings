@@ -37,7 +37,7 @@ export class LayerManager {
     }
   }
 
-  getLayer(id: string): LayerConfig | undefined {
+  getLayer(id: string) {
     return this.layers.get(id);
   }
 
