@@ -110,7 +110,7 @@ export default function DeckGlMap() {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       try {
-        const padding = 20; // pixels of padding around bbox
+        const padding = 0; // pixels of padding around bbox
         const scale = 5; // Higher resolution multiplier (2x or 3x for better quality)
 
         // Get the viewport
