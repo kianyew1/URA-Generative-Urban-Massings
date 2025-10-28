@@ -18,7 +18,6 @@ import {
 } from "@deck.gl-community/editable-layers";
 import { BASEMAPS } from "./consts/const";
 import { ScreenshotWidget } from "@deck.gl/widgets";
-import type { ScreenshotWidgetProps } from "@deck.gl/widgets";
 import "@deck.gl/widgets/stylesheet.css";
 
 // Initial camera position - Sembawang waterfront area, Singapore
@@ -38,7 +37,7 @@ export default function DeckGlMap() {
   const [isLoading, setIsLoading] = useState(true);
   const [hoverInfo, setHoverInfo] = useState<any>(null);
   const [currentBasemap, setCurrentBasemap] =
-    useState<keyof typeof BASEMAPS>("osm");
+    useState<keyof typeof BASEMAPS>("voyager");
   const [basemapSelectorOpen, setBasemapSelectorOpen] = useState(false);
 
   // layers
@@ -103,7 +102,7 @@ export default function DeckGlMap() {
       // Get the viewport
       const viewport = deck.getViewports()[0];
 
-      // Project the bounds to get pixel coordinates
+      // Project the bounds to get pixel coordinates (viewport.project returns CSS pixels)
       const nw = viewport.project([minLng, maxLat]);
       const se = viewport.project([maxLng, minLat]);
       const ne = viewport.project([maxLng, maxLat]);
@@ -121,27 +120,21 @@ export default function DeckGlMap() {
       const deckCanvas = deck.canvas;
       const mapCanvas = map.getCanvas();
 
-      // Get device pixel ratio to handle retina displays
+      // Device pixel ratio
       const dpr = window.devicePixelRatio || 1;
 
-      console.log("Screenshot params:", {
-        minX,
-        minY,
-        width,
-        height,
-        padding,
-        dpr,
-        canvasWidth: deckCanvas.width,
-        canvasHeight: deckCanvas.height,
-      });
-
-      // Create composite canvas at device resolution
-      const cropCanvas = document.createElement("canvas");
+      // Output size in CSS pixels
       const outputWidth = Math.round(width + padding * 2);
       const outputHeight = Math.round(height + padding * 2);
 
-      cropCanvas.width = outputWidth;
-      cropCanvas.height = outputHeight;
+      // Create high-res canvas (internal pixels = css * dpr)
+      const cropCanvas = document.createElement("canvas");
+      cropCanvas.width = Math.round(outputWidth * dpr);
+      cropCanvas.height = Math.round(outputHeight * dpr);
+      // keep CSS size (not strictly necessary since canvas is not inserted into DOM,
+      // but useful for clarity if debugging)
+      cropCanvas.style.width = `${outputWidth}px`;
+      cropCanvas.style.height = `${outputHeight}px`;
 
       const ctx = cropCanvas.getContext("2d", {
         willReadFrequently: false,
@@ -152,51 +145,53 @@ export default function DeckGlMap() {
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
 
-        // White background
+        // White background (fill in device pixels)
         ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, outputWidth, outputHeight);
+        ctx.fillRect(0, 0, cropCanvas.width, cropCanvas.height);
 
-        // Calculate source coordinates accounting for device pixel ratio
-        const sx = (minX - padding) * dpr;
-        const sy = (minY - padding) * dpr;
-        const sWidth = (width + padding * 2) * dpr;
-        const sHeight = (height + padding * 2) * dpr;
+        // Source coords: viewport.project returns CSS px, so multiply by dpr to get canvas pixels
+        const sx = Math.round((minX - padding) * dpr);
+        const sy = Math.round((minY - padding) * dpr);
+        const sWidth = Math.round((width + padding * 2) * dpr);
+        const sHeight = Math.round((height + padding * 2) * dpr);
 
-        // Draw MapLibre basemap first
+        // Destination is the full high-res canvas
+        const dx = 0;
+        const dy = 0;
+        const dWidth = cropCanvas.width;
+        const dHeight = cropCanvas.height;
+
+        // Draw basemap then deck.gl layers on top at high resolution
         ctx.drawImage(
           mapCanvas,
           sx,
           sy,
           sWidth,
-          sHeight, // source
-          0,
-          0,
-          outputWidth,
-          outputHeight // destination
+          sHeight,
+          dx,
+          dy,
+          dWidth,
+          dHeight
         );
-
-        // Draw deck.gl layers on top
         ctx.drawImage(
           deckCanvas,
           sx,
           sy,
           sWidth,
-          sHeight, // source
-          0,
-          0,
-          outputWidth,
-          outputHeight // destination
+          sHeight,
+          dx,
+          dy,
+          dWidth,
+          dHeight
         );
 
-        // Download
+        // Export
         cropCanvas.toBlob(
           (blob) => {
             if (!blob) return;
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
-            link.download = `${
-              layer.name
-            }-screenshot-${new Date().getTime()}.png`;
+            link.download = `${layer.name}-screenshot-${Date.now()}.png`;
             link.href = url;
             link.click();
             URL.revokeObjectURL(url);
@@ -218,19 +213,16 @@ export default function DeckGlMap() {
           timestamp: new Date().toISOString(),
         };
 
-        console.log("Captured bounding box data:", bboxData);
         localStorage.setItem(
           `bbox-${pendingScreenshotLayerId}`,
           JSON.stringify(bboxData)
         );
       }
 
-      // Clear the pending screenshot
       setPendingScreenshotLayerId(null);
     },
     [pendingScreenshotLayerId, layerManager]
   );
-
   const screenshotWidget = useMemo(() => {
     return new ScreenshotWidget({
       id: "screenshot",
