@@ -10,18 +10,16 @@ import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { LayerControl } from "./LayerControl";
 import { LayerManager } from "./LayerManager";
-import {
-  GEOJSON_DATA,
-  THIRD_GENERATION,
-  CLAUDE_GENERATION,
-  HUBERT_GENERATION,
-} from "./consts/const";
+import { THIRD_GENERATION, HUBERT_GENERATION } from "./consts/const";
 import {
   DrawPolygonMode,
   DrawRectangleMode,
   ViewMode,
 } from "@deck.gl-community/editable-layers";
 import { BASEMAPS } from "./consts/const";
+import { ScreenshotWidget } from "@deck.gl/widgets";
+import type { ScreenshotWidgetProps } from "@deck.gl/widgets";
+import "@deck.gl/widgets/stylesheet.css";
 
 // Initial camera position - Sembawang waterfront area, Singapore
 const INITIAL_VIEW_STATE = {
@@ -40,7 +38,7 @@ export default function DeckGlMap() {
   const [isLoading, setIsLoading] = useState(true);
   const [hoverInfo, setHoverInfo] = useState<any>(null);
   const [currentBasemap, setCurrentBasemap] =
-    useState<keyof typeof BASEMAPS>("positron");
+    useState<keyof typeof BASEMAPS>("osm");
   const [basemapSelectorOpen, setBasemapSelectorOpen] = useState(false);
 
   // layers
@@ -73,153 +71,211 @@ export default function DeckGlMap() {
 
   const [layerRevision, setLayerRevision] = useState(0);
 
-  // screenshot functionality consts
+  // Add this state after the existing refs
   const deckRef = useRef<any>(null);
   const mapRef = useRef<any>(null);
+  const [pendingScreenshotLayerId, setPendingScreenshotLayerId] = useState<
+    string | null
+  >(null);
 
+  const handleCustomScreenshot = useCallback(
+    (widget: ScreenshotWidget) => {
+      if (!pendingScreenshotLayerId || !deckRef.current || !mapRef.current) {
+        // If no pending screenshot, just use default behavior
+        const dataURL = widget.captureScreenToDataURL(widget.props.imageFormat);
+        if (dataURL) {
+          widget.downloadDataURL(dataURL, widget.props.filename);
+        }
+        return;
+      }
+
+      const layer = layerManager.getLayer(pendingScreenshotLayerId);
+      if (!layer?.bounds) return;
+
+      const deck = deckRef.current.deck;
+      const map = mapRef.current.getMap();
+
+      if (!deck || !map) return;
+
+      const { minLng, maxLng, minLat, maxLat } = layer.bounds;
+      const padding = 0;
+
+      // Get the viewport
+      const viewport = deck.getViewports()[0];
+
+      // Project the bounds to get pixel coordinates
+      const nw = viewport.project([minLng, maxLat]);
+      const se = viewport.project([maxLng, minLat]);
+      const ne = viewport.project([maxLng, maxLat]);
+      const sw = viewport.project([minLng, minLat]);
+
+      const minX = Math.min(nw[0], se[0], ne[0], sw[0]);
+      const maxX = Math.max(nw[0], se[0], ne[0], sw[0]);
+      const minY = Math.min(nw[1], se[1], ne[1], sw[1]);
+      const maxY = Math.max(nw[1], se[1], ne[1], sw[1]);
+
+      const width = maxX - minX;
+      const height = maxY - minY;
+
+      // Get both canvases
+      const deckCanvas = deck.canvas;
+      const mapCanvas = map.getCanvas();
+
+      // Get device pixel ratio to handle retina displays
+      const dpr = window.devicePixelRatio || 1;
+
+      console.log("Screenshot params:", {
+        minX,
+        minY,
+        width,
+        height,
+        padding,
+        dpr,
+        canvasWidth: deckCanvas.width,
+        canvasHeight: deckCanvas.height,
+      });
+
+      // Create composite canvas at device resolution
+      const cropCanvas = document.createElement("canvas");
+      const outputWidth = Math.round(width + padding * 2);
+      const outputHeight = Math.round(height + padding * 2);
+
+      cropCanvas.width = outputWidth;
+      cropCanvas.height = outputHeight;
+
+      const ctx = cropCanvas.getContext("2d", {
+        willReadFrequently: false,
+        alpha: false,
+      });
+
+      if (ctx && deckCanvas && mapCanvas) {
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+
+        // White background
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, outputWidth, outputHeight);
+
+        // Calculate source coordinates accounting for device pixel ratio
+        const sx = (minX - padding) * dpr;
+        const sy = (minY - padding) * dpr;
+        const sWidth = (width + padding * 2) * dpr;
+        const sHeight = (height + padding * 2) * dpr;
+
+        // Draw MapLibre basemap first
+        ctx.drawImage(
+          mapCanvas,
+          sx,
+          sy,
+          sWidth,
+          sHeight, // source
+          0,
+          0,
+          outputWidth,
+          outputHeight // destination
+        );
+
+        // Draw deck.gl layers on top
+        ctx.drawImage(
+          deckCanvas,
+          sx,
+          sy,
+          sWidth,
+          sHeight, // source
+          0,
+          0,
+          outputWidth,
+          outputHeight // destination
+        );
+
+        // Download
+        cropCanvas.toBlob(
+          (blob) => {
+            if (!blob) return;
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.download = `${
+              layer.name
+            }-screenshot-${new Date().getTime()}.png`;
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+          },
+          "image/png",
+          1.0
+        );
+
+        // Store coordinates
+        const bboxData = {
+          layerId: pendingScreenshotLayerId,
+          coordinates: {
+            topLeft: [minLng, maxLat],
+            topRight: [maxLng, maxLat],
+            bottomRight: [maxLng, minLat],
+            bottomLeft: [minLng, minLat],
+          },
+          bounds: layer.bounds,
+          timestamp: new Date().toISOString(),
+        };
+
+        console.log("Captured bounding box data:", bboxData);
+        localStorage.setItem(
+          `bbox-${pendingScreenshotLayerId}`,
+          JSON.stringify(bboxData)
+        );
+      }
+
+      // Clear the pending screenshot
+      setPendingScreenshotLayerId(null);
+    },
+    [pendingScreenshotLayerId, layerManager]
+  );
+
+  const screenshotWidget = useMemo(() => {
+    return new ScreenshotWidget({
+      id: "screenshot",
+      placement: "top-right",
+      filename: "deck-screenshot.png",
+      onCapture: handleCustomScreenshot,
+    });
+  }, [handleCustomScreenshot]);
+
+  // Replace the captureScreenshot function
   const captureScreenshot = useCallback(
     async (layerId: string) => {
       const layer = layerManager.getLayer(layerId);
-      if (!layer?.bounds || !deckRef.current) {
-        console.error(
-          "Cannot capture screenshot: missing bounds or deck reference"
-        );
+      if (!layer?.bounds) {
+        console.error("Cannot capture screenshot: missing bounds");
         return;
       }
 
-      const deck = deckRef.current.deck;
-      if (!deck) {
-        console.error("Deck instance not available");
-        return;
-      }
-
-      const { minLng, maxLng, minLat, maxLat } = layer.bounds;
-
-      // Temporarily hide the bounding box layer for screenshot
+      // Temporarily hide the bounding box layer
       const originalVisibility = layer.visible;
       layerManager.toggleLayer(layerId);
       setLayerRevision((prev) => prev + 1);
 
-      // Wait for deck to re-render with layer hidden
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      // Store the layer ID for the capture callback
+      setPendingScreenshotLayerId(layerId);
 
-      // Force a redraw to ensure the layer is hidden
-      deck.redraw(true);
+      // Wait for render
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      // Wait a bit more for the redraw to complete
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Trigger the screenshot widget
+      if (screenshotWidget) {
+        screenshotWidget.handleClick();
+      }
 
-      try {
-        const padding = 0; // pixels of padding around bbox
-        const scale = 5; // Higher resolution multiplier (2x or 3x for better quality)
-
-        // Get the viewport
-        const viewport = deck.getViewports()[0];
-
-        // Project the bounds to get pixel coordinates
-        const nw = viewport.project([minLng, maxLat]);
-        const se = viewport.project([maxLng, minLat]);
-        const ne = viewport.project([maxLng, maxLat]);
-        const sw = viewport.project([minLng, minLat]);
-
-        // Calculate dimensions - use min/max to handle all orientations
-        const minX = Math.min(nw[0], se[0], ne[0], sw[0]);
-        const maxX = Math.max(nw[0], se[0], ne[0], sw[0]);
-        const minY = Math.min(nw[1], se[1], ne[1], sw[1]);
-        const maxY = Math.max(nw[1], se[1], ne[1], sw[1]);
-
-        const width = maxX - minX;
-        const height = maxY - minY;
-
-        console.log("Crop area:", {
-          minX,
-          minY,
-          width,
-          height,
-          padding,
-          scale,
-        });
-
-        // Get the canvas
-        const canvas = deck.canvas;
-
-        // Create a high-resolution cropped canvas
-        const cropCanvas = document.createElement("canvas");
-        cropCanvas.width = (width + padding * 2) * scale;
-        cropCanvas.height = (height + padding * 2) * scale;
-        const ctx = cropCanvas.getContext("2d", {
-          willReadFrequently: false,
-          alpha: false,
-        });
-
-        if (ctx && canvas) {
-          // Scale the context for high resolution
-          ctx.scale(scale, scale);
-
-          // Enable image smoothing for better quality
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = "high";
-
-          // Fill with white background first
-          ctx.fillStyle = "white";
-          ctx.fillRect(0, 0, width + padding * 2, height + padding * 2);
-
-          // Draw the cropped area
-          ctx.drawImage(
-            canvas,
-            minX - padding,
-            minY - padding,
-            width + padding * 2,
-            height + padding * 2,
-            0,
-            0,
-            width + padding * 2,
-            height + padding * 2
-          );
-
-          // Download the image
-          cropCanvas.toBlob(
-            (blob) => {
-              if (!blob) return;
-              const url = URL.createObjectURL(blob);
-              const link = document.createElement("a");
-              link.download = `${
-                layer.name
-              }-screenshot-${new Date().getTime()}.png`;
-              link.href = url;
-              link.click();
-              URL.revokeObjectURL(url);
-            },
-            "image/png",
-            1.0
-          );
-
-          // Store the coordinates
-          const bboxData = {
-            layerId,
-            coordinates: {
-              topLeft: [minLng, maxLat],
-              topRight: [maxLng, maxLat],
-              bottomRight: [maxLng, minLat],
-              bottomLeft: [minLng, minLat],
-            },
-            bounds: layer.bounds,
-            timestamp: new Date().toISOString(),
-          };
-
-          console.log("Captured bounding box data:", bboxData);
-          localStorage.setItem(`bbox-${layerId}`, JSON.stringify(bboxData));
-        }
-      } finally {
-        // Restore layer visibility
+      // Restore layer visibility after a delay
+      setTimeout(() => {
         if (originalVisibility !== layer.visible) {
           layerManager.toggleLayer(layerId);
           setLayerRevision((prev) => prev + 1);
         }
-      }
+      }, 500);
     },
-    [layerManager]
+    [layerManager, screenshotWidget]
   );
+
   // function to parse HTML description from URA masterplan .geojson
   const parseDescription = useCallback((description: string) => {
     const parser = new DOMParser();
@@ -625,6 +681,7 @@ export default function DeckGlMap() {
           doubleClickZoom: false,
         }}
         layers={layers}
+        widgets={[screenshotWidget]}
         onViewStateChange={({ viewState }) => setViewState(viewState)}
         getCursor={({ isDragging }) => (isDragging ? "grabbing" : "grab")}
         onHover={(info) => setHoverInfo(info)}

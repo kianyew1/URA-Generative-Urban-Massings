@@ -39,11 +39,13 @@ export const BASEMAPS = {
   },
   osm: {
     name: "OpenStreetMap",
-    url: "https://tiles.stadiamaps.com/styles/osm_bright.json",
+    // Alternative free OSM source that works in production
+    url: "https://api.maptiler.com/maps/openstreetmap/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
   },
   satellite: {
     name: "Satellite",
-    url: "https://tiles.stadiamaps.com/styles/alidade_satellite.json",
+    // Alternative free satellite source
+    url: "https://api.maptiler.com/maps/hybrid/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL",
   },
 };
 
