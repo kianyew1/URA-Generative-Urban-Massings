@@ -18,6 +18,7 @@ export function useScreenshot({
   const [pendingScreenshotLayerId, setPendingScreenshotLayerId] = useState<
     string | null
   >(null);
+  const screenshotDataUrlRef = useRef<string | null>(null);
 
   const handleCustomScreenshot = useCallback(
     (widget: ScreenshotWidget) => {
@@ -125,6 +126,10 @@ export function useScreenshot({
           dHeight
         );
 
+        // Convert to data URL and store it
+        const dataUrl = cropCanvas.toDataURL("image/png", 1.0);
+        screenshotDataUrlRef.current = dataUrl;
+
         // Export
         cropCanvas.toBlob(
           (blob) => {
@@ -174,12 +179,15 @@ export function useScreenshot({
   }, [handleCustomScreenshot]);
 
   const captureScreenshot = useCallback(
-    async (layerId: string) => {
+    async (layerId: string): Promise<string> => {
       const layer = layerManager.getLayer(layerId);
       if (!layer?.bounds) {
         console.error("Cannot capture screenshot: missing bounds");
-        return;
+        return "";
       }
+
+      // Reset the data URL
+      screenshotDataUrlRef.current = null;
 
       // Temporarily hide the bounding box layer
       const originalVisibility = layer.visible;
@@ -197,13 +205,19 @@ export function useScreenshot({
         screenshotWidget.handleClick();
       }
 
-      // Restore layer visibility after a delay
+      // Wait for screenshot to be captured
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Restore layer visibility
       setTimeout(() => {
         if (originalVisibility !== layer.visible) {
           layerManager.toggleLayer(layerId);
           setLayerRevision((prev) => prev + 1);
         }
-      }, 500);
+      }, 100);
+
+      // Return the captured screenshot data URL
+      return screenshotDataUrlRef.current || "";
     },
     [layerManager, screenshotWidget, setLayerRevision]
   );

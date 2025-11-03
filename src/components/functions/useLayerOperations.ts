@@ -1,6 +1,9 @@
 import { useCallback } from "react";
 import { LayerManager } from "../LayerManager";
-import { DrawRectangleMode } from "@deck.gl-community/editable-layers";
+import {
+  DrawRectangleMode,
+  ViewMode,
+} from "@deck.gl-community/editable-layers";
 
 interface UseLayerOperationsProps {
   layerManager: LayerManager;
@@ -9,7 +12,6 @@ interface UseLayerOperationsProps {
   setMode: React.Dispatch<React.SetStateAction<any>>;
   mode: any;
 }
-
 export function useLayerOperations({
   layerManager,
   setLayerRevision,
@@ -70,7 +72,7 @@ export function useLayerOperations({
           features: [],
         });
 
-        setMode(new (require("@deck.gl-community/editable-layers").ViewMode)());
+        setMode(new ViewMode());
         setLayerRevision((prev) => prev + 1);
       }
     },

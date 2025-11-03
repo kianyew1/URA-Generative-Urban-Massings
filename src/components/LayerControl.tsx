@@ -1,6 +1,6 @@
-import React from "react";
-import { LayerConfig } from "./LayerManager";
+import React, { useState } from "react";
 import { GeoJsonImporter } from "./GeoJsonImporter";
+import { ScreenshotDialog } from "./ScreenshotDialog";
 
 interface LayerControlProps {
   isOpen: boolean;
@@ -9,7 +9,7 @@ interface LayerControlProps {
   onLayerToggle: (id: string) => void;
   onLayerRemove: (id: string) => void;
   onGeoJsonImport: (geojson: any, name: string) => void;
-  onCaptureScreenshot?: (layerId: string) => void;
+  onCaptureScreenshot?: (layerId: string) => Promise<string>; // Updated to return screenshot URL
 }
 
 export function LayerControl({
@@ -21,6 +21,37 @@ export function LayerControl({
   onGeoJsonImport,
   onCaptureScreenshot,
 }: LayerControlProps) {
+  const [screenshotDialog, setScreenshotDialog] = useState<{
+    isOpen: boolean;
+    imageUrl: string | null;
+    layerId: string | null;
+  }>({
+    isOpen: false,
+    imageUrl: null,
+    layerId: null,
+  });
+
+  const handleScreenshotClick = async (layerId: string) => {
+    if (!onCaptureScreenshot) return;
+
+    // Capture screenshot and get the image URL
+    const imageUrl = await onCaptureScreenshot(layerId);
+
+    // Open dialog with the screenshot
+    setScreenshotDialog({
+      isOpen: true,
+      imageUrl: imageUrl,
+      layerId: layerId,
+    });
+  };
+
+  const handlePromptSubmit = (prompt: string) => {
+    console.log("Submitted prompt:", prompt);
+    console.log("Layer ID:", screenshotDialog.layerId);
+    console.log("Screenshot URL:", screenshotDialog.imageUrl);
+    // TODO: Add your AI generation logic here
+  };
+
   return (
     <>
       <div
@@ -29,6 +60,7 @@ export function LayerControl({
         }`}
         style={{ width: "320px" }}
       >
+        {/* ...existing code... */}
         <button
           onClick={onToggle}
           className="w-full p-4 flex items-center justify-between hover:bg-gray-50 rounded-t-xl transition-colors"
@@ -112,7 +144,7 @@ export function LayerControl({
                           layer.bounds &&
                           !!onCaptureScreenshot && (
                             <button
-                              onClick={() => onCaptureScreenshot(layer.id)}
+                              onClick={() => handleScreenshotClick(layer.id)}
                               className="opacity-0 group-hover:opacity-100 p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-all"
                               title="Capture screenshot"
                             >
@@ -191,6 +223,16 @@ export function LayerControl({
           </svg>
         </button>
       )}
+
+      {/* Screenshot Dialog */}
+      <ScreenshotDialog
+        isOpen={screenshotDialog.isOpen}
+        onClose={() =>
+          setScreenshotDialog({ isOpen: false, imageUrl: null, layerId: null })
+        }
+        screenshotUrl={screenshotDialog.imageUrl}
+        onSubmit={handlePromptSubmit}
+      />
     </>
   );
 }
