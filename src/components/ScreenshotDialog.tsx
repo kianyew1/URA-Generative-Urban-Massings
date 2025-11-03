@@ -42,7 +42,7 @@ export function ScreenshotDialog({
       formData.append("prompt", prompt);
 
       // Send to API
-      const apiResponse = await fetch("/api/nanobanana", {
+      const apiResponse = await fetch("/api/nano_banana", {
         method: "POST",
         body: formData,
       });
@@ -76,47 +76,47 @@ export function ScreenshotDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl bg-white opacity-100">
+      <DialogContent className='max-w-3xl bg-white opacity-100'>
         <DialogHeader>
           <DialogTitle>Screenshot Captured</DialogTitle>
           <DialogDescription>
             Review your screenshot and provide instructions for AI generation
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
+        <div className='space-y-4'>
           {screenshotUrl && (
-            <div className="border rounded-lg overflow-hidden">
+            <div className='border rounded-lg overflow-hidden'>
               <img
                 src={screenshotUrl}
-                alt="Screenshot"
-                className="w-full h-auto"
+                alt='Screenshot'
+                className='w-full h-auto'
               />
             </div>
           )}
-          <div className="space-y-2">
+          <div className='space-y-2'>
             <label
-              htmlFor="prompt"
-              className="text-sm font-medium text-gray-700"
+              htmlFor='prompt'
+              className='text-sm font-medium text-gray-700'
             >
               AI Prompt
             </label>
             <Textarea
-              id="prompt"
+              id='prompt'
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Enter your prompt..."
-              className="min-h-[100px]"
+              placeholder='Enter your prompt...'
+              className='min-h-[100px]'
               disabled={isLoading}
             />
           </div>
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={onClose} disabled={isLoading}>
+          <div className='flex justify-end gap-2'>
+            <Button variant='outline' onClick={onClose} disabled={isLoading}>
               Cancel
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className='bg-green-600 hover:bg-green-700 text-white'
             >
               {isLoading ? "Generating..." : "Generate"}
             </Button>
