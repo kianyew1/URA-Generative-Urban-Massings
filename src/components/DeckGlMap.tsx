@@ -19,6 +19,9 @@ import {
 import { BASEMAPS } from "./consts/const";
 import { ScreenshotWidget } from "@deck.gl/widgets";
 import "@deck.gl/widgets/stylesheet.css";
+import { parseDescription } from "./functions/functions";
+import { useScreenshot } from "./functions/useScreenshot";
+import { useLayerOperations } from "./functions/useLayerOperations";
 
 // Initial camera position - Sembawang waterfront area, Singapore
 const INITIAL_VIEW_STATE = {
@@ -73,221 +76,14 @@ export default function DeckGlMap() {
   // Add this state after the existing refs
   const deckRef = useRef<any>(null);
   const mapRef = useRef<any>(null);
-  const [pendingScreenshotLayerId, setPendingScreenshotLayerId] = useState<
-    string | null
-  >(null);
 
-  const handleCustomScreenshot = useCallback(
-    (widget: ScreenshotWidget) => {
-      if (!pendingScreenshotLayerId || !deckRef.current || !mapRef.current) {
-        // If no pending screenshot, just use default behavior
-        const dataURL = widget.captureScreenToDataURL(widget.props.imageFormat);
-        if (dataURL) {
-          widget.downloadDataURL(dataURL, widget.props.filename);
-        }
-        return;
-      }
-
-      const layer = layerManager.getLayer(pendingScreenshotLayerId);
-      if (!layer?.bounds) return;
-
-      const deck = deckRef.current.deck;
-      const map = mapRef.current.getMap();
-
-      if (!deck || !map) return;
-
-      const { minLng, maxLng, minLat, maxLat } = layer.bounds;
-      const padding = 0;
-
-      // Get the viewport
-      const viewport = deck.getViewports()[0];
-
-      // Project the bounds to get pixel coordinates (viewport.project returns CSS pixels)
-      const nw = viewport.project([minLng, maxLat]);
-      const se = viewport.project([maxLng, minLat]);
-      const ne = viewport.project([maxLng, maxLat]);
-      const sw = viewport.project([minLng, minLat]);
-
-      const minX = Math.min(nw[0], se[0], ne[0], sw[0]);
-      const maxX = Math.max(nw[0], se[0], ne[0], sw[0]);
-      const minY = Math.min(nw[1], se[1], ne[1], sw[1]);
-      const maxY = Math.max(nw[1], se[1], ne[1], sw[1]);
-
-      const width = maxX - minX;
-      const height = maxY - minY;
-
-      // Get both canvases
-      const deckCanvas = deck.canvas;
-      const mapCanvas = map.getCanvas();
-
-      // Device pixel ratio
-      const dpr = window.devicePixelRatio || 1;
-
-      // Output size in CSS pixels
-      const outputWidth = Math.round(width + padding * 2);
-      const outputHeight = Math.round(height + padding * 2);
-
-      // Create high-res canvas (internal pixels = css * dpr)
-      const cropCanvas = document.createElement("canvas");
-      cropCanvas.width = Math.round(outputWidth * dpr);
-      cropCanvas.height = Math.round(outputHeight * dpr);
-      // keep CSS size (not strictly necessary since canvas is not inserted into DOM,
-      // but useful for clarity if debugging)
-      cropCanvas.style.width = `${outputWidth}px`;
-      cropCanvas.style.height = `${outputHeight}px`;
-
-      const ctx = cropCanvas.getContext("2d", {
-        willReadFrequently: false,
-        alpha: false,
-      });
-
-      if (ctx && deckCanvas && mapCanvas) {
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
-
-        // White background (fill in device pixels)
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, cropCanvas.width, cropCanvas.height);
-
-        // Source coords: viewport.project returns CSS px, so multiply by dpr to get canvas pixels
-        const sx = Math.round((minX - padding) * dpr);
-        const sy = Math.round((minY - padding) * dpr);
-        const sWidth = Math.round((width + padding * 2) * dpr);
-        const sHeight = Math.round((height + padding * 2) * dpr);
-
-        // Destination is the full high-res canvas
-        const dx = 0;
-        const dy = 0;
-        const dWidth = cropCanvas.width;
-        const dHeight = cropCanvas.height;
-
-        // Draw basemap then deck.gl layers on top at high resolution
-        ctx.drawImage(
-          mapCanvas,
-          sx,
-          sy,
-          sWidth,
-          sHeight,
-          dx,
-          dy,
-          dWidth,
-          dHeight
-        );
-        ctx.drawImage(
-          deckCanvas,
-          sx,
-          sy,
-          sWidth,
-          sHeight,
-          dx,
-          dy,
-          dWidth,
-          dHeight
-        );
-
-        // Export
-        cropCanvas.toBlob(
-          (blob) => {
-            if (!blob) return;
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.download = `${layer.name}-screenshot-${Date.now()}.png`;
-            link.href = url;
-            link.click();
-            URL.revokeObjectURL(url);
-          },
-          "image/png",
-          1.0
-        );
-
-        // Store coordinates
-        const bboxData = {
-          layerId: pendingScreenshotLayerId,
-          coordinates: {
-            topLeft: [minLng, maxLat],
-            topRight: [maxLng, maxLat],
-            bottomRight: [maxLng, minLat],
-            bottomLeft: [minLng, minLat],
-          },
-          bounds: layer.bounds,
-          timestamp: new Date().toISOString(),
-        };
-
-        localStorage.setItem(
-          `bbox-${pendingScreenshotLayerId}`,
-          JSON.stringify(bboxData)
-        );
-      }
-
-      setPendingScreenshotLayerId(null);
-    },
-    [pendingScreenshotLayerId, layerManager]
-  );
-  const screenshotWidget = useMemo(() => {
-    return new ScreenshotWidget({
-      id: "screenshot",
-      placement: "top-right",
-      filename: "deck-screenshot.png",
-      onCapture: handleCustomScreenshot,
-    });
-  }, [handleCustomScreenshot]);
-
-  // Replace the captureScreenshot function
-  const captureScreenshot = useCallback(
-    async (layerId: string) => {
-      const layer = layerManager.getLayer(layerId);
-      if (!layer?.bounds) {
-        console.error("Cannot capture screenshot: missing bounds");
-        return;
-      }
-
-      // Temporarily hide the bounding box layer
-      const originalVisibility = layer.visible;
-      layerManager.toggleLayer(layerId);
-      setLayerRevision((prev) => prev + 1);
-
-      // Store the layer ID for the capture callback
-      setPendingScreenshotLayerId(layerId);
-
-      // Wait for render
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      // Trigger the screenshot widget
-      if (screenshotWidget) {
-        screenshotWidget.handleClick();
-      }
-
-      // Restore layer visibility after a delay
-      setTimeout(() => {
-        if (originalVisibility !== layer.visible) {
-          layerManager.toggleLayer(layerId);
-          setLayerRevision((prev) => prev + 1);
-        }
-      }, 500);
-    },
-    [layerManager, screenshotWidget]
-  );
-
-  // function to parse HTML description from URA masterplan .geojson
-  const parseDescription = useCallback((description: string) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(description, "text/html");
-    const rows = doc.querySelectorAll("tr");
-    const properties: Record<string, string> = {};
-
-    rows.forEach((row) => {
-      const cells = row.querySelectorAll("th, td");
-      if (cells.length === 2) {
-        const key = cells[0].textContent?.trim();
-        const value = cells[1].textContent?.trim();
-        if (key && value) {
-          properties[key] = value;
-        }
-      }
-    });
-
-    return properties;
-  }, []);
+  // Use the screenshot hook
+  const { screenshotWidget, captureScreenshot } = useScreenshot({
+    layerManager,
+    deckRef,
+    mapRef,
+    setLayerRevision,
+  });
 
   const [features, setFeatures] = useState({
     type: "FeatureCollection",
@@ -339,119 +135,19 @@ export default function DeckGlMap() {
     };
   }, []);
 
-  const handleEdit = useCallback(
-    ({ updatedData, editType }: any) => {
-      setFeatures(updatedData);
-
-      if (editType === "addFeature" && updatedData.features.length > 0) {
-        const newFeature =
-          updatedData.features[updatedData.features.length - 1];
-
-        const isRectangle = mode instanceof DrawRectangleMode;
-        const layerId = `drawn-${
-          isRectangle ? "bbox" : "polygon"
-        }-${Date.now()}`;
-
-        const coordinates = newFeature.geometry.coordinates[0];
-        const lngs = coordinates.map((coord: number[]) => coord[0]);
-        const lats = coordinates.map((coord: number[]) => coord[1]);
-        const bounds = {
-          minLng: Math.min(...lngs),
-          maxLng: Math.max(...lngs),
-          minLat: Math.min(...lats),
-          maxLat: Math.max(...lats),
-        };
-
-        layerManager.addLayer({
-          id: layerId,
-          name: isRectangle
-            ? `Bounding Box ${
-                layerManager
-                  .getAllLayers()
-                  .filter((l) => l.type === "drawn" && l.id.includes("bbox"))
-                  .length + 1
-              }`
-            : `Polygon ${
-                layerManager
-                  .getAllLayers()
-                  .filter((l) => l.type === "drawn" && l.id.includes("polygon"))
-                  .length + 1
-              }`,
-          visible: true,
-          type: "drawn",
-          data: {
-            type: "FeatureCollection",
-            features: [newFeature],
-          },
-          geometry: newFeature.geometry,
-          bounds: isRectangle ? bounds : undefined,
-        });
-
-        setFeatures({
-          type: "FeatureCollection",
-          features: [],
-        });
-
-        setMode(new ViewMode());
-        setLayerRevision((prev) => prev + 1);
-      }
-    },
-    [layerManager, mode]
-  );
-
-  const handleGeoJsonImport = useCallback(
-    (geojson: any, name: string) => {
-      console.log("Importing GeoJSON:", geojson);
-      const layerId = `imported-${Date.now()}`;
-
-      const data =
-        geojson.type === "FeatureCollection"
-          ? geojson
-          : {
-              type: "FeatureCollection",
-              features:
-                geojson.type === "Feature"
-                  ? [geojson]
-                  : [
-                      {
-                        type: "Feature",
-                        geometry: geojson,
-                        properties: {},
-                      },
-                    ],
-            };
-
-      console.log("Processed data:", data);
-
-      layerManager.addLayer({
-        id: layerId,
-        name: name,
-        visible: true,
-        type: "imported",
-        data: data,
-      });
-
-      console.log("All layers:", layerManager.getAllLayers());
-      setLayerRevision((prev) => prev + 1);
-    },
-    [layerManager]
-  );
-
-  const handleLayerToggle = useCallback(
-    (id: string) => {
-      layerManager.toggleLayer(id);
-      setLayerRevision((prev) => prev + 1);
-    },
-    [layerManager]
-  );
-
-  const handleLayerRemove = useCallback(
-    (id: string) => {
-      layerManager.removeLayer(id);
-      setLayerRevision((prev) => prev + 1);
-    },
-    [layerManager]
-  );
+  // Use the layer operations hook
+  const {
+    handleEdit,
+    handleGeoJsonImport,
+    handleLayerToggle,
+    handleLayerRemove,
+  } = useLayerOperations({
+    layerManager,
+    setLayerRevision,
+    setFeatures,
+    setMode,
+    mode,
+  });
 
   const layers = useMemo(
     () =>
