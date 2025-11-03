@@ -1,6 +1,7 @@
 {
   "functions": {
-    "api/index.py": {
+    "src/api/**/*.py": {
+      "runtime": "python3.11",
       "maxDuration": 60
     }
   }
