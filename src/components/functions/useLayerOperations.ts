@@ -11,6 +11,7 @@ interface UseLayerOperationsProps {
   setFeatures: React.Dispatch<React.SetStateAction<any>>;
   setMode: React.Dispatch<React.SetStateAction<any>>;
   mode: any;
+  setBoundingBox: any;
 }
 export function useLayerOperations({
   layerManager,
@@ -18,6 +19,7 @@ export function useLayerOperations({
   setFeatures,
   setMode,
   mode,
+  setBoundingBox,
 }: UseLayerOperationsProps) {
   const handleEdit = useCallback(
     ({ updatedData, editType }: any) => {
@@ -66,6 +68,11 @@ export function useLayerOperations({
           geometry: newFeature.geometry,
           bounds: isRectangle ? bounds : undefined,
         });
+
+        // Extract bounding box coordinates
+        if (newFeature && newFeature.geometry && setBoundingBox) {
+          setBoundingBox(newFeature.geometry);
+        }
 
         setFeatures({
           type: "FeatureCollection",
