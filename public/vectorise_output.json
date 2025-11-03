@@ -66,7 +66,7 @@
       },
       "properties": {
         "id": 0,
-        "height": 15.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 2.7529706502471735e-07
       }
@@ -160,7 +160,7 @@
       },
       "properties": {
         "id": 1,
-        "height": 21.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 1.5877931330035361e-07
       }
@@ -196,8 +196,8 @@
       },
       "properties": {
         "id": 2,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 6.971963832321062e-08
       }
     },
@@ -248,7 +248,7 @@
       },
       "properties": {
         "id": 3,
-        "height": 87.0,
+        "height": 96.0,
         "usetype": "Residential",
         "area": 2.1178533969413434e-07
       }
@@ -412,8 +412,8 @@
       },
       "properties": {
         "id": 4,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 3.877557967005763e-07
       }
     },
@@ -464,8 +464,8 @@
       },
       "properties": {
         "id": 5,
-        "height": 36.0,
-        "usetype": "Office/Industrial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 1.1604021995269538e-07
       }
     },
@@ -604,8 +604,8 @@
       },
       "properties": {
         "id": 6,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.742990958093556e-07
       }
     },
@@ -710,7 +710,7 @@
       },
       "properties": {
         "id": 7,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 9.049227029158372e-08
       }
@@ -750,7 +750,7 @@
       },
       "properties": {
         "id": 8,
-        "height": 75.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 4.3216625125321377e-07
       }
@@ -816,7 +816,7 @@
       },
       "properties": {
         "id": 9,
-        "height": 18.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 2.674177908315151e-07
       }
@@ -950,8 +950,8 @@
       },
       "properties": {
         "id": 10,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 6.733197947605664e-08
       }
     },
@@ -1024,7 +1024,7 @@
       },
       "properties": {
         "id": 11,
-        "height": 102.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 9.431252444449346e-08
       }
@@ -1154,8 +1154,8 @@
       },
       "properties": {
         "id": 12,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 1.8766998535120946e-07
       }
     },
@@ -1206,8 +1206,8 @@
       },
       "properties": {
         "id": 13,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 1.5066127322700267e-07
       }
     },
@@ -1304,7 +1304,7 @@
       },
       "properties": {
         "id": 14,
-        "height": 18.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 2.554794965998759e-07
       }
@@ -1340,8 +1340,8 @@
       },
       "properties": {
         "id": 15,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 6.948087244097173e-08
       }
     },
@@ -1602,8 +1602,8 @@
       },
       "properties": {
         "id": 16,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 1.4015557430131317e-07
       }
     },
@@ -1638,7 +1638,7 @@
       },
       "properties": {
         "id": 17,
-        "height": 18.0,
+        "height": 9.0,
         "usetype": "Commercial",
         "area": 5.014083578097524e-08
       }
@@ -1712,7 +1712,7 @@
       },
       "properties": {
         "id": 18,
-        "height": 96.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 8.094163490275028e-08
       }
@@ -1778,8 +1778,8 @@
       },
       "properties": {
         "id": 19,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 33.0,
+        "usetype": "Office/Industrial",
         "area": 1.0625081867635572e-07
       }
     },
@@ -2320,8 +2320,8 @@
       },
       "properties": {
         "id": 20,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 3.34272238537947e-07
       }
     },
@@ -2360,8 +2360,8 @@
       },
       "properties": {
         "id": 21,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 6.255666178289501e-08
       }
     },
@@ -2400,8 +2400,8 @@
       },
       "properties": {
         "id": 22,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 6.279542766810981e-08
       }
     },
@@ -2436,8 +2436,8 @@
       },
       "properties": {
         "id": 23,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 4.3216625125741325e-08
       }
     },
@@ -2514,8 +2514,8 @@
       },
       "properties": {
         "id": 24,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 7.54500195557793e-08
       }
     },
@@ -2602,8 +2602,8 @@
       },
       "properties": {
         "id": 25,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 33.0,
+        "usetype": "Office/Industrial",
         "area": 6.542185240075454e-08
       }
     },
@@ -2670,8 +2670,8 @@
       },
       "properties": {
         "id": 26,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 8.452312317112594e-08
       }
     },
@@ -2834,8 +2834,8 @@
       },
       "properties": {
         "id": 27,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.1413009287728388e-07
       }
     },
@@ -2960,8 +2960,8 @@
       },
       "properties": {
         "id": 28,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 1.981756842754712e-07
       }
     },
@@ -2996,7 +2996,7 @@
       },
       "properties": {
         "id": 29,
-        "height": 18.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 6.016900293691594e-08
       }
@@ -3084,7 +3084,7 @@
       },
       "properties": {
         "id": 31,
-        "height": 18.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 5.658751466550062e-08
       }
@@ -3216,7 +3216,7 @@
       },
       "properties": {
         "id": 32,
-        "height": 6.0,
+        "height": 9.0,
         "usetype": "Commercial",
         "area": 2.881904227919331e-07
       }
@@ -3276,8 +3276,8 @@
       },
       "properties": {
         "id": 33,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 9.982801638198906e-07
       }
     },
@@ -3388,7 +3388,7 @@
       },
       "properties": {
         "id": 35,
-        "height": 12.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 6.422802297604091e-08
       }
@@ -3500,8 +3500,8 @@
       },
       "properties": {
         "id": 36,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 9.74164809447979e-08
       }
     },
@@ -3540,8 +3540,8 @@
       },
       "properties": {
         "id": 37,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 7.545001955691285e-08
       }
     },
@@ -3658,8 +3658,8 @@
       },
       "properties": {
         "id": 38,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 9.120856794151338e-08
       }
     },
@@ -3960,8 +3960,8 @@
       },
       "properties": {
         "id": 39,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 5.181219697336049e-07
       }
     },
@@ -4000,8 +4000,8 @@
       },
       "properties": {
         "id": 40,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 6.446678886017804e-08
       }
     },
@@ -4096,7 +4096,7 @@
       },
       "properties": {
         "id": 42,
-        "height": 96.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 2.7840102152825104e-07
       }
@@ -4184,7 +4184,7 @@
       },
       "properties": {
         "id": 43,
-        "height": 102.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 6.90033406726726e-08
       }
@@ -4232,8 +4232,8 @@
       },
       "properties": {
         "id": 44,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 8.762707967345744e-08
       }
     },
@@ -4360,8 +4360,8 @@
       },
       "properties": {
         "id": 45,
-        "height": 9.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 1.4779608261267152e-07
       }
     },
@@ -4396,7 +4396,7 @@
       },
       "properties": {
         "id": 46,
-        "height": 21.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 5.467738758894397e-08
       }
@@ -4556,7 +4556,7 @@
       },
       "properties": {
         "id": 47,
-        "height": 18.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 1.9745938662107777e-07
       }
@@ -4670,8 +4670,8 @@
       },
       "properties": {
         "id": 48,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 57.0,
+        "usetype": "Office/Industrial",
         "area": 1.1651775171778285e-07
       }
     },
@@ -4714,7 +4714,7 @@
       },
       "properties": {
         "id": 49,
-        "height": 87.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 8.237423021181248e-08
       }
@@ -4754,8 +4754,8 @@
       },
       "properties": {
         "id": 50,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 4.8708240473690866e-08
       }
     },
@@ -4810,7 +4810,7 @@
       },
       "properties": {
         "id": 51,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 2.084426173166577e-07
       }
@@ -4928,8 +4928,8 @@
       },
       "properties": {
         "id": 52,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.0457945748705603e-07
       }
     },
@@ -5052,8 +5052,8 @@
       },
       "properties": {
         "id": 53,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.5519782503697655e-07
       }
     },
@@ -5108,8 +5108,8 @@
       },
       "properties": {
         "id": 54,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 9.956537390815815e-08
       }
     },
@@ -5148,8 +5148,8 @@
       },
       "properties": {
         "id": 55,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 6.47055547446908e-08
       }
     },
@@ -5206,7 +5206,7 @@
       },
       "properties": {
         "id": 56,
-        "height": 21.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 4.345539101023462e-08
       }
@@ -5246,7 +5246,7 @@
       },
       "properties": {
         "id": 57,
-        "height": 12.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 1.723889687332134e-07
       }
@@ -5588,8 +5588,8 @@
       },
       "properties": {
         "id": 59,
-        "height": 48.0,
-        "usetype": "Office/Industrial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 7.473372189958244e-08
       }
     },
@@ -5632,8 +5632,8 @@
       },
       "properties": {
         "id": 60,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 5.2289728743451736e-08
       }
     },
@@ -5828,8 +5828,8 @@
       },
       "properties": {
         "id": 61,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 1.3394766130127074e-07
       }
     },
@@ -5904,7 +5904,7 @@
       },
       "properties": {
         "id": 62,
-        "height": 84.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 3.942024755929169e-07
       }
@@ -5948,8 +5948,8 @@
       },
       "properties": {
         "id": 63,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 4.679811339529129e-08
       }
     },
@@ -6018,7 +6018,7 @@
       },
       "properties": {
         "id": 64,
-        "height": 57.0,
+        "height": 30.0,
         "usetype": "Office/Industrial",
         "area": 1.0744464810024145e-07
       }
@@ -6226,8 +6226,8 @@
       },
       "properties": {
         "id": 65,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 1.8480479473229957e-07
       }
     },
@@ -6266,7 +6266,7 @@
       },
       "properties": {
         "id": 66,
-        "height": 15.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 5.4677387589573665e-08
       }
@@ -6458,8 +6458,8 @@
       },
       "properties": {
         "id": 67,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 3.185136901498198e-07
       }
     },
@@ -6498,8 +6498,8 @@
       },
       "properties": {
         "id": 68,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 5.5632451130632134e-08
       }
     },
@@ -6546,7 +6546,7 @@
       },
       "properties": {
         "id": 69,
-        "height": 24.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 7.59275513239715e-08
       }
@@ -6582,8 +6582,8 @@
       },
       "properties": {
         "id": 70,
-        "height": 45.0,
-        "usetype": "Office/Industrial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 4.584304985663979e-08
       }
     },
@@ -6674,8 +6674,8 @@
       },
       "properties": {
         "id": 71,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 4.178402981662619e-08
       }
     },
@@ -6864,7 +6864,7 @@
       },
       "properties": {
         "id": 74,
-        "height": 90.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 1.9913074781547572e-07
       }
@@ -7076,7 +7076,7 @@
       },
       "properties": {
         "id": 75,
-        "height": 21.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 4.3885169602272356e-07
       }
@@ -7172,8 +7172,8 @@
       },
       "properties": {
         "id": 76,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 45.0,
+        "usetype": "Office/Industrial",
         "area": 7.186853128789778e-08
       }
     },
@@ -7256,7 +7256,7 @@
       },
       "properties": {
         "id": 78,
-        "height": 81.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 8.165793255800072e-08
       }
@@ -7304,8 +7304,8 @@
       },
       "properties": {
         "id": 79,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 3.1135071360902223e-07
       }
     },
@@ -7376,7 +7376,7 @@
       },
       "properties": {
         "id": 80,
-        "height": 96.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 9.19248655976136e-08
       }
@@ -7460,7 +7460,7 @@
       },
       "properties": {
         "id": 81,
-        "height": 81.0,
+        "height": 75.0,
         "usetype": "Residential",
         "area": 7.282359482429191e-08
       }
@@ -7508,7 +7508,7 @@
       },
       "properties": {
         "id": 82,
-        "height": 15.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 6.422802297741828e-08
       }
@@ -7740,7 +7740,7 @@
       },
       "properties": {
         "id": 83,
-        "height": 78.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 8.769870943930607e-07
       }
@@ -7796,7 +7796,7 @@
       },
       "properties": {
         "id": 84,
-        "height": 24.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 2.8532523218216724e-07
       }
@@ -7886,7 +7886,7 @@
       },
       "properties": {
         "id": 85,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 1.614057380399535e-07
       }
@@ -7996,7 +7996,7 @@
       },
       "properties": {
         "id": 86,
-        "height": 102.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 1.678524169240698e-07
       }
@@ -8108,8 +8108,8 @@
       },
       "properties": {
         "id": 87,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.5304893207189867e-07
       }
     },
@@ -8178,8 +8178,8 @@
       },
       "properties": {
         "id": 88,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 7.091346774774496e-08
       }
     },
@@ -8242,8 +8242,8 @@
       },
       "properties": {
         "id": 89,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 6.900334067037012e-08
       }
     },
@@ -8380,8 +8380,8 @@
       },
       "properties": {
         "id": 90,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 6.907497043518127e-07
       }
     },
@@ -8520,8 +8520,8 @@
       },
       "properties": {
         "id": 91,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 5.443862170435644e-08
       }
     },
@@ -8564,8 +8564,8 @@
       },
       "properties": {
         "id": 92,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 3.216176466520668e-07
       }
     },
@@ -8620,8 +8620,8 @@
       },
       "properties": {
         "id": 93,
-        "height": 48.0,
-        "usetype": "Office/Industrial",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 3.5623869992529944e-07
       }
     },
@@ -8774,7 +8774,7 @@
       },
       "properties": {
         "id": 94,
-        "height": 18.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 1.23441962375225e-07
       }
@@ -8984,8 +8984,8 @@
       },
       "properties": {
         "id": 95,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 2.268275904375328e-07
       }
     },
@@ -9154,8 +9154,8 @@
       },
       "properties": {
         "id": 96,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 8.041634995612355e-07
       }
     },
@@ -9280,7 +9280,7 @@
       },
       "properties": {
         "id": 97,
-        "height": 75.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 9.550635387012544e-08
       }
@@ -9324,8 +9324,8 @@
       },
       "properties": {
         "id": 98,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 5.6587514665701796e-08
       }
     },
@@ -9364,7 +9364,7 @@
       },
       "properties": {
         "id": 99,
-        "height": 21.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 1.81462072348957e-07
       }
@@ -9416,8 +9416,8 @@
       },
       "properties": {
         "id": 100,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 4.5652037148964474e-07
       }
     },
@@ -9484,8 +9484,8 @@
       },
       "properties": {
         "id": 101,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 2.6288123902152716e-07
       }
     },
@@ -9520,7 +9520,7 @@
       },
       "properties": {
         "id": 102,
-        "height": 36.0,
+        "height": 33.0,
         "usetype": "Office/Industrial",
         "area": 4.1115485340046294e-07
       }
@@ -9564,8 +9564,8 @@
       },
       "properties": {
         "id": 103,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 1.0625081867782598e-07
       }
     },
@@ -9670,7 +9670,7 @@
       },
       "properties": {
         "id": 104,
-        "height": 78.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 6.733197947707357e-08
       }
@@ -9812,8 +9812,8 @@
       },
       "properties": {
         "id": 105,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 1.2702345064518897e-07
       }
     },
@@ -9856,8 +9856,8 @@
       },
       "properties": {
         "id": 106,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 3.2161764664994794e-07
       }
     },
@@ -9958,8 +9958,8 @@
       },
       "properties": {
         "id": 107,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 1.2177060117860422e-07
       }
     },
@@ -10154,7 +10154,7 @@
       },
       "properties": {
         "id": 108,
-        "height": 24.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 2.1011397851626039e-07
       }
@@ -10202,8 +10202,8 @@
       },
       "properties": {
         "id": 109,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.2797851418724057e-07
       }
     },
@@ -10306,8 +10306,8 @@
       },
       "properties": {
         "id": 110,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 8.571695259759308e-08
       }
     },
@@ -10378,8 +10378,8 @@
       },
       "properties": {
         "id": 111,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.6976254399738812e-07
       }
     },
@@ -10452,8 +10452,8 @@
       },
       "properties": {
         "id": 112,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.5495905915190893e-07
       }
     },
@@ -10544,8 +10544,8 @@
       },
       "properties": {
         "id": 114,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 9.598388563889144e-08
       }
     },
@@ -10650,8 +10650,8 @@
       },
       "properties": {
         "id": 115,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.0075920333091521e-07
       }
     },
@@ -10712,8 +10712,8 @@
       },
       "properties": {
         "id": 116,
-        "height": 72.0,
-        "usetype": "Residential",
+        "height": 33.0,
+        "usetype": "Office/Industrial",
         "area": 5.5871217011085905e-08
       }
     },
@@ -10962,8 +10962,8 @@
       },
       "properties": {
         "id": 117,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 2.3876588467152667e-07
       }
     },
@@ -11014,8 +11014,8 @@
       },
       "properties": {
         "id": 118,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.3752914957014727e-07
       }
     },
@@ -11230,8 +11230,8 @@
       },
       "properties": {
         "id": 119,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 2.4569009531651165e-07
       }
     },
@@ -11320,8 +11320,8 @@
       },
       "properties": {
         "id": 120,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 3.402413856526311e-07
       }
     },
@@ -11414,8 +11414,8 @@
       },
       "properties": {
         "id": 121,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.1866664467978893e-07
       }
     },
@@ -11642,7 +11642,7 @@
       },
       "properties": {
         "id": 122,
-        "height": 75.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 3.0824675710875475e-07
       }
@@ -11690,8 +11690,8 @@
       },
       "properties": {
         "id": 123,
-        "height": 57.0,
-        "usetype": "Office/Industrial",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 7.306236071065782e-08
       }
     },
@@ -11742,8 +11742,8 @@
       },
       "properties": {
         "id": 124,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 2.4688392475393465e-07
       }
     },
@@ -11804,8 +11804,8 @@
       },
       "properties": {
         "id": 125,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 45.0,
+        "usetype": "Office/Industrial",
         "area": 5.921393939886495e-08
       }
     },
@@ -11884,8 +11884,8 @@
       },
       "properties": {
         "id": 126,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 9.216363148247037e-08
       }
     },
@@ -12170,8 +12170,8 @@
       },
       "properties": {
         "id": 127,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 1.8766998535278907e-07
       }
     },
@@ -12312,8 +12312,8 @@
       },
       "properties": {
         "id": 128,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.501837414578756e-07
       }
     },
@@ -12386,8 +12386,8 @@
       },
       "properties": {
         "id": 129,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 3.7199724830711685e-07
       }
     },
@@ -12586,8 +12586,8 @@
       },
       "properties": {
         "id": 130,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 2.363782258225547e-07
       }
     },
@@ -12660,8 +12660,8 @@
       },
       "properties": {
         "id": 131,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 9.693894917502659e-08
       }
     },
@@ -12812,8 +12812,8 @@
       },
       "properties": {
         "id": 132,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.3036617302971557e-07
       }
     },
@@ -12974,8 +12974,8 @@
       },
       "properties": {
         "id": 133,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 1.8671492181086633e-07
       }
     },
@@ -13114,7 +13114,7 @@
       },
       "properties": {
         "id": 134,
-        "height": 21.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 5.25284946264024e-08
       }
@@ -13234,7 +13234,7 @@
       },
       "properties": {
         "id": 135,
-        "height": 96.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 1.0290809629336498e-07
       }
@@ -13290,7 +13290,7 @@
       },
       "properties": {
         "id": 136,
-        "height": 75.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 1.1317502933294923e-07
       }
@@ -13486,8 +13486,8 @@
       },
       "properties": {
         "id": 137,
-        "height": 45.0,
-        "usetype": "Office/Industrial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 2.342293328589422e-07
       }
     },
@@ -13534,8 +13534,8 @@
       },
       "properties": {
         "id": 138,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 4.464922043404745e-08
       }
     },
@@ -13690,8 +13690,8 @@
       },
       "properties": {
         "id": 139,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 1.528101661878928e-07
       }
     },
@@ -13768,8 +13768,8 @@
       },
       "properties": {
         "id": 140,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 8.905967498149489e-08
       }
     },
@@ -13886,8 +13886,8 @@
       },
       "properties": {
         "id": 141,
-        "height": 45.0,
-        "usetype": "Office/Industrial",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 7.759891251781753e-08
       }
     },
@@ -13964,8 +13964,8 @@
       },
       "properties": {
         "id": 142,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 8.786584555608595e-08
       }
     },
@@ -14008,7 +14008,7 @@
       },
       "properties": {
         "id": 143,
-        "height": 21.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 1.186666446837853e-07
       }
@@ -14048,8 +14048,8 @@
       },
       "properties": {
         "id": 144,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 5.849764174502646e-08
       }
     },
@@ -14164,7 +14164,7 @@
       },
       "properties": {
         "id": 145,
-        "height": 54.0,
+        "height": 39.0,
         "usetype": "Office/Industrial",
         "area": 1.0505698925343452e-07
       }
@@ -14212,7 +14212,7 @@
       },
       "properties": {
         "id": 146,
-        "height": 18.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 6.924210655151866e-08
       }
@@ -14296,8 +14296,8 @@
       },
       "properties": {
         "id": 147,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 4.2261561586380475e-08
       }
     },
@@ -14426,7 +14426,7 @@
       },
       "properties": {
         "id": 148,
-        "height": 102.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 1.7143390519466826e-07
       }
@@ -14608,7 +14608,7 @@
       },
       "properties": {
         "id": 149,
-        "height": 18.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 1.5830178153554445e-07
       }
@@ -14698,7 +14698,7 @@
       },
       "properties": {
         "id": 150,
-        "height": 96.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 1.673748851512959e-07
       }
@@ -14856,8 +14856,8 @@
       },
       "properties": {
         "id": 151,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 2.4855528593692696e-07
       }
     },
@@ -14936,7 +14936,7 @@
       },
       "properties": {
         "id": 152,
-        "height": 21.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 4.6320581625963116e-08
       }
@@ -15070,8 +15070,8 @@
       },
       "properties": {
         "id": 153,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.196217082195978e-07
       }
     },
@@ -15230,8 +15230,8 @@
       },
       "properties": {
         "id": 155,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 6.924210655386299e-08
       }
     },
@@ -15304,8 +15304,8 @@
       },
       "properties": {
         "id": 156,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 9.264116325315644e-08
       }
     },
@@ -15396,7 +15396,7 @@
       },
       "properties": {
         "id": 157,
-        "height": 102.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 8.094163490331734e-08
       }
@@ -15514,8 +15514,8 @@
       },
       "properties": {
         "id": 158,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 1.081609457553515e-07
       }
     },
@@ -15574,8 +15574,8 @@
       },
       "properties": {
         "id": 159,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 7.616631721445416e-08
       }
     },
@@ -15720,7 +15720,7 @@
       },
       "properties": {
         "id": 160,
-        "height": 21.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 1.9698185485626678e-07
       }
@@ -15886,8 +15886,8 @@
       },
       "properties": {
         "id": 161,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.7191143695854743e-07
       }
     },
@@ -15964,8 +15964,8 @@
       },
       "properties": {
         "id": 162,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 3.027551417634377e-07
       }
     },
@@ -16048,7 +16048,7 @@
       },
       "properties": {
         "id": 163,
-        "height": 102.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 6.637691594084174e-08
       }
@@ -16550,7 +16550,7 @@
       },
       "properties": {
         "id": 164,
-        "height": 18.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 2.86519061604432e-07
       }
@@ -16656,8 +16656,8 @@
       },
       "properties": {
         "id": 165,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 5.778134408853905e-08
       }
     },
@@ -16700,8 +16700,8 @@
       },
       "properties": {
         "id": 166,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 5.778134409028717e-08
       }
     },
@@ -16932,8 +16932,8 @@
       },
       "properties": {
         "id": 167,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 2.2252980450968357e-07
       }
     },
@@ -17082,8 +17082,8 @@
       },
       "properties": {
         "id": 168,
-        "height": 33.0,
-        "usetype": "Office/Industrial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 1.3347012953293085e-07
       }
     },
@@ -17858,7 +17858,7 @@
       },
       "properties": {
         "id": 170,
-        "height": 81.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 1.0648958456213999e-07
       }
@@ -17936,7 +17936,7 @@
       },
       "properties": {
         "id": 171,
-        "height": 93.0,
+        "height": 75.0,
         "usetype": "Residential",
         "area": 6.327295943721253e-08
       }
@@ -18102,8 +18102,8 @@
       },
       "properties": {
         "id": 172,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 45.0,
+        "usetype": "Office/Industrial",
         "area": 1.5830178153460967e-07
       }
     },
@@ -18336,8 +18336,8 @@
       },
       "properties": {
         "id": 174,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 7.592755132508803e-08
       }
     },
@@ -18476,7 +18476,7 @@
       },
       "properties": {
         "id": 175,
-        "height": 90.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 5.4677387589253956e-08
       }
@@ -18676,7 +18676,7 @@
       },
       "properties": {
         "id": 176,
-        "height": 15.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 1.5639165445879635e-07
       }
@@ -18788,8 +18788,8 @@
       },
       "properties": {
         "id": 177,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 9.311869501974581e-08
       }
     },
@@ -18858,8 +18858,8 @@
       },
       "properties": {
         "id": 178,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 7.998657136474846e-08
       }
     },
@@ -19098,8 +19098,8 @@
       },
       "properties": {
         "id": 179,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 1.9578802542816713e-07
       }
     },
@@ -19168,7 +19168,7 @@
       },
       "properties": {
         "id": 180,
-        "height": 54.0,
+        "height": 51.0,
         "usetype": "Office/Industrial",
         "area": 1.0314686217503923e-07
       }
@@ -19248,7 +19248,7 @@
       },
       "properties": {
         "id": 181,
-        "height": 12.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 8.165793255867902e-08
       }
@@ -19308,7 +19308,7 @@
       },
       "properties": {
         "id": 182,
-        "height": 99.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 3.5408980696571433e-07
       }
@@ -19574,7 +19574,7 @@
       },
       "properties": {
         "id": 183,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 2.148892962041669e-07
       }
@@ -19622,8 +19622,8 @@
       },
       "properties": {
         "id": 184,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 7.640508309376467e-08
       }
     },
@@ -19714,7 +19714,7 @@
       },
       "properties": {
         "id": 185,
-        "height": 75.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 5.49161534731516e-08
       }
@@ -20054,8 +20054,8 @@
       },
       "properties": {
         "id": 186,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 3.712809506604523e-07
       }
     },
@@ -20182,8 +20182,8 @@
       },
       "properties": {
         "id": 187,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 1.310824706846852e-07
       }
     },
@@ -20234,8 +20234,8 @@
       },
       "properties": {
         "id": 188,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 3.0896305475534454e-07
       }
     },
@@ -20274,8 +20274,8 @@
       },
       "properties": {
         "id": 189,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 2.1560559385954067e-07
       }
     },
@@ -20482,8 +20482,8 @@
       },
       "properties": {
         "id": 191,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 8.977597263534986e-08
       }
     },
@@ -20652,8 +20652,8 @@
       },
       "properties": {
         "id": 193,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 51.0,
+        "usetype": "Office/Industrial",
         "area": 6.613815005172538e-08
       }
     },
@@ -20812,8 +20812,8 @@
       },
       "properties": {
         "id": 194,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.0147550098412888e-07
       }
     },
@@ -20868,8 +20868,8 @@
       },
       "properties": {
         "id": 195,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 7.162976540019094e-08
       }
     },
@@ -20908,8 +20908,8 @@
       },
       "properties": {
         "id": 196,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 6.685444770406742e-08
       }
     },
@@ -20956,7 +20956,7 @@
       },
       "properties": {
         "id": 197,
-        "height": 84.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 8.547818671314354e-08
       }
@@ -21152,8 +21152,8 @@
       },
       "properties": {
         "id": 198,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 1.0577328690989949e-07
       }
     },
@@ -21268,8 +21268,8 @@
       },
       "properties": {
         "id": 200,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 1.0720588221608973e-07
       }
     },
@@ -21346,8 +21346,8 @@
       },
       "properties": {
         "id": 201,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 9.717771506281122e-08
       }
     },
@@ -21456,8 +21456,8 @@
       },
       "properties": {
         "id": 202,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.42543233143773e-07
       }
     },
@@ -21610,8 +21610,8 @@
       },
       "properties": {
         "id": 204,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 5.372232405091972e-08
       }
     },
@@ -21658,8 +21658,8 @@
       },
       "properties": {
         "id": 205,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 8.595571848071334e-08
       }
     },
@@ -21738,8 +21738,8 @@
       },
       "properties": {
         "id": 206,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 8.977597263540089e-08
       }
     },
@@ -21962,8 +21962,8 @@
       },
       "properties": {
         "id": 208,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 2.476002223967838e-07
       }
     },
@@ -22084,7 +22084,7 @@
       },
       "properties": {
         "id": 209,
-        "height": 78.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 5.9452705283244587e-08
       }
@@ -22176,8 +22176,8 @@
       },
       "properties": {
         "id": 210,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 5.539368524327604e-08
       }
     },
@@ -22330,8 +22330,8 @@
       },
       "properties": {
         "id": 211,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 2.0868138319753753e-07
       }
     },
@@ -22442,8 +22442,8 @@
       },
       "properties": {
         "id": 212,
-        "height": 36.0,
-        "usetype": "Office/Industrial",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.413494037245473e-07
       }
     },
@@ -22588,8 +22588,8 @@
       },
       "properties": {
         "id": 213,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 57.0,
+        "usetype": "Office/Industrial",
         "area": 5.037960166568672e-08
       }
     },
@@ -22662,8 +22662,8 @@
       },
       "properties": {
         "id": 214,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 9.049227029092972e-08
       }
     },
@@ -22718,7 +22718,7 @@
       },
       "properties": {
         "id": 215,
-        "height": 24.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 7.521125367152363e-08
       }
@@ -22804,8 +22804,8 @@
       },
       "properties": {
         "id": 216,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 2.1465053032328942e-07
       }
     },
@@ -22860,8 +22860,8 @@
       },
       "properties": {
         "id": 217,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 8.476188905839453e-08
       }
     },
@@ -22900,8 +22900,8 @@
       },
       "properties": {
         "id": 218,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 1.2415826002535771e-07
       }
     },
@@ -23030,7 +23030,7 @@
       },
       "properties": {
         "id": 219,
-        "height": 21.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 1.5519782503794545e-07
       }
@@ -23074,8 +23074,8 @@
       },
       "properties": {
         "id": 220,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 5.6109982897773415e-08
       }
     },
@@ -23152,8 +23152,8 @@
       },
       "properties": {
         "id": 221,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 9.096980206045852e-08
       }
     },
@@ -23248,7 +23248,7 @@
       },
       "properties": {
         "id": 222,
-        "height": 24.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 8.141916667044402e-08
       }
@@ -23422,8 +23422,8 @@
       },
       "properties": {
         "id": 223,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 8.428435728957994e-08
       }
     },
@@ -23644,8 +23644,8 @@
       },
       "properties": {
         "id": 224,
-        "height": 54.0,
-        "usetype": "Office/Industrial",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 2.1154657381867626e-07
       }
     },
@@ -23712,8 +23712,8 @@
       },
       "properties": {
         "id": 225,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 1.4206570138114352e-07
       }
     },
@@ -23892,7 +23892,7 @@
       },
       "properties": {
         "id": 227,
-        "height": 96.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 5.157343108878237e-08
       }
@@ -24058,7 +24058,7 @@
       },
       "properties": {
         "id": 228,
-        "height": 81.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 1.1842787879620077e-07
       }
@@ -24236,8 +24236,8 @@
       },
       "properties": {
         "id": 229,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 2.187095503593966e-07
       }
     },
@@ -24434,8 +24434,8 @@
       },
       "properties": {
         "id": 230,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 1.4540842376417367e-07
       }
     },
@@ -24568,7 +24568,7 @@
       },
       "properties": {
         "id": 231,
-        "height": 24.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 1.869536876984327e-07
       }
@@ -24612,8 +24612,8 @@
       },
       "properties": {
         "id": 232,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 4.9185772241059483e-08
       }
     },
@@ -24746,8 +24746,8 @@
       },
       "properties": {
         "id": 233,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 5.8975173513664744e-08
       }
     },
@@ -24974,8 +24974,8 @@
       },
       "properties": {
         "id": 234,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 45.0,
+        "usetype": "Office/Industrial",
         "area": 1.1102613637177721e-07
       }
     },
@@ -25014,8 +25014,8 @@
       },
       "properties": {
         "id": 235,
-        "height": 48.0,
-        "usetype": "Office/Industrial",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 5.5632451128830554e-08
       }
     },
@@ -25050,8 +25050,8 @@
       },
       "properties": {
         "id": 236,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 9.765524683392264e-08
       }
     },
@@ -25116,8 +25116,8 @@
       },
       "properties": {
         "id": 237,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 6.566061828365958e-08
       }
     },
@@ -25160,8 +25160,8 @@
       },
       "properties": {
         "id": 238,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 5.037960166457991e-08
       }
     },
@@ -25306,8 +25306,8 @@
       },
       "properties": {
         "id": 239,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 8.7149547903502e-08
       }
     },
@@ -25422,7 +25422,7 @@
       },
       "properties": {
         "id": 240,
-        "height": 78.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 1.3585778837964167e-07
       }
@@ -25514,8 +25514,8 @@
       },
       "properties": {
         "id": 241,
-        "height": 36.0,
-        "usetype": "Office/Industrial",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 6.924210655488772e-08
       }
     },
@@ -25650,8 +25650,8 @@
       },
       "properties": {
         "id": 242,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 1.4063310606798395e-07
       }
     },
@@ -25756,8 +25756,8 @@
       },
       "properties": {
         "id": 244,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 6.852580890091799e-08
       }
     },
@@ -25986,7 +25986,7 @@
       },
       "properties": {
         "id": 245,
-        "height": 96.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 2.2229103862757888e-07
       }
@@ -26120,7 +26120,7 @@
       },
       "properties": {
         "id": 246,
-        "height": 45.0,
+        "height": 39.0,
         "usetype": "Office/Industrial",
         "area": 1.1795034702628719e-07
       }
@@ -26270,7 +26270,7 @@
       },
       "properties": {
         "id": 247,
-        "height": 12.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 1.217706011821496e-07
       }
@@ -26374,8 +26374,8 @@
       },
       "properties": {
         "id": 248,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 9.359622679123604e-08
       }
     },
@@ -26422,8 +26422,8 @@
       },
       "properties": {
         "id": 249,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 7.401742424898609e-08
       }
     },
@@ -26496,8 +26496,8 @@
       },
       "properties": {
         "id": 250,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 4.5843049858868024e-08
       }
     },
@@ -26536,8 +26536,8 @@
       },
       "properties": {
         "id": 251,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 7.54500195554766e-08
       }
     },
@@ -26710,7 +26710,7 @@
       },
       "properties": {
         "id": 252,
-        "height": 12.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 2.0175717255123063e-07
       }
@@ -26794,8 +26794,8 @@
       },
       "properties": {
         "id": 253,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 6.160159824590468e-08
       }
     },
@@ -26846,8 +26846,8 @@
       },
       "properties": {
         "id": 254,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 57.0,
+        "usetype": "Office/Industrial",
         "area": 7.377865836070302e-08
       }
     },
@@ -27136,8 +27136,8 @@
       },
       "properties": {
         "id": 256,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 2.3279673755423977e-07
       }
     },
@@ -27198,7 +27198,7 @@
       },
       "properties": {
         "id": 257,
-        "height": 102.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 5.01408357810433e-08
       }
@@ -27258,7 +27258,7 @@
       },
       "properties": {
         "id": 258,
-        "height": 81.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 1.0959354106688574e-07
       }
@@ -27358,7 +27358,7 @@
       },
       "properties": {
         "id": 259,
-        "height": 12.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 4.3932922779742104e-08
       }
@@ -27466,8 +27466,8 @@
       },
       "properties": {
         "id": 260,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.1890541056415402e-07
       }
     },
@@ -27564,7 +27564,7 @@
       },
       "properties": {
         "id": 261,
-        "height": 93.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 1.341864271815233e-07
       }
@@ -27608,8 +27608,8 @@
       },
       "properties": {
         "id": 262,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 5.324479228141279e-08
       }
     },
@@ -27774,7 +27774,7 @@
       },
       "properties": {
         "id": 263,
-        "height": 84.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 6.160159824607911e-08
       }
@@ -27826,7 +27826,7 @@
       },
       "properties": {
         "id": 264,
-        "height": 99.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 8.261299609657499e-08
       }
@@ -27896,8 +27896,8 @@
       },
       "properties": {
         "id": 265,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 6.112406647680927e-08
       }
     },
@@ -27974,7 +27974,7 @@
       },
       "properties": {
         "id": 266,
-        "height": 15.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 2.569120919044773e-07
       }
@@ -28038,7 +28038,7 @@
       },
       "properties": {
         "id": 267,
-        "height": 18.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 1.1651775171991872e-07
       }
@@ -28132,8 +28132,8 @@
       },
       "properties": {
         "id": 268,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 1.0386315983208397e-07
       }
     },
@@ -28176,7 +28176,7 @@
       },
       "properties": {
         "id": 269,
-        "height": 75.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 5.730381231980409e-08
       }
@@ -28232,8 +28232,8 @@
       },
       "properties": {
         "id": 270,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 51.0,
+        "usetype": "Office/Industrial",
         "area": 4.7753176933322835e-08
       }
     },
@@ -28296,8 +28296,8 @@
       },
       "properties": {
         "id": 271,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 6.924210655486344e-08
       }
     },
@@ -28348,7 +28348,7 @@
       },
       "properties": {
         "id": 272,
-        "height": 84.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 2.3303550343176326e-07
       }
@@ -28404,8 +28404,8 @@
       },
       "properties": {
         "id": 273,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 39.0,
+        "usetype": "Office/Industrial",
         "area": 6.54218523998343e-08
       }
     },
@@ -28478,7 +28478,7 @@
       },
       "properties": {
         "id": 274,
-        "height": 90.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 6.279542766792324e-08
       }
@@ -28622,8 +28622,8 @@
       },
       "properties": {
         "id": 275,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 8.428435728901099e-08
       }
     },
@@ -28784,7 +28784,7 @@
       },
       "properties": {
         "id": 276,
-        "height": 15.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 2.43302436477791e-07
       }
@@ -28912,8 +28912,8 @@
       },
       "properties": {
         "id": 277,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 1.0266933040789067e-07
       }
     },
@@ -28988,7 +28988,7 @@
       },
       "properties": {
         "id": 278,
-        "height": 87.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 1.3084370479642102e-07
       }
@@ -29046,8 +29046,8 @@
       },
       "properties": {
         "id": 279,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 1.5901807918976587e-07
       }
     },
@@ -29154,8 +29154,8 @@
       },
       "properties": {
         "id": 280,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.7883564761777767e-07
       }
     },
@@ -29194,7 +29194,7 @@
       },
       "properties": {
         "id": 281,
-        "height": 12.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 8.141916667412254e-08
       }
@@ -29250,8 +29250,8 @@
       },
       "properties": {
         "id": 282,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 5.658751466515419e-08
       }
     },
@@ -29286,7 +29286,7 @@
       },
       "properties": {
         "id": 283,
-        "height": 21.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 6.828704301531113e-08
       }
@@ -29338,7 +29338,7 @@
       },
       "properties": {
         "id": 284,
-        "height": 12.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 6.255666178283371e-08
       }
@@ -29390,8 +29390,8 @@
       },
       "properties": {
         "id": 285,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 8.858214321284501e-08
       }
     },
@@ -29788,8 +29788,8 @@
       },
       "properties": {
         "id": 288,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 1.7979071115848e-07
       }
     },
@@ -29870,8 +29870,8 @@
       },
       "properties": {
         "id": 289,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 9.31186950228292e-08
       }
     },
@@ -30006,8 +30006,8 @@
       },
       "properties": {
         "id": 290,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.0935477517670146e-07
       }
     },
@@ -30224,7 +30224,7 @@
       },
       "properties": {
         "id": 291,
-        "height": 18.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 2.762521285647474e-07
       }
@@ -30276,7 +30276,7 @@
       },
       "properties": {
         "id": 292,
-        "height": 93.0,
+        "height": 75.0,
         "usetype": "Residential",
         "area": 1.666585875016179e-07
       }
@@ -30384,8 +30384,8 @@
       },
       "properties": {
         "id": 293,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 9.884907625192483e-08
       }
     },
@@ -30448,8 +30448,8 @@
       },
       "properties": {
         "id": 294,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 6.589938416924212e-08
       }
     },
@@ -30568,8 +30568,8 @@
       },
       "properties": {
         "id": 295,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 2.6383630256072146e-07
       }
     },
@@ -30628,7 +30628,7 @@
       },
       "properties": {
         "id": 296,
-        "height": 12.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 6.184036412953851e-08
       }
@@ -30792,7 +30792,7 @@
       },
       "properties": {
         "id": 297,
-        "height": 81.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 1.82894667659058e-07
       }
@@ -30844,8 +30844,8 @@
       },
       "properties": {
         "id": 298,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 5.4438621706523896e-08
       }
     },
@@ -30924,7 +30924,7 @@
       },
       "properties": {
         "id": 299,
-        "height": 90.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 9.120856794512925e-08
       }
@@ -31002,8 +31002,8 @@
       },
       "properties": {
         "id": 300,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.58779313306873e-07
       }
     },
@@ -31114,8 +31114,8 @@
       },
       "properties": {
         "id": 301,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.4827361438109897e-07
       }
     },
@@ -31274,8 +31274,8 @@
       },
       "properties": {
         "id": 302,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 1.1221996579480834e-07
       }
     },
@@ -31366,8 +31366,8 @@
       },
       "properties": {
         "id": 303,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 2.0557742670581606e-07
       }
     },
@@ -31406,7 +31406,7 @@
       },
       "properties": {
         "id": 304,
-        "height": 75.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 8.547818671039984e-08
       }
@@ -31458,8 +31458,8 @@
       },
       "properties": {
         "id": 305,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 7.664384897704233e-08
       }
     },
@@ -31494,7 +31494,7 @@
       },
       "properties": {
         "id": 306,
-        "height": 84.0,
+        "height": 75.0,
         "usetype": "Residential",
         "area": 8.59557184805705e-08
       }
@@ -31530,7 +31530,7 @@
       },
       "properties": {
         "id": 307,
-        "height": 99.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 6.685444770673334e-08
       }
@@ -31676,7 +31676,7 @@
       },
       "properties": {
         "id": 308,
-        "height": 12.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 1.1413009286874713e-07
       }
@@ -31720,8 +31720,8 @@
       },
       "properties": {
         "id": 309,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 6.828704301391377e-08
       }
     },
@@ -31910,7 +31910,7 @@
       },
       "properties": {
         "id": 311,
-        "height": 102.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 5.014083578361984e-08
       }
@@ -32090,8 +32090,8 @@
       },
       "properties": {
         "id": 312,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 4.092447263216537e-07
       }
     },
@@ -32418,8 +32418,8 @@
       },
       "properties": {
         "id": 313,
-        "height": 51.0,
-        "usetype": "Office/Industrial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 4.803969599576732e-07
       }
     },
@@ -32454,8 +32454,8 @@
       },
       "properties": {
         "id": 314,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 6.016900293708252e-08
       }
     },
@@ -32536,7 +32536,7 @@
       },
       "properties": {
         "id": 315,
-        "height": 75.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 7.61663172094458e-08
       }
@@ -32610,8 +32610,8 @@
       },
       "properties": {
         "id": 316,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 5.0857133434976025e-08
       }
     },
@@ -32712,8 +32712,8 @@
       },
       "properties": {
         "id": 317,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.4302076491741176e-07
       }
     },
@@ -32778,8 +32778,8 @@
       },
       "properties": {
         "id": 318,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 7.091346774906023e-08
       }
     },
@@ -32866,7 +32866,7 @@
       },
       "properties": {
         "id": 319,
-        "height": 15.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 1.0290809629254382e-07
       }
@@ -32998,7 +32998,7 @@
       },
       "properties": {
         "id": 320,
-        "height": 87.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 1.7000130988505175e-07
       }
@@ -33046,8 +33046,8 @@
       },
       "properties": {
         "id": 321,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 6.92421065536108e-08
       }
     },
@@ -33164,7 +33164,7 @@
       },
       "properties": {
         "id": 322,
-        "height": 12.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 2.81743743907911e-07
       }
@@ -33672,8 +33672,8 @@
       },
       "properties": {
         "id": 323,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 3.956350708998038e-07
       }
     },
@@ -33724,8 +33724,8 @@
       },
       "properties": {
         "id": 324,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 7.019717009307857e-08
       }
     },
@@ -33844,8 +33844,8 @@
       },
       "properties": {
         "id": 325,
-        "height": 45.0,
-        "usetype": "Office/Industrial",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.3705161779697586e-07
       }
     },
@@ -33934,7 +33934,7 @@
       },
       "properties": {
         "id": 326,
-        "height": 21.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 1.1818911291302573e-07
       }
@@ -33990,8 +33990,8 @@
       },
       "properties": {
         "id": 327,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 1.2511332356909965e-07
       }
     },
@@ -34132,7 +34132,7 @@
       },
       "properties": {
         "id": 328,
-        "height": 96.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 1.3060493890594563e-07
       }
@@ -34468,8 +34468,8 @@
       },
       "properties": {
         "id": 329,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 2.0462236315995464e-07
       }
     },
@@ -34504,8 +34504,8 @@
       },
       "properties": {
         "id": 330,
-        "height": 51.0,
-        "usetype": "Office/Industrial",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 3.612527835086788e-07
       }
     },
@@ -34544,7 +34544,7 @@
       },
       "properties": {
         "id": 331,
-        "height": 99.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 1.3347012953139547e-07
       }
@@ -34604,8 +34604,8 @@
       },
       "properties": {
         "id": 332,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 2.3375180109177658e-07
       }
     },
@@ -34644,7 +34644,7 @@
       },
       "properties": {
         "id": 333,
-        "height": 78.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 9.096980205829648e-08
       }
@@ -34692,7 +34692,7 @@
       },
       "properties": {
         "id": 334,
-        "height": 75.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 6.589938416801434e-08
       }
@@ -34744,7 +34744,7 @@
       },
       "properties": {
         "id": 335,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 1.055345210235152e-07
       }
@@ -34800,8 +34800,8 @@
       },
       "properties": {
         "id": 336,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 1.657035239618353e-07
       }
     },
@@ -34888,7 +34888,7 @@
       },
       "properties": {
         "id": 337,
-        "height": 21.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 1.7406032991871852e-07
       }
@@ -34924,8 +34924,8 @@
       },
       "properties": {
         "id": 338,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 39.0,
+        "usetype": "Office/Industrial",
         "area": 5.658751466791788e-08
       }
     },
@@ -35002,7 +35002,7 @@
       },
       "properties": {
         "id": 339,
-        "height": 36.0,
+        "height": 51.0,
         "usetype": "Office/Industrial",
         "area": 1.0553452102235007e-07
       }
@@ -35268,8 +35268,8 @@
       },
       "properties": {
         "id": 340,
-        "height": 33.0,
-        "usetype": "Office/Industrial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 3.0944058653088225e-07
       }
     },
@@ -35328,8 +35328,8 @@
       },
       "properties": {
         "id": 341,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 7.139099951611887e-08
       }
     },
@@ -35426,8 +35426,8 @@
       },
       "properties": {
         "id": 343,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 6.709321359222222e-08
       }
     },
@@ -35574,8 +35574,8 @@
       },
       "properties": {
         "id": 345,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 9.264116325355635e-08
       }
     },
@@ -35754,8 +35754,8 @@
       },
       "properties": {
         "id": 346,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.5758548387908075e-07
       }
     },
@@ -35790,7 +35790,7 @@
       },
       "properties": {
         "id": 347,
-        "height": 90.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 1.520938685360411e-07
       }
@@ -35846,7 +35846,7 @@
       },
       "properties": {
         "id": 348,
-        "height": 93.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 1.3920051076129527e-07
       }
@@ -36104,7 +36104,7 @@
       },
       "properties": {
         "id": 349,
-        "height": 15.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 4.524613514543781e-07
       }
@@ -36160,7 +36160,7 @@
       },
       "properties": {
         "id": 350,
-        "height": 75.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 6.876457478549394e-08
       }
@@ -36312,8 +36312,8 @@
       },
       "properties": {
         "id": 351,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 2.0796508555441789e-07
       }
     },
@@ -36388,7 +36388,7 @@
       },
       "properties": {
         "id": 352,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 8.213546432716906e-08
       }
@@ -36428,7 +36428,7 @@
       },
       "properties": {
         "id": 353,
-        "height": 81.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 4.918577224136218e-08
       }
@@ -36636,8 +36636,8 @@
       },
       "properties": {
         "id": 354,
-        "height": 54.0,
-        "usetype": "Office/Industrial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 2.5189800832676773e-07
       }
     },
@@ -36672,7 +36672,7 @@
       },
       "properties": {
         "id": 355,
-        "height": 18.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 3.7605626835827155e-07
       }
@@ -36744,8 +36744,8 @@
       },
       "properties": {
         "id": 356,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 1.6403216277163966e-07
       }
     },
@@ -36914,7 +36914,7 @@
       },
       "properties": {
         "id": 357,
-        "height": 81.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 1.8456602884773523e-07
       }
@@ -36990,8 +36990,8 @@
       },
       "properties": {
         "id": 358,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 1.3752914956798226e-07
       }
     },
@@ -37080,8 +37080,8 @@
       },
       "properties": {
         "id": 359,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 57.0,
+        "usetype": "Office/Industrial",
         "area": 2.4974911536634137e-07
       }
     },
@@ -37140,8 +37140,8 @@
       },
       "properties": {
         "id": 360,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 8.404559140406731e-08
       }
     },
@@ -37222,8 +37222,8 @@
       },
       "properties": {
         "id": 361,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 1.0028167155675122e-07
       }
     },
@@ -37428,8 +37428,8 @@
       },
       "properties": {
         "id": 363,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 5.706504643556489e-08
       }
     },
@@ -37484,8 +37484,8 @@
       },
       "properties": {
         "id": 364,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 7.043593597770257e-08
       }
     },
@@ -37576,7 +37576,7 @@
       },
       "properties": {
         "id": 365,
-        "height": 84.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 8.929844086457867e-08
       }
@@ -37748,8 +37748,8 @@
       },
       "properties": {
         "id": 366,
-        "height": 51.0,
-        "usetype": "Office/Industrial",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 3.9778396386740476e-07
       }
     },
@@ -37888,8 +37888,8 @@
       },
       "properties": {
         "id": 367,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 57.0,
+        "usetype": "Office/Industrial",
         "area": 2.163218915117577e-07
       }
     },
@@ -37988,8 +37988,8 @@
       },
       "properties": {
         "id": 369,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 1.260683871041596e-07
       }
     },
@@ -38106,8 +38106,8 @@
       },
       "properties": {
         "id": 370,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.4660225318761576e-07
       }
     },
@@ -38142,8 +38142,8 @@
       },
       "properties": {
         "id": 371,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 7.162976540050579e-08
       }
     },
@@ -38212,7 +38212,7 @@
       },
       "properties": {
         "id": 372,
-        "height": 102.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 1.5734671799457782e-07
       }
@@ -38264,7 +38264,7 @@
       },
       "properties": {
         "id": 373,
-        "height": 96.0,
+        "height": 75.0,
         "usetype": "Residential",
         "area": 3.6650563296777877e-07
       }
@@ -38400,8 +38400,8 @@
       },
       "properties": {
         "id": 374,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 1.0744464810557926e-07
       }
     },
@@ -38474,8 +38474,8 @@
       },
       "properties": {
         "id": 375,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 7.688261486415105e-08
       }
     },
@@ -38562,8 +38562,8 @@
       },
       "properties": {
         "id": 376,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.2415826002994485e-07
       }
     },
@@ -38642,7 +38642,7 @@
       },
       "properties": {
         "id": 377,
-        "height": 93.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 8.3090527863689e-08
       }
@@ -38690,8 +38690,8 @@
       },
       "properties": {
         "id": 378,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.0601205279155484e-07
       }
     },
@@ -38788,7 +38788,7 @@
       },
       "properties": {
         "id": 379,
-        "height": 12.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 1.0123673510307944e-07
       }
@@ -38880,8 +38880,8 @@
       },
       "properties": {
         "id": 380,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 1.7358279815319216e-07
       }
     },
@@ -39126,7 +39126,7 @@
       },
       "properties": {
         "id": 382,
-        "height": 81.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 1.6832994868976812e-07
       }
@@ -39208,8 +39208,8 @@
       },
       "properties": {
         "id": 383,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 6.709321359093125e-08
       }
     },
@@ -39574,8 +39574,8 @@
       },
       "properties": {
         "id": 385,
-        "height": 48.0,
-        "usetype": "Office/Industrial",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.2511332356860122e-07
       }
     },
@@ -39648,8 +39648,8 @@
       },
       "properties": {
         "id": 386,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 1.6641982161621707e-07
       }
     },
@@ -39688,8 +39688,8 @@
       },
       "properties": {
         "id": 387,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 8.165793255611893e-08
       }
     },
@@ -39732,8 +39732,8 @@
       },
       "properties": {
         "id": 388,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 5.658751466757387e-08
       }
     },
@@ -39828,8 +39828,8 @@
       },
       "properties": {
         "id": 389,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.809845405787596e-07
       }
     },
@@ -39936,8 +39936,8 @@
       },
       "properties": {
         "id": 391,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 1.203380058756402e-07
       }
     },
@@ -39988,8 +39988,8 @@
       },
       "properties": {
         "id": 392,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 9.789401271198049e-08
       }
     },
@@ -40044,8 +40044,8 @@
       },
       "properties": {
         "id": 393,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 51.0,
+        "usetype": "Office/Industrial",
         "area": 5.5871217013609534e-08
       }
     },
@@ -40144,8 +40144,8 @@
       },
       "properties": {
         "id": 394,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 1.437370625701532e-07
       }
     },
@@ -40184,8 +40184,8 @@
       },
       "properties": {
         "id": 395,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.0075920333264686e-07
       }
     },
@@ -40220,7 +40220,7 @@
       },
       "properties": {
         "id": 396,
-        "height": 84.0,
+        "height": 96.0,
         "usetype": "Residential",
         "area": 1.6880748045445025e-07
       }
@@ -40472,7 +40472,7 @@
       },
       "properties": {
         "id": 397,
-        "height": 24.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 6.496819721829802e-07
       }
@@ -40594,8 +40594,8 @@
       },
       "properties": {
         "id": 398,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 1.1269749756578067e-07
       }
     },
@@ -40700,8 +40700,8 @@
       },
       "properties": {
         "id": 399,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 2.0318976785516289e-07
       }
     },
@@ -40770,8 +40770,8 @@
       },
       "properties": {
         "id": 400,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 6.637691593948083e-08
       }
     },
@@ -40814,8 +40814,8 @@
       },
       "properties": {
         "id": 401,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 45.0,
+        "usetype": "Office/Industrial",
         "area": 1.912514736161753e-07
       }
     },
@@ -40850,8 +40850,8 @@
       },
       "properties": {
         "id": 402,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 4.417168866452109e-08
       }
     },
@@ -40890,8 +40890,8 @@
       },
       "properties": {
         "id": 403,
-        "height": 57.0,
-        "usetype": "Office/Industrial",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.2368072826290754e-07
       }
     },
@@ -40980,7 +40980,7 @@
       },
       "properties": {
         "id": 404,
-        "height": 78.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 1.6427092865276746e-07
       }
@@ -41020,8 +41020,8 @@
       },
       "properties": {
         "id": 405,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 1.4898991203452478e-07
       }
     },
@@ -41134,8 +41134,8 @@
       },
       "properties": {
         "id": 406,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 7.258482893782014e-08
       }
     },
@@ -41224,7 +41224,7 @@
       },
       "properties": {
         "id": 407,
-        "height": 15.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 1.3299259776261005e-07
       }
@@ -41298,8 +41298,8 @@
       },
       "properties": {
         "id": 408,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.0457945748126055e-07
       }
     },
@@ -41338,8 +41338,8 @@
       },
       "properties": {
         "id": 409,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 5.8258875859583754e-08
       }
     },
@@ -41510,8 +41510,8 @@
       },
       "properties": {
         "id": 410,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 2.5738962367630664e-07
       }
     },
@@ -41558,8 +41558,8 @@
       },
       "properties": {
         "id": 411,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.1293626344622957e-07
       }
     },
@@ -41606,8 +41606,8 @@
       },
       "properties": {
         "id": 412,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 6.112406647750888e-08
       }
     },
@@ -41642,8 +41642,8 @@
       },
       "properties": {
         "id": 413,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 6.685444770744997e-08
       }
     },
@@ -41716,8 +41716,8 @@
       },
       "properties": {
         "id": 414,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 8.30905278634252e-08
       }
     },
@@ -41774,8 +41774,8 @@
       },
       "properties": {
         "id": 415,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 6.040776882121779e-08
       }
     },
@@ -41830,8 +41830,8 @@
       },
       "properties": {
         "id": 416,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 5.324479228076852e-08
       }
     },
@@ -41870,7 +41870,7 @@
       },
       "properties": {
         "id": 417,
-        "height": 75.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 6.112406647528365e-08
       }
@@ -41922,8 +41922,8 @@
       },
       "properties": {
         "id": 418,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 6.470555474660117e-08
       }
     },
@@ -42066,7 +42066,7 @@
       },
       "properties": {
         "id": 419,
-        "height": 93.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 8.428435728922377e-08
       }
@@ -42148,7 +42148,7 @@
       },
       "properties": {
         "id": 420,
-        "height": 75.0,
+        "height": 96.0,
         "usetype": "Residential",
         "area": 1.3872297899538478e-07
       }
@@ -42188,8 +42188,8 @@
       },
       "properties": {
         "id": 421,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 6.470555474533208e-08
       }
     },
@@ -42228,8 +42228,8 @@
       },
       "properties": {
         "id": 422,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 7.473372190126548e-08
       }
     },
@@ -42276,7 +42276,7 @@
       },
       "properties": {
         "id": 423,
-        "height": 15.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 7.592755132443592e-08
       }
@@ -42328,8 +42328,8 @@
       },
       "properties": {
         "id": 424,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 57.0,
+        "usetype": "Office/Industrial",
         "area": 9.789401271292989e-08
       }
     },
@@ -42428,7 +42428,7 @@
       },
       "properties": {
         "id": 425,
-        "height": 102.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 1.0625081867980444e-07
       }
@@ -42522,7 +42522,7 @@
       },
       "properties": {
         "id": 426,
-        "height": 21.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 8.834337732692032e-08
       }
@@ -42704,8 +42704,8 @@
       },
       "properties": {
         "id": 427,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 39.0,
+        "usetype": "Office/Industrial",
         "area": 1.5901807919131337e-07
       }
     },
@@ -42748,8 +42748,8 @@
       },
       "properties": {
         "id": 428,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 5.252849462634164e-08
       }
     },
@@ -42822,8 +42822,8 @@
       },
       "properties": {
         "id": 429,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 4.56042839730138e-08
       }
     },
@@ -42972,8 +42972,8 @@
       },
       "properties": {
         "id": 430,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 4.894700635768436e-07
       }
     },
@@ -43012,7 +43012,7 @@
       },
       "properties": {
         "id": 431,
-        "height": 15.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 7.306236070618678e-08
       }
@@ -43160,7 +43160,7 @@
       },
       "properties": {
         "id": 433,
-        "height": 102.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 6.733197947737925e-08
       }
@@ -43272,7 +43272,7 @@
       },
       "properties": {
         "id": 434,
-        "height": 99.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 8.285176198109207e-08
       }
@@ -43504,8 +43504,8 @@
       },
       "properties": {
         "id": 435,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.1914417644957972e-07
       }
     },
@@ -43692,7 +43692,7 @@
       },
       "properties": {
         "id": 436,
-        "height": 12.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 2.585834530949179e-07
       }
@@ -43740,8 +43740,8 @@
       },
       "properties": {
         "id": 437,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 7.258482894073396e-08
       }
     },
@@ -43862,7 +43862,7 @@
       },
       "properties": {
         "id": 438,
-        "height": 78.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 4.4864109729395715e-07
       }
@@ -44062,8 +44062,8 @@
       },
       "properties": {
         "id": 439,
-        "height": 51.0,
-        "usetype": "Office/Industrial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.5304893207352394e-07
       }
     },
@@ -44206,8 +44206,8 @@
       },
       "properties": {
         "id": 440,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 3.884720943536543e-07
       }
     },
@@ -44288,7 +44288,7 @@
       },
       "properties": {
         "id": 441,
-        "height": 96.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 2.091589149721841e-07
       }
@@ -44398,8 +44398,8 @@
       },
       "properties": {
         "id": 442,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.1604021994924363e-07
       }
     },
@@ -44434,7 +44434,7 @@
       },
       "properties": {
         "id": 443,
-        "height": 18.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 7.879274194215556e-08
       }
@@ -44474,8 +44474,8 @@
       },
       "properties": {
         "id": 444,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 4.72756451652346e-08
       }
     },
@@ -44518,7 +44518,7 @@
       },
       "properties": {
         "id": 445,
-        "height": 96.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 5.730381231499203e-08
       }
@@ -44566,8 +44566,8 @@
       },
       "properties": {
         "id": 446,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 5.8258875860664396e-08
       }
     },
@@ -44688,8 +44688,8 @@
       },
       "properties": {
         "id": 447,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.4612472141717832e-07
       }
     },
@@ -44844,7 +44844,7 @@
       },
       "properties": {
         "id": 448,
-        "height": 102.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 1.1795034702420481e-07
       }
@@ -44918,8 +44918,8 @@
       },
       "properties": {
         "id": 449,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 5.276726051283284e-08
       }
     },
@@ -44954,8 +44954,8 @@
       },
       "properties": {
         "id": 450,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 9.311869502205854e-08
       }
     },
@@ -45066,8 +45066,8 @@
       },
       "properties": {
         "id": 451,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.0123673510019234e-07
       }
     },
@@ -45106,8 +45106,8 @@
       },
       "properties": {
         "id": 452,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 1.0004290567774287e-07
       }
     },
@@ -45226,8 +45226,8 @@
       },
       "properties": {
         "id": 453,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 45.0,
+        "usetype": "Office/Industrial",
         "area": 1.1842787880207163e-07
       }
     },
@@ -45312,8 +45312,8 @@
       },
       "properties": {
         "id": 454,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 1.2129306941227927e-07
       }
     },
@@ -45412,8 +45412,8 @@
       },
       "properties": {
         "id": 456,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 8.500065494353942e-08
       }
     },
@@ -45482,7 +45482,7 @@
       },
       "properties": {
         "id": 457,
-        "height": 90.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 9.383499267373687e-08
       }
@@ -45544,8 +45544,8 @@
       },
       "properties": {
         "id": 458,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 8.404559140321026e-08
       }
     },
@@ -45604,8 +45604,8 @@
       },
       "properties": {
         "id": 459,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 45.0,
+        "usetype": "Office/Industrial",
         "area": 5.1095899319946454e-08
       }
     },
@@ -45674,8 +45674,8 @@
       },
       "properties": {
         "id": 460,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 6.160159824567248e-08
       }
     },
@@ -45714,8 +45714,8 @@
       },
       "properties": {
         "id": 461,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 8.858214321168958e-08
       }
     },
@@ -45908,7 +45908,7 @@
       },
       "properties": {
         "id": 462,
-        "height": 96.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 3.9515753912970787e-07
       }
@@ -45992,8 +45992,8 @@
       },
       "properties": {
         "id": 463,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 8.786584556058075e-08
       }
     },
@@ -46066,8 +46066,8 @@
       },
       "properties": {
         "id": 464,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 7.521125367113101e-08
       }
     },
@@ -46184,8 +46184,8 @@
       },
       "properties": {
         "id": 465,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 57.0,
+        "usetype": "Office/Industrial",
         "area": 9.19248655988797e-08
       }
     },
@@ -46276,8 +46276,8 @@
       },
       "properties": {
         "id": 466,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 8.922681110121733e-07
       }
     },
@@ -46332,7 +46332,7 @@
       },
       "properties": {
         "id": 467,
-        "height": 87.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 5.2289728741649594e-08
       }
@@ -46472,7 +46472,7 @@
       },
       "properties": {
         "id": 468,
-        "height": 12.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 1.4158816961579707e-07
       }
@@ -46588,7 +46588,7 @@
       },
       "properties": {
         "id": 470,
-        "height": 12.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 6.971963832568322e-08
       }
@@ -46658,8 +46658,8 @@
       },
       "properties": {
         "id": 471,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 3.7653380012591374e-07
       }
     },
@@ -46760,8 +46760,8 @@
       },
       "properties": {
         "id": 472,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 2.1918708212608445e-07
       }
     },
@@ -46838,7 +46838,7 @@
       },
       "properties": {
         "id": 473,
-        "height": 93.0,
+        "height": 75.0,
         "usetype": "Residential",
         "area": 8.404559140318784e-08
       }
@@ -46956,8 +46956,8 @@
       },
       "properties": {
         "id": 475,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 1.0481822337288838e-07
       }
     },
@@ -47050,8 +47050,8 @@
       },
       "properties": {
         "id": 476,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 1.6880748046240408e-07
       }
     },
@@ -47094,8 +47094,8 @@
       },
       "properties": {
         "id": 477,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 8.619448436603506e-08
       }
     },
@@ -47194,7 +47194,7 @@
       },
       "properties": {
         "id": 478,
-        "height": 90.0,
+        "height": 75.0,
         "usetype": "Residential",
         "area": 1.029080962918758e-07
       }
@@ -47316,7 +47316,7 @@
       },
       "properties": {
         "id": 479,
-        "height": 15.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 1.0052043744692334e-07
       }
@@ -47356,8 +47356,8 @@
       },
       "properties": {
         "id": 480,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 7.664384897816671e-08
       }
     },
@@ -47412,8 +47412,8 @@
       },
       "properties": {
         "id": 481,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.1150366814118257e-07
       }
     },
@@ -47788,7 +47788,7 @@
       },
       "properties": {
         "id": 483,
-        "height": 99.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 9.932660802204445e-08
       }
@@ -48102,7 +48102,7 @@
       },
       "properties": {
         "id": 486,
-        "height": 102.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 7.592755132415266e-08
       }
@@ -48150,8 +48150,8 @@
       },
       "properties": {
         "id": 487,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 8.022533724750039e-08
       }
     },
@@ -48240,8 +48240,8 @@
       },
       "properties": {
         "id": 488,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 39.0,
+        "usetype": "Office/Industrial",
         "area": 1.2582962122072454e-07
       }
     },
@@ -48280,8 +48280,8 @@
       },
       "properties": {
         "id": 489,
-        "height": 45.0,
-        "usetype": "Office/Industrial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 2.0724878789536303e-07
       }
     },
@@ -48362,8 +48362,8 @@
       },
       "properties": {
         "id": 490,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 1.3153612586466523e-06
       }
     },
@@ -48398,8 +48398,8 @@
       },
       "properties": {
         "id": 491,
-        "height": 39.0,
-        "usetype": "Office/Industrial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 9.4551290330096e-08
       }
     },
@@ -48438,8 +48438,8 @@
       },
       "properties": {
         "id": 492,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 5.730381232151146e-08
       }
     },
@@ -48544,7 +48544,7 @@
       },
       "properties": {
         "id": 493,
-        "height": 78.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 6.231789589783467e-08
       }
@@ -48618,8 +48618,8 @@
       },
       "properties": {
         "id": 494,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 7.616631720983298e-08
       }
     },
@@ -48706,7 +48706,7 @@
       },
       "properties": {
         "id": 495,
-        "height": 93.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 8.356805963178455e-08
       }
@@ -48832,8 +48832,8 @@
       },
       "properties": {
         "id": 496,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 3.6316291058277423e-07
       }
     },
@@ -48880,8 +48880,8 @@
       },
       "properties": {
         "id": 497,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 51.0,
+        "usetype": "Office/Industrial",
         "area": 1.346639589572135e-07
       }
     },
@@ -48946,7 +48946,7 @@
       },
       "properties": {
         "id": 498,
-        "height": 84.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 8.046410313297225e-08
       }
@@ -48986,8 +48986,8 @@
       },
       "properties": {
         "id": 499,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 8.714954790683703e-08
       }
     },
@@ -49026,7 +49026,7 @@
       },
       "properties": {
         "id": 500,
-        "height": 12.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 1.7382156404120713e-07
       }
@@ -49280,8 +49280,8 @@
       },
       "properties": {
         "id": 501,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 51.0,
+        "usetype": "Office/Industrial",
         "area": 2.552407307162917e-07
       }
     },
@@ -49360,8 +49360,8 @@
       },
       "properties": {
         "id": 502,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 6.040776882123951e-07
       }
     },
@@ -49460,8 +49460,8 @@
       },
       "properties": {
         "id": 503,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 1.255908553348946e-07
       }
     },
@@ -49504,8 +49504,8 @@
       },
       "properties": {
         "id": 504,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 8.094163490003575e-08
       }
     },
@@ -49548,7 +49548,7 @@
       },
       "properties": {
         "id": 505,
-        "height": 15.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 5.08571334360148e-08
       }
@@ -49604,8 +49604,8 @@
       },
       "properties": {
         "id": 506,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.4731855084329714e-07
       }
     },
@@ -49746,7 +49746,7 @@
       },
       "properties": {
         "id": 507,
-        "height": 18.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 3.228114760708883e-07
       }
@@ -49786,8 +49786,8 @@
       },
       "properties": {
         "id": 508,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 7.449495601817387e-08
       }
     },
@@ -49890,7 +49890,7 @@
       },
       "properties": {
         "id": 509,
-        "height": 84.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 9.43125244447208e-08
       }
@@ -49946,8 +49946,8 @@
       },
       "properties": {
         "id": 510,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 7.043593597765452e-08
       }
     },
@@ -50018,8 +50018,8 @@
       },
       "properties": {
         "id": 511,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 1.0505698925296168e-07
       }
     },
@@ -50180,8 +50180,8 @@
       },
       "properties": {
         "id": 513,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 4.3049489006421197e-07
       }
     },
@@ -50224,8 +50224,8 @@
       },
       "properties": {
         "id": 514,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 3.1063441595267765e-07
       }
     },
@@ -50312,8 +50312,8 @@
       },
       "properties": {
         "id": 515,
-        "height": 33.0,
-        "usetype": "Office/Industrial",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 8.14191666709819e-08
       }
     },
@@ -50370,8 +50370,8 @@
       },
       "properties": {
         "id": 516,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 9.455129033501689e-08
       }
     },
@@ -50484,8 +50484,8 @@
       },
       "properties": {
         "id": 517,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.2272566472002558e-07
       }
     },
@@ -50542,8 +50542,8 @@
       },
       "properties": {
         "id": 518,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 8.977597263639834e-08
       }
     },
@@ -50654,8 +50654,8 @@
       },
       "properties": {
         "id": 519,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.2511332356942237e-07
       }
     },
@@ -50730,8 +50730,8 @@
       },
       "properties": {
         "id": 521,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 6.780951124652327e-08
       }
     },
@@ -50814,8 +50814,8 @@
       },
       "properties": {
         "id": 522,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 6.780951124590817e-08
       }
     },
@@ -50894,7 +50894,7 @@
       },
       "properties": {
         "id": 523,
-        "height": 84.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 4.202279570155287e-08
       }
@@ -50930,7 +50930,7 @@
       },
       "properties": {
         "id": 524,
-        "height": 93.0,
+        "height": 96.0,
         "usetype": "Residential",
         "area": 2.3184167401266714e-07
       }
@@ -50992,7 +50992,7 @@
       },
       "properties": {
         "id": 525,
-        "height": 93.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 1.1866664467457024e-07
       }
@@ -51098,8 +51098,8 @@
       },
       "properties": {
         "id": 526,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 2.805499144866758e-07
       }
     },
@@ -51164,7 +51164,7 @@
       },
       "properties": {
         "id": 527,
-        "height": 81.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 6.63769159394012e-08
       }
@@ -51286,8 +51286,8 @@
       },
       "properties": {
         "id": 528,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 1.6188326980772693e-07
       }
     },
@@ -51470,7 +51470,7 @@
       },
       "properties": {
         "id": 529,
-        "height": 54.0,
+        "height": 36.0,
         "usetype": "Office/Industrial",
         "area": 2.1870955035707956e-07
       }
@@ -51518,7 +51518,7 @@
       },
       "properties": {
         "id": 530,
-        "height": 24.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 2.1059151027183736e-07
       }
@@ -51562,8 +51562,8 @@
       },
       "properties": {
         "id": 531,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 4.441045454866065e-08
       }
     },
@@ -51610,7 +51610,7 @@
       },
       "properties": {
         "id": 532,
-        "height": 24.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 7.139099951815323e-08
       }
@@ -51768,8 +51768,8 @@
       },
       "properties": {
         "id": 533,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 4.2070548878907096e-07
       }
     },
@@ -51894,8 +51894,8 @@
       },
       "properties": {
         "id": 534,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 2.2133597509242477e-07
       }
     },
@@ -51930,8 +51930,8 @@
       },
       "properties": {
         "id": 535,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 5.7781344088325734e-08
       }
     },
@@ -51988,8 +51988,8 @@
       },
       "properties": {
         "id": 536,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 5.085713343232414e-08
       }
     },
@@ -52032,7 +52032,7 @@
       },
       "properties": {
         "id": 537,
-        "height": 90.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 2.0175717254192616e-07
       }
@@ -52100,8 +52100,8 @@
       },
       "properties": {
         "id": 538,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.75015393464572e-07
       }
     },
@@ -52206,7 +52206,7 @@
       },
       "properties": {
         "id": 539,
-        "height": 18.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 1.4182693549495255e-07
       }
@@ -52250,8 +52250,8 @@
       },
       "properties": {
         "id": 540,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 3.567162317002073e-07
       }
     },
@@ -52294,7 +52294,7 @@
       },
       "properties": {
         "id": 541,
-        "height": 96.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 7.425619013240471e-08
       }
@@ -52330,8 +52330,8 @@
       },
       "properties": {
         "id": 542,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 8.452312317290133e-08
       }
     },
@@ -52370,7 +52370,7 @@
       },
       "properties": {
         "id": 543,
-        "height": 102.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 1.1150366814311596e-07
       }
@@ -52418,8 +52418,8 @@
       },
       "properties": {
         "id": 544,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 7.640508309241292e-08
       }
     },
@@ -52652,7 +52652,7 @@
       },
       "properties": {
         "id": 545,
-        "height": 90.0,
+        "height": 96.0,
         "usetype": "Residential",
         "area": 9.686731941100392e-07
       }
@@ -52798,7 +52798,7 @@
       },
       "properties": {
         "id": 546,
-        "height": 99.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 1.222481329524169e-07
       }
@@ -52838,7 +52838,7 @@
       },
       "properties": {
         "id": 547,
-        "height": 81.0,
+        "height": 96.0,
         "usetype": "Residential",
         "area": 6.494432063109747e-08
       }
@@ -53096,8 +53096,8 @@
       },
       "properties": {
         "id": 548,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 7.33966329477536e-07
       }
     },
@@ -53164,8 +53164,8 @@
       },
       "properties": {
         "id": 549,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 1.7549292523056754e-07
       }
     },
@@ -53288,8 +53288,8 @@
       },
       "properties": {
         "id": 550,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 6.184036412831502e-08
       }
     },
@@ -53464,8 +53464,8 @@
       },
       "properties": {
         "id": 552,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 6.040776882186637e-08
       }
     },
@@ -53576,7 +53576,7 @@
       },
       "properties": {
         "id": 553,
-        "height": 87.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 1.4707978495748128e-07
       }
@@ -53612,8 +53612,8 @@
       },
       "properties": {
         "id": 554,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 1.5328769795874656e-07
       }
     },
@@ -53672,8 +53672,8 @@
       },
       "properties": {
         "id": 555,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 1.2606838710823317e-07
       }
     },
@@ -53796,8 +53796,8 @@
       },
       "properties": {
         "id": 556,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 1.444533602268296e-07
       }
     },
@@ -53856,8 +53856,8 @@
       },
       "properties": {
         "id": 557,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 48.0,
+        "usetype": "Office/Industrial",
         "area": 1.298886412555996e-07
       }
     },
@@ -54104,7 +54104,7 @@
       },
       "properties": {
         "id": 558,
-        "height": 12.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 2.1321793501194118e-07
       }
@@ -54252,7 +54252,7 @@
       },
       "properties": {
         "id": 559,
-        "height": 90.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 1.2248689883537243e-07
       }
@@ -54334,8 +54334,8 @@
       },
       "properties": {
         "id": 560,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.198604741037598e-07
       }
     },
@@ -54390,8 +54390,8 @@
       },
       "properties": {
         "id": 561,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.0410192571402448e-07
       }
     },
@@ -54460,7 +54460,7 @@
       },
       "properties": {
         "id": 562,
-        "height": 12.0,
+        "height": 21.0,
         "usetype": "Commercial",
         "area": 2.9010054987252447e-07
       }
@@ -54556,7 +54556,7 @@
       },
       "properties": {
         "id": 563,
-        "height": 84.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 5.969147116779323e-08
       }
@@ -54600,7 +54600,7 @@
       },
       "properties": {
         "id": 564,
-        "height": 15.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 1.0075920332990504e-07
       }
@@ -54694,7 +54694,7 @@
       },
       "properties": {
         "id": 565,
-        "height": 12.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 1.0147550098493059e-07
       }
@@ -54738,8 +54738,8 @@
       },
       "properties": {
         "id": 566,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 3.321233455779502e-07
       }
     },
@@ -54816,8 +54816,8 @@
       },
       "properties": {
         "id": 567,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 2.225298045126241e-07
       }
     },
@@ -54868,7 +54868,7 @@
       },
       "properties": {
         "id": 568,
-        "height": 12.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 1.6641982161345338e-07
       }
@@ -54904,8 +54904,8 @@
       },
       "properties": {
         "id": 569,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 1.9531049366363936e-07
       }
     },
@@ -54964,7 +54964,7 @@
       },
       "properties": {
         "id": 570,
-        "height": 93.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 1.3729038368471731e-07
       }
@@ -55082,8 +55082,8 @@
       },
       "properties": {
         "id": 572,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 7.73601466275968e-08
       }
     },
@@ -55174,7 +55174,7 @@
       },
       "properties": {
         "id": 573,
-        "height": 84.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 7.807644428683762e-08
       }
@@ -55286,7 +55286,7 @@
       },
       "properties": {
         "id": 574,
-        "height": 12.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 5.596672336671422e-07
       }
@@ -55430,8 +55430,8 @@
       },
       "properties": {
         "id": 575,
-        "height": 33.0,
-        "usetype": "Office/Industrial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 1.6522599219433352e-07
       }
     },
@@ -55588,8 +55588,8 @@
       },
       "properties": {
         "id": 576,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 2.0199593843340812e-07
       }
     },
@@ -55720,8 +55720,8 @@
       },
       "properties": {
         "id": 577,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 7.210729716892535e-08
       }
     },
@@ -55858,8 +55858,8 @@
       },
       "properties": {
         "id": 578,
-        "height": 99.0,
-        "usetype": "Residential",
+        "height": 51.0,
+        "usetype": "Office/Industrial",
         "area": 1.3251506599051142e-07
       }
     },
@@ -55906,7 +55906,7 @@
       },
       "properties": {
         "id": 579,
-        "height": 99.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 2.1345670089452953e-07
       }
@@ -56016,8 +56016,8 @@
       },
       "properties": {
         "id": 580,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 2.1990337978229404e-07
       }
     },
@@ -56194,8 +56194,8 @@
       },
       "properties": {
         "id": 581,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.7047884165790212e-07
       }
     },
@@ -56264,8 +56264,8 @@
       },
       "properties": {
         "id": 582,
-        "height": 54.0,
-        "usetype": "Office/Industrial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 3.4979202104381795e-07
       }
     },
@@ -56328,7 +56328,7 @@
       },
       "properties": {
         "id": 583,
-        "height": 78.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 2.6168740959595357e-07
       }
@@ -56386,8 +56386,8 @@
       },
       "properties": {
         "id": 584,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 3.2854185730490297e-07
       }
     },
@@ -56536,8 +56536,8 @@
       },
       "properties": {
         "id": 585,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 1.3323136364792883e-07
       }
     },
@@ -56576,8 +56576,8 @@
       },
       "properties": {
         "id": 586,
-        "height": 48.0,
-        "usetype": "Office/Industrial",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.5472029326503108e-07
       }
     },
@@ -56694,7 +56694,7 @@
       },
       "properties": {
         "id": 587,
-        "height": 81.0,
+        "height": 102.0,
         "usetype": "Residential",
         "area": 1.4325953080201449e-07
       }
@@ -56764,8 +56764,8 @@
       },
       "properties": {
         "id": 588,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.950717277750288e-07
       }
     },
@@ -56924,8 +56924,8 @@
       },
       "properties": {
         "id": 589,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 2.1942584801110407e-07
       }
     },
@@ -56968,8 +56968,8 @@
       },
       "properties": {
         "id": 590,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 8.452312317559699e-08
       }
     },
@@ -57148,7 +57148,7 @@
       },
       "properties": {
         "id": 592,
-        "height": 87.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 2.012796407767366e-07
       }
@@ -57234,7 +57234,7 @@
       },
       "properties": {
         "id": 593,
-        "height": 99.0,
+        "height": 93.0,
         "usetype": "Residential",
         "area": 2.2730512221043618e-07
       }
@@ -57308,8 +57308,8 @@
       },
       "properties": {
         "id": 594,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.0099796920838577e-07
       }
     },
@@ -57348,8 +57348,8 @@
       },
       "properties": {
         "id": 595,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 42.0,
+        "usetype": "Office/Industrial",
         "area": 5.276726051163421e-08
       }
     },
@@ -57450,7 +57450,7 @@
       },
       "properties": {
         "id": 596,
-        "height": 99.0,
+        "height": 96.0,
         "usetype": "Residential",
         "area": 1.7310526638550576e-07
       }
@@ -57550,8 +57550,8 @@
       },
       "properties": {
         "id": 597,
-        "height": 30.0,
-        "usetype": "Office/Industrial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 3.029939076410549e-07
       }
     },
@@ -57632,8 +57632,8 @@
       },
       "properties": {
         "id": 598,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.0481822336913695e-07
       }
     },
@@ -57798,7 +57798,7 @@
       },
       "properties": {
         "id": 599,
-        "height": 12.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 3.0800799122191854e-07
       }
@@ -57846,7 +57846,7 @@
       },
       "properties": {
         "id": 600,
-        "height": 21.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 1.7549292523181049e-07
       }
@@ -57906,7 +57906,7 @@
       },
       "properties": {
         "id": 601,
-        "height": 15.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 6.78095112490901e-08
       }
@@ -57986,8 +57986,8 @@
       },
       "properties": {
         "id": 603,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 8.500065494081513e-08
       }
     },
@@ -58106,8 +58106,8 @@
       },
       "properties": {
         "id": 604,
-        "height": 36.0,
-        "usetype": "Office/Industrial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 3.154097336468106e-07
       }
     },
@@ -58352,7 +58352,7 @@
       },
       "properties": {
         "id": 605,
-        "height": 21.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 3.134996065702145e-07
       }
@@ -58456,8 +58456,8 @@
       },
       "properties": {
         "id": 606,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 5.252849462629059e-08
       }
     },
@@ -58552,8 +58552,8 @@
       },
       "properties": {
         "id": 607,
-        "height": 57.0,
-        "usetype": "Office/Industrial",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 2.9487586756443993e-07
       }
     },
@@ -58636,8 +58636,8 @@
       },
       "properties": {
         "id": 608,
-        "height": 48.0,
-        "usetype": "Office/Industrial",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.7835811584817052e-07
       }
     },
@@ -58722,7 +58722,7 @@
       },
       "properties": {
         "id": 609,
-        "height": 15.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 7.950903959512651e-07
       }
@@ -59042,8 +59042,8 @@
       },
       "properties": {
         "id": 611,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 8.714954790402529e-08
       }
     },
@@ -59082,8 +59082,8 @@
       },
       "properties": {
         "id": 612,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 81.0,
+        "usetype": "Residential",
         "area": 4.6320581626028734e-08
       }
     },
@@ -59270,7 +59270,7 @@
       },
       "properties": {
         "id": 613,
-        "height": 18.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 2.0677125612336897e-07
       }
@@ -59706,8 +59706,8 @@
       },
       "properties": {
         "id": 614,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 2.311253763590759e-07
       }
     },
@@ -59806,8 +59806,8 @@
       },
       "properties": {
         "id": 615,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 8.929844086507769e-08
       }
     },
@@ -59982,7 +59982,7 @@
       },
       "properties": {
         "id": 616,
-        "height": 21.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 5.324479228187048e-08
       }
@@ -60144,7 +60144,7 @@
       },
       "properties": {
         "id": 617,
-        "height": 87.0,
+        "height": 99.0,
         "usetype": "Residential",
         "area": 2.0939768085218265e-07
       }
@@ -60180,8 +60180,8 @@
       },
       "properties": {
         "id": 618,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 4.8708240472748754e-08
       }
     },
@@ -60268,8 +60268,8 @@
       },
       "properties": {
         "id": 619,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 5.4677387589268534e-08
       }
     },
@@ -60312,7 +60312,7 @@
       },
       "properties": {
         "id": 620,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 5.3483558165557224e-08
       }
@@ -60420,8 +60420,8 @@
       },
       "properties": {
         "id": 621,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 6.279542766884346e-08
       }
     },
@@ -60604,8 +60604,8 @@
       },
       "properties": {
         "id": 622,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 36.0,
+        "usetype": "Office/Industrial",
         "area": 1.9005764419090246e-07
       }
     },
@@ -60666,8 +60666,8 @@
       },
       "properties": {
         "id": 623,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 7.855397605690675e-08
       }
     },
@@ -60784,7 +60784,7 @@
       },
       "properties": {
         "id": 624,
-        "height": 21.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 1.3275383187549158e-07
       }
@@ -60824,7 +60824,7 @@
       },
       "properties": {
         "id": 625,
-        "height": 15.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 6.44667888614107e-08
       }
@@ -60882,8 +60882,8 @@
       },
       "properties": {
         "id": 626,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 5.3483558167386094e-08
       }
     },
@@ -60926,7 +60926,7 @@
       },
       "properties": {
         "id": 627,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 9.861031036696656e-08
       }
@@ -60990,7 +60990,7 @@
       },
       "properties": {
         "id": 628,
-        "height": 24.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 2.0486112904417257e-07
       }
@@ -61080,7 +61080,7 @@
       },
       "properties": {
         "id": 629,
-        "height": 93.0,
+        "height": 78.0,
         "usetype": "Residential",
         "area": 1.1460762464396016e-07
       }
@@ -61158,8 +61158,8 @@
       },
       "properties": {
         "id": 630,
-        "height": 36.0,
-        "usetype": "Office/Industrial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 5.6587514666125464e-08
       }
     },
@@ -61246,8 +61246,8 @@
       },
       "properties": {
         "id": 631,
-        "height": 93.0,
-        "usetype": "Residential",
+        "height": 45.0,
+        "usetype": "Office/Industrial",
         "area": 8.14191666715673e-08
       }
     },
@@ -61290,7 +61290,7 @@
       },
       "properties": {
         "id": 632,
-        "height": 78.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 7.85539760504165e-08
       }
@@ -61454,7 +61454,7 @@
       },
       "properties": {
         "id": 633,
-        "height": 99.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 2.041448313930662e-07
       }
@@ -61520,7 +61520,7 @@
       },
       "properties": {
         "id": 634,
-        "height": 18.0,
+        "height": 12.0,
         "usetype": "Commercial",
         "area": 1.0219179863959209e-07
       }
@@ -61560,7 +61560,7 @@
       },
       "properties": {
         "id": 635,
-        "height": 93.0,
+        "height": 96.0,
         "usetype": "Residential",
         "area": 5.1334665205304096e-08
       }
@@ -61682,8 +61682,8 @@
       },
       "properties": {
         "id": 636,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 8.428435728942307e-08
       }
     },
@@ -61726,8 +61726,8 @@
       },
       "properties": {
         "id": 637,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.029080962976902e-07
       }
     },
@@ -61922,8 +61922,8 @@
       },
       "properties": {
         "id": 638,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 1.024305645260304e-07
       }
     },
@@ -61966,8 +61966,8 @@
       },
       "properties": {
         "id": 639,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 9.813277860063429e-08
       }
     },
@@ -62062,7 +62062,7 @@
       },
       "properties": {
         "id": 640,
-        "height": 78.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 8.428435728731579e-08
       }
@@ -62102,8 +62102,8 @@
       },
       "properties": {
         "id": 641,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 1.1604021994857808e-07
       }
     },
@@ -62168,7 +62168,7 @@
       },
       "properties": {
         "id": 642,
-        "height": 90.0,
+        "height": 84.0,
         "usetype": "Residential",
         "area": 3.772500977878436e-08
       }
@@ -62204,7 +62204,7 @@
       },
       "properties": {
         "id": 643,
-        "height": 81.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 7.688261486376141e-08
       }
@@ -62352,8 +62352,8 @@
       },
       "properties": {
         "id": 644,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 1.3084370480175828e-07
       }
     },
@@ -62408,7 +62408,7 @@
       },
       "properties": {
         "id": 645,
-        "height": 93.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 8.882090909594283e-08
       }
@@ -62448,7 +62448,7 @@
       },
       "properties": {
         "id": 646,
-        "height": 87.0,
+        "height": 81.0,
         "usetype": "Residential",
         "area": 9.598388563712145e-08
       }
@@ -62500,8 +62500,8 @@
       },
       "properties": {
         "id": 647,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 33.0,
+        "usetype": "Office/Industrial",
         "area": 8.332929375352066e-08
       }
     },
@@ -62790,8 +62790,8 @@
       },
       "properties": {
         "id": 648,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 6.17209811868606e-07
       }
     },
@@ -63182,7 +63182,7 @@
       },
       "properties": {
         "id": 651,
-        "height": 21.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 1.0314686217670582e-07
       }
@@ -63378,8 +63378,8 @@
       },
       "properties": {
         "id": 653,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 8.929844086612133e-08
       }
     },
@@ -63442,8 +63442,8 @@
       },
       "properties": {
         "id": 654,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 5.68262805512679e-08
       }
     },
@@ -63542,8 +63542,8 @@
       },
       "properties": {
         "id": 655,
-        "height": 36.0,
-        "usetype": "Office/Industrial",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 9.025350440658412e-08
       }
     },
@@ -63706,7 +63706,7 @@
       },
       "properties": {
         "id": 656,
-        "height": 42.0,
+        "height": 36.0,
         "usetype": "Office/Industrial",
         "area": 2.0844261731722172e-07
       }
@@ -63742,8 +63742,8 @@
       },
       "properties": {
         "id": 657,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 7.664384898068923e-08
       }
     },
@@ -63856,8 +63856,8 @@
       },
       "properties": {
         "id": 658,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 8.523942082781021e-08
       }
     },
@@ -64022,8 +64022,8 @@
       },
       "properties": {
         "id": 659,
-        "height": 45.0,
-        "usetype": "Office/Industrial",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 1.7429909581046486e-07
       }
     },
@@ -64102,8 +64102,8 @@
       },
       "properties": {
         "id": 660,
-        "height": 51.0,
-        "usetype": "Office/Industrial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 6.589938416889381e-08
       }
     },
@@ -64138,8 +64138,8 @@
       },
       "properties": {
         "id": 661,
-        "height": 75.0,
-        "usetype": "Residential",
+        "height": 30.0,
+        "usetype": "Office/Industrial",
         "area": 7.49724877882484e-08
       }
     },
@@ -64226,8 +64226,8 @@
       },
       "properties": {
         "id": 662,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.1914417644695942e-07
       }
     },
@@ -64330,8 +64330,8 @@
       },
       "properties": {
         "id": 663,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 54.0,
+        "usetype": "Office/Industrial",
         "area": 7.186853128427032e-08
       }
     },
@@ -64374,7 +64374,7 @@
       },
       "properties": {
         "id": 664,
-        "height": 12.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 8.452312317159092e-08
       }
@@ -64418,8 +64418,8 @@
       },
       "properties": {
         "id": 665,
-        "height": 102.0,
-        "usetype": "Residential",
+        "height": 24.0,
+        "usetype": "Commercial",
         "area": 5.9452705281185926e-08
       }
     },
@@ -64716,7 +64716,7 @@
       },
       "properties": {
         "id": 666,
-        "height": 18.0,
+        "height": 15.0,
         "usetype": "Commercial",
         "area": 2.3566192816994632e-07
       }
@@ -64756,7 +64756,7 @@
       },
       "properties": {
         "id": 667,
-        "height": 24.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 8.40455914028468e-08
       }
@@ -64846,7 +64846,7 @@
       },
       "properties": {
         "id": 668,
-        "height": 81.0,
+        "height": 75.0,
         "usetype": "Residential",
         "area": 7.616631720900511e-08
       }
@@ -64934,8 +64934,8 @@
       },
       "properties": {
         "id": 669,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 18.0,
+        "usetype": "Commercial",
         "area": 6.995840420754408e-08
       }
     },
@@ -65106,8 +65106,8 @@
       },
       "properties": {
         "id": 671,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 78.0,
+        "usetype": "Residential",
         "area": 5.419985582174735e-08
       }
     },
@@ -65172,8 +65172,8 @@
       },
       "properties": {
         "id": 672,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 5.396108993210282e-08
       }
     },
@@ -65352,8 +65352,8 @@
       },
       "properties": {
         "id": 673,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 75.0,
+        "usetype": "Residential",
         "area": 1.7764181819837226e-07
       }
     },
@@ -65416,8 +65416,8 @@
       },
       "properties": {
         "id": 674,
-        "height": 81.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 8.165793255528376e-08
       }
     },
@@ -65538,8 +65538,8 @@
       },
       "properties": {
         "id": 675,
-        "height": 15.0,
-        "usetype": "Commercial",
+        "height": 84.0,
+        "usetype": "Residential",
         "area": 1.2296443060485078e-07
       }
     },
@@ -65618,8 +65618,8 @@
       },
       "properties": {
         "id": 676,
-        "height": 78.0,
-        "usetype": "Residential",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 5.539368524261046e-08
       }
     },
@@ -65718,7 +65718,7 @@
       },
       "properties": {
         "id": 677,
-        "height": 15.0,
+        "height": 18.0,
         "usetype": "Commercial",
         "area": 6.375049120673458e-08
       }
@@ -65866,8 +65866,8 @@
       },
       "properties": {
         "id": 678,
-        "height": 51.0,
-        "usetype": "Office/Industrial",
+        "height": 21.0,
+        "usetype": "Commercial",
         "area": 1.043406915990897e-07
       }
     },
@@ -65994,8 +65994,8 @@
       },
       "properties": {
         "id": 679,
-        "height": 21.0,
-        "usetype": "Commercial",
+        "height": 51.0,
+        "usetype": "Office/Industrial",
         "area": 1.3920051076051597e-07
       }
     },
@@ -66056,7 +66056,7 @@
       },
       "properties": {
         "id": 680,
-        "height": 81.0,
+        "height": 90.0,
         "usetype": "Residential",
         "area": 1.5591412268808297e-07
       }
@@ -66170,8 +66170,8 @@
       },
       "properties": {
         "id": 681,
-        "height": 90.0,
-        "usetype": "Residential",
+        "height": 12.0,
+        "usetype": "Commercial",
         "area": 2.5285307186430333e-07
       }
     },
@@ -66258,8 +66258,8 @@
       },
       "properties": {
         "id": 682,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 102.0,
+        "usetype": "Residential",
         "area": 4.7036879278876516e-08
       }
     },
@@ -66306,8 +66306,8 @@
       },
       "properties": {
         "id": 683,
-        "height": 96.0,
-        "usetype": "Residential",
+        "height": 15.0,
+        "usetype": "Commercial",
         "area": 6.852580890081404e-08
       }
     },
@@ -66414,8 +66414,8 @@
       },
       "properties": {
         "id": 684,
-        "height": 42.0,
-        "usetype": "Office/Industrial",
+        "height": 96.0,
+        "usetype": "Residential",
         "area": 9.240239736653998e-08
       }
     },
@@ -66450,8 +66450,8 @@
       },
       "properties": {
         "id": 685,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 93.0,
+        "usetype": "Residential",
         "area": 6.016900293611125e-08
       }
     },
@@ -66558,8 +66558,8 @@
       },
       "properties": {
         "id": 686,
-        "height": 18.0,
-        "usetype": "Commercial",
+        "height": 87.0,
+        "usetype": "Residential",
         "area": 1.2439702591289607e-07
       }
     },
@@ -66706,8 +66706,8 @@
       },
       "properties": {
         "id": 687,
-        "height": 87.0,
-        "usetype": "Residential",
+        "height": 57.0,
+        "usetype": "Office/Industrial",
         "area": 6.398925709105345e-08
       }
     },
@@ -66742,8 +66742,8 @@
       },
       "properties": {
         "id": 688,
-        "height": 24.0,
-        "usetype": "Commercial",
+        "height": 99.0,
+        "usetype": "Residential",
         "area": 4.82307087032394e-08
       }
     },
@@ -66778,7 +66778,7 @@
       },
       "properties": {
         "id": 689,
-        "height": 15.0,
+        "height": 24.0,
         "usetype": "Commercial",
         "area": 6.303419355367162e-08
       }
@@ -66910,7 +66910,7 @@
       },
       "properties": {
         "id": 690,
-        "height": 78.0,
+        "height": 87.0,
         "usetype": "Residential",
         "area": 5.802010997581494e-08
       }
@@ -66972,8 +66972,8 @@
       },
       "properties": {
         "id": 691,
-        "height": 12.0,
-        "usetype": "Commercial",
+        "height": 90.0,
+        "usetype": "Residential",
         "area": 1.1317502933595617e-07
       }
     },
@@ -67012,8 +67012,8 @@
       },
       "properties": {
         "id": 692,
-        "height": 84.0,
-        "usetype": "Residential",
+        "height": 39.0,
+        "usetype": "Office/Industrial",
         "area": 3.533735093130883e-08
       }
     }
