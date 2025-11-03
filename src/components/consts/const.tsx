@@ -8,7 +8,7 @@ export const getBuildingColor = (type: string) => {
       return [147, 112, 219, 150];
     case "shophouse":
       return [255, 69, 0, 150];
-    case "industrial":
+    case "office":
       return [128, 128, 128, 150];
     default:
       return [255, 0, 0, 150];
@@ -232,7 +232,7 @@ export const GEOJSON_DATA = {
       },
       properties: {
         elevation: 25,
-        type: "industrial",
+        type: "office",
       },
     },
   ],
@@ -694,7 +694,7 @@ export const THIRD_GENERATION = {
       },
       properties: {
         elevation: 28,
-        type: "industrial",
+        type: "office",
       },
     },
     {
@@ -713,7 +713,7 @@ export const THIRD_GENERATION = {
       },
       properties: {
         elevation: 32,
-        type: "industrial",
+        type: "office",
       },
     },
   ],
