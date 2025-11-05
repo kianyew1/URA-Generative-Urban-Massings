@@ -1,2 +1,6 @@
-api/
-api/**
+# Ignore Python API files
+api/__pycache__/
+api/*.py
+api/Dockerfile
+api/procfile
+api/requirements.txt
