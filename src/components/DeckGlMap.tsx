@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useMemo,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import DeckGL from "@deck.gl/react";
 import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -12,12 +6,10 @@ import { LayerControl } from "./LayerControl";
 import { LayerManager } from "./LayerManager";
 import { THIRD_GENERATION, HUBERT_GENERATION } from "./consts/const";
 import {
-  DrawPolygonMode,
   DrawRectangleMode,
   ViewMode,
 } from "@deck.gl-community/editable-layers";
 import { BASEMAPS } from "./consts/const";
-import { ScreenshotWidget } from "@deck.gl/widgets";
 import "@deck.gl/widgets/stylesheet.css";
 import { parseDescription } from "./functions/functions";
 import { useScreenshot } from "./functions/useScreenshot";
@@ -42,6 +34,7 @@ export default function DeckGlMap() {
   const [currentBasemap, setCurrentBasemap] =
     useState<keyof typeof BASEMAPS>("voyager");
   const [basemapSelectorOpen, setBasemapSelectorOpen] = useState(false);
+  const [boundingBox, setBoundingBox] = useState<any>(null);
 
   // layers
   const [layerManager] = useState(() => {
@@ -147,6 +140,7 @@ export default function DeckGlMap() {
     setFeatures,
     setMode,
     mode,
+    setBoundingBox,
   });
 
   const layers = useMemo(
@@ -277,6 +271,8 @@ export default function DeckGlMap() {
         onLayerRemove={handleLayerRemove}
         onGeoJsonImport={handleGeoJsonImport}
         onCaptureScreenshot={captureScreenshot}
+        boundingBox={boundingBox}
+        manager={layerManager}
       />
 
       {/* Basemap Selector */}
@@ -326,22 +322,6 @@ export default function DeckGlMap() {
       </div>
 
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
-        <button
-          className={`px-4 py-2 rounded shadow-lg ${
-            mode instanceof DrawPolygonMode
-              ? "bg-blue-500 text-white"
-              : "bg-white text-gray-700"
-          }`}
-          onClick={() => {
-            setMode((prevMode) =>
-              prevMode instanceof DrawPolygonMode
-                ? new ViewMode()
-                : new DrawPolygonMode()
-            );
-          }}
-        >
-          {mode instanceof DrawPolygonMode ? "Stop Drawing" : "Draw Polygon"}
-        </button>
         <button
           className={`px-4 py-2 rounded shadow-lg ${
             mode instanceof DrawRectangleMode

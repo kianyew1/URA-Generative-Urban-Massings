@@ -10,6 +10,8 @@ interface LayerControlProps {
   onLayerRemove: (id: string) => void;
   onGeoJsonImport: (geojson: any, name: string) => void;
   onCaptureScreenshot?: (layerId: string) => Promise<string>; // Updated to return screenshot URL
+  boundingBox: any;
+  manager: any;
 }
 
 export function LayerControl({
@@ -20,6 +22,8 @@ export function LayerControl({
   onLayerRemove,
   onGeoJsonImport,
   onCaptureScreenshot,
+  boundingBox,
+  manager,
 }: LayerControlProps) {
   const [screenshotDialog, setScreenshotDialog] = useState<{
     isOpen: boolean;
@@ -232,6 +236,8 @@ export function LayerControl({
         }
         screenshotUrl={screenshotDialog.imageUrl}
         onSubmit={handlePromptSubmit}
+        boundingBox={boundingBox}
+        layerManager={manager}
       />
     </>
   );

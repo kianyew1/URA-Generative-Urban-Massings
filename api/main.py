@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Tuple, Optional
-import cv2
+import io
 import numpy as np
 from scipy.ndimage import distance_transform_edt
 from rasterio.features import shapes
@@ -10,7 +10,7 @@ from shapely.geometry import shape, mapping
 from shapely.ops import transform as shp_transform
 from rasterio.transform import from_bounds
 import pyproj
-import json
+from PIL import Image
 import base64
 
 app = FastAPI()
@@ -37,11 +37,14 @@ def hello():
 @app.post("/api/py/vectorise")
 async def vectorise(request: VectoriseRequest):
     try:
-        # Decode base64 image
+        # Decode base64 image using Pillow
         img_data = base64.b64decode(request.image)
-        nparr = np.frombuffer(img_data, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        b, g, r = cv2.split(img)
+        img = Image.open(io.BytesIO(img_data)).convert('RGB')
+        img_array = np.array(img)
+        
+        r = img_array[:, :, 0]
+        g = img_array[:, :, 1]
+        b = img_array[:, :, 2]
 
         # Create building and terrain maps
         building_map = np.where(
@@ -87,9 +90,9 @@ async def vectorise(request: VectoriseRequest):
         O /= total
 
         use_mix_params = {
-            "R": {"storeys": dR, "ratio": fR, "distribution": R, "usetype": "Residential"},
-            "C": {"storeys": dC, "ratio": fC, "distribution": C, "usetype": "Commercial"},
-            "O": {"storeys": dO, "ratio": fO, "distribution": O, "usetype": "Office/Industrial"}
+            "R": {"storeys": dR, "ratio": fR, "distribution": R, "usetype": "residential"},
+            "C": {"storeys": dC, "ratio": fC, "distribution": C, "usetype": "commercial"},
+            "O": {"storeys": dO, "ratio": fO, "distribution": O, "usetype": "office"}
         }
 
         ratio_list = sorted(
@@ -178,7 +181,7 @@ async def vectorise(request: VectoriseRequest):
                 usetype = str(usetype_map[row, col])
             else:
                 h = 0.0
-                usetype = "Unknown"
+                usetype = "residential"  # Default to residential instead of "Unknown"
 
             geojson_features.append({
                 "type": "Feature",
@@ -186,7 +189,7 @@ async def vectorise(request: VectoriseRequest):
                 "properties": {
                     "id": idx,
                     "height": h * 3,
-                    "usetype": usetype,
+                    "type": usetype,
                     "area": poly.area
                 }
             })
