@@ -119,7 +119,6 @@ export function ScreenshotDialog({
         const requestBody = {
           image: base64Image,
           bbox: boundingBox,
-          // Optional: include other parameters with defaults
           use_mix: [0.7, 0.2, 0.1],
           density: [
             [25, 35],
@@ -134,8 +133,12 @@ export function ScreenshotDialog({
           min_area_ratio: 0.0001,
         };
 
-        // Send to Python API endpoint
-        const apiResponse = await fetch("/api/py/vectorise", {
+        // Use environment variable for API URL
+        const apiUrl =
+          process.env.NEXT_PUBLIC_PYTHON_API_URL || "http://localhost:8000";
+
+        // Send to Python API endpoint - FIX THE PATH
+        const apiResponse = await fetch(`${apiUrl}/api/py/vectorise`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
