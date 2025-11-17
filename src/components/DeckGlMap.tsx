@@ -158,7 +158,7 @@ export default function DeckGlMap() {
         // Load Building Outlines
         const buildingOutlineUrl =
           process.env.NODE_ENV === "production"
-            ? "https://pub-11f00423b1754a1fac8d8ed39c0f472c.r2.dev/sg_building_outline.geojson"
+            ? "https://pub-11f00423b1754a1fac8d8ed39c0f472c.r2.dev/buildings_with_height.geojson"
             : "/buildings_with_height.geojson";
 
         const buildingOutlineResponse = await fetch(buildingOutlineUrl);
