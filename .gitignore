@@ -42,3 +42,6 @@ next-env.d.ts
 
 # big URA masterplan geojson
 public/MasterPlan2019LandUselayer.geojson
+public/parcels.geojson
+public/sg_building_outline.geojson
+public/buildings_with_height.geojson

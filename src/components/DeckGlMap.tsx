@@ -28,6 +28,8 @@ const INITIAL_VIEW_STATE = {
 export default function DeckGlMap() {
   const [viewState, setViewState] = useState<any>(INITIAL_VIEW_STATE);
   const [masterPlanData, setMasterPlanData] = useState(null);
+  const [buildingOutlineData, setBuildingOutlineData] = useState(null);
+  const [parcelsData, setParcelsData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [hoverInfo, setHoverInfo] = useState<any>(null);
@@ -61,6 +63,22 @@ export default function DeckGlMap() {
       visible: false,
       type: "geojson",
     });
+
+    // Add Building Outline layer
+    manager.addLayer({
+      id: "building-outline",
+      name: "SG Building Outlines",
+      visible: false,
+      type: "geojson",
+    });
+
+    // Add Parcels layer
+    manager.addLayer({
+      id: "parcels",
+      name: "Land Parcels",
+      visible: false,
+      type: "geojson",
+    });
     return manager;
   });
 
@@ -85,35 +103,72 @@ export default function DeckGlMap() {
   const [mode, setMode] = useState(() => new ViewMode());
   const [selectedFeatureIndexes] = useState([]);
 
-  // Load Master Plan data with streaming
+  // Load GeoJSON data
   useEffect(() => {
     let isCancelled = false;
 
-    const loadMasterPlan = async () => {
+    const loadGeoJsonData = async () => {
       try {
         setIsLoading(true);
 
-        const url =
+        // Load Master Plan
+        const masterPlanUrl =
           process.env.NODE_ENV === "production"
             ? "https://pub-11f00423b1754a1fac8d8ed39c0f472c.r2.dev/MasterPlan2019LandUselayer.geojson"
             : "/MasterPlan2019LandUselayer.geojson";
 
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        const masterPlanResponse = await fetch(masterPlanUrl);
+        if (!masterPlanResponse.ok) {
+          throw new Error(`HTTP error! status: ${masterPlanResponse.status}`);
         }
+        const masterPlanData = await masterPlanResponse.json();
 
-        const data = await response.json();
+        // Load Building Outlines
+        const buildingOutlineUrl =
+          process.env.NODE_ENV === "production"
+            ? "https://pub-11f00423b1754a1fac8d8ed39c0f472c.r2.dev/sg_building_outline.geojson"
+            : "/buildings_with_height.geojson";
+
+        const buildingOutlineResponse = await fetch(buildingOutlineUrl);
+        if (!buildingOutlineResponse.ok) {
+          throw new Error(
+            `HTTP error! status: ${buildingOutlineResponse.status}`
+          );
+        }
+        const buildingOutlineData = await buildingOutlineResponse.json();
+
+        // Load Parcels
+        const parcelsUrl =
+          process.env.NODE_ENV === "production"
+            ? "https://pub-11f00423b1754a1fac8d8ed39c0f472c.r2.dev/parcels.geojson"
+            : "/parcels.geojson";
+
+        const parcelsResponse = await fetch(parcelsUrl);
+        if (!parcelsResponse.ok) {
+          throw new Error(`HTTP error! status: ${parcelsResponse.status}`);
+        }
+        const parcelsData = await parcelsResponse.json();
 
         if (!isCancelled) {
-          setMasterPlanData(data);
+          setMasterPlanData(masterPlanData);
+          setBuildingOutlineData(buildingOutlineData);
+          setParcelsData(parcelsData);
           console.log(
-            `Loaded ${data.features?.length || 0} Master Plan features`
+            `Loaded ${
+              masterPlanData.features?.length || 0
+            } Master Plan features`
+          );
+          console.log(
+            `Loaded ${
+              buildingOutlineData.features?.length || 0
+            } Building Outline features`
+          );
+          console.log(
+            `Loaded ${parcelsData.features?.length || 0} Parcel features`
           );
         }
       } catch (error) {
-        console.error("Error loading Master Plan:", error);
+        console.error("Error loading GeoJSON data:", error);
       } finally {
         if (!isCancelled) {
           setIsLoading(false);
@@ -121,7 +176,7 @@ export default function DeckGlMap() {
       }
     };
 
-    loadMasterPlan();
+    loadGeoJsonData();
 
     return () => {
       isCancelled = true;
@@ -150,6 +205,8 @@ export default function DeckGlMap() {
           "generation-three": THIRD_GENERATION,
           "master-plan": masterPlanData,
           "hubert-generation": HUBERT_GENERATION,
+          "building-outline": buildingOutlineData,
+          parcels: parcelsData,
         },
         features,
         selectedFeatureIndexes,
@@ -160,6 +217,7 @@ export default function DeckGlMap() {
       layerManager,
       features,
       masterPlanData,
+      buildingOutlineData,
       selectedFeatureIndexes,
       handleEdit,
       mode,

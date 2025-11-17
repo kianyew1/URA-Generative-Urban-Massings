@@ -1,20 +1,33 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Tuple, Optional
-import io
 import numpy as np
+import io
+import base64
+import pyproj
 from scipy.ndimage import distance_transform_edt
 from rasterio.features import shapes
 from skimage import measure, morphology
 from shapely.geometry import shape, mapping
 from shapely.ops import transform as shp_transform
 from rasterio.transform import from_bounds
-import pyproj
 from PIL import Image
-import base64
 
 app = FastAPI()
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "https://ura-generative-urban-massings.vercel.app",
+        "*"  # For development - remove in production and specify exact origins
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class VectoriseRequest(BaseModel):
     image: str  # base64 encoded
