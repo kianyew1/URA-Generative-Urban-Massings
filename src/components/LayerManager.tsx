@@ -80,8 +80,47 @@ export class LayerManager {
         case "geojson":
           const layerData = dataMap[layer.id] || layer.data;
           if (layerData) {
+            // Special handling for Water Background - render as large blue base layer
+            if (layer.id === "water-background") {
+              deckLayers.push(
+                new GeoJsonLayer({
+                  id: layer.id,
+                  data: layerData,
+                  extruded: false,
+                  wireframe: false,
+                  filled: true,
+                  stroked: false,
+                  pickable: false,
+                  getFillColor: [44, 127, 184, 255], // Blue color for water
+                  updateTriggers: {
+                    getFillColor: layer.visible,
+                  },
+                })
+              );
+            }
+            // Special handling for Water layer - render as blue flat layer
+            else if (layer.id === "water-layer") {
+              deckLayers.push(
+                new GeoJsonLayer({
+                  id: layer.id,
+                  data: layerData,
+                  extruded: false,
+                  wireframe: false,
+                  filled: true,
+                  stroked: true,
+                  pickable: false,
+                  getFillColor: [44, 127, 184, 255], // Blue color for water
+                  getLineColor: [30, 90, 140, 255], // Darker blue for borders
+                  getLineWidth: 2,
+                  lineWidthMinPixels: 1,
+                  updateTriggers: {
+                    getFillColor: layer.visible,
+                  },
+                })
+              );
+            }
             // Special handling for Master Plan layer
-            if (layer.id === "master-plan") {
+            else if (layer.id === "master-plan") {
               deckLayers.push(
                 new GeoJsonLayer({
                   id: layer.id,

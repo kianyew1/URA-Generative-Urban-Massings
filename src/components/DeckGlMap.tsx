@@ -24,10 +24,34 @@ const INITIAL_VIEW_STATE = {
   bearing: 0,
 };
 
+// Create a large blue water background covering Singapore area
+const WATER_BACKGROUND = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      properties: {},
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [103.6, 1.2], // Southwest corner
+            [104.1, 1.2], // Southeast corner
+            [104.1, 1.5], // Northeast corner
+            [103.6, 1.5], // Northwest corner
+            [103.6, 1.2], // Close the polygon
+          ],
+        ],
+      },
+    },
+  ],
+};
+
 // Main Map Component
 export default function DeckGlMap() {
   const [viewState, setViewState] = useState<any>(INITIAL_VIEW_STATE);
-  const [masterPlanData, setMasterPlanData] = useState(null);
+  const [masterPlanData, setMasterPlanData] = useState<any>(null);
+  const [waterData, setWaterData] = useState<any>(null);
   const [buildingOutlineData, setBuildingOutlineData] = useState(null);
   const [parcelsData, setParcelsData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -41,6 +65,14 @@ export default function DeckGlMap() {
   // layers
   const [layerManager] = useState(() => {
     const manager = new LayerManager();
+
+    // Add background water layer FIRST (covers entire area)
+    manager.addLayer({
+      id: "water-background",
+      name: "Water Background",
+      visible: true,
+      type: "geojson",
+    });
 
     manager.addLayer({
       id: "generation-three",
@@ -163,9 +195,35 @@ export default function DeckGlMap() {
               buildingOutlineData.features?.length || 0
             } Building Outline features`
           );
-          console.log(
-            `Loaded ${parcelsData.features?.length || 0} Parcel features`
-          );
+
+          // Filter out water features for the water layer
+          if (masterPlanData.features) {
+            const waterFeatures = masterPlanData.features.filter(
+              (feature: any) => {
+                const desc = feature.properties?.Description || "";
+                const luDesc = feature.properties?.LU_DESC || "";
+                // Check if it's a water body
+                return (
+                  desc.includes("WATERBODY") ||
+                  luDesc.includes("WATERBODY") ||
+                  desc.includes("WATER") ||
+                  luDesc.includes("WATER") ||
+                  luDesc === "WATERBODY"
+                );
+              }
+            );
+
+            setWaterData({
+              type: "FeatureCollection",
+              features: waterFeatures,
+            });
+
+            console.log(
+              `Loaded ${parcelsData.features?.length || 0} Parcel features, ${
+                waterFeatures.length
+              } water features`
+            );
+          }
         }
       } catch (error) {
         console.error("Error loading GeoJSON data:", error);
@@ -202,6 +260,7 @@ export default function DeckGlMap() {
     () =>
       layerManager.createDeckLayers(
         {
+          "water-background": WATER_BACKGROUND,
           "generation-three": THIRD_GENERATION,
           "master-plan": masterPlanData,
           "hubert-generation": HUBERT_GENERATION,
@@ -418,6 +477,7 @@ export default function DeckGlMap() {
           style={{ width: "100%", height: "100%" }}
           mapStyle={BASEMAPS[currentBasemap].url}
           mapLib={import("maplibre-gl")}
+          preserveDrawingBuffer={true}
         />
       </DeckGL>
     </div>
