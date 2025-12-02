@@ -75,7 +75,7 @@ export async function POST(req: Request) {
     console.log(`[${requestId}] Calling Gemini API`);
     // Generate content
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-image",
+      model: "gemini-3-pro-image-preview",
       contents: prompt,
     });
 

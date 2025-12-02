@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
 interface ScreenshotDialogProps {
   isOpen: boolean;
@@ -26,6 +27,37 @@ interface ScreenshotDialogProps {
   layerManager: any;
 }
 
+const STYLE_PRESETS = [
+  {
+    id: "punggol",
+    name: "Punggol style",
+    image: "/styles/punggol.jpg",
+    prompt:
+      "The attached picture is a 2d top-down city map of Singapore. Generate a Punggol-style mixed residential development with modern high-rise buildings arranged in clusters. Blue areas = water body (do not build here). Green areas = parks. Grey areas = roads. Create buildings with red fill (no black outline) in a contemporary linear arrangement with courtyards. Buildings must be completely red. Water must be blue. Roads must be grey.",
+  },
+  {
+    id: "bedok",
+    name: "Bedok south Segmented slab style",
+    image: "/styles/bedok.jpg",
+    prompt:
+      "The attached picture is a 2d top-down city map of Singapore. Generate a Bedok South segmented slab-style development with long parallel residential blocks. Blue areas = water body (do not build here). Green areas = parks. Grey areas = roads. Create rectangular slab buildings with red fill (no black outline) arranged in parallel rows. Buildings must be completely red. Water must be blue. Roads must be grey.",
+  },
+  {
+    id: "queenstown",
+    name: "Queenstown Dawson style",
+    image: "/styles/queenstown.jpg",
+    prompt:
+      "The attached picture is a 2d top-down city map of Singapore. Generate a Queenstown Dawson-style development with distinctive curved and horseshoe-shaped blocks. Blue areas = water body (do not build here). Green areas = parks. Grey areas = roads. Create organically shaped buildings with red fill (no black outline) featuring curved forms. Buildings must be completely red. Water must be blue. Roads must be grey.",
+  },
+  {
+    id: "toapayoh",
+    name: "Toa Payoh central courtyard style",
+    image: "/styles/toapayoh.jpg",
+    prompt:
+      "The attached picture is a 2d top-down city map of Singapore. Generate a Toa Payoh central courtyard-style development with buildings arranged around central open spaces. Blue areas = water body (do not build here). Green areas = parks. Grey areas = roads. Create buildings with red fill (no black outline) forming courtyard arrangements. Buildings must be completely red. Water must be blue. Roads must be grey.",
+  },
+];
+
 export function ScreenshotDialog({
   isOpen,
   onClose,
@@ -34,9 +66,8 @@ export function ScreenshotDialog({
   boundingBox,
   layerManager,
 }: ScreenshotDialogProps) {
-  const [prompt, setPrompt] = useState(
-    "The attached picture is a 2d top-down city map of singapore, around a reservoir. Blue areas = water body (do not build here). Green areas = parks, generate a park map in those spaces. Grey areas = roads, leave those be. Generate me an city map for this image, by adding the 2d building footprints, filling in all the zones with designs of your own, for a mixed use urban project. in your output, roads must be grey, water must be blue. Buildings must be completely red with no black outline. Ensure that the areas closest to the water have buildings."
-  );
+  const [prompt, setPrompt] = useState("");
+  const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null
@@ -47,9 +78,8 @@ export function ScreenshotDialog({
   useEffect(() => {
     if (!isOpen) {
       setGeneratedImageUrl(null);
-      setPrompt(
-        "The attached picture is a 2d top-down city map of singapore, around a reservoir. Blue areas = water body (do not build here). Green areas = parks, generate a park map in those spaces. Grey areas = roads, leave those be. Generate me an city map for this image, by adding the 2d building footprints, filling in all the zones with designs of your own, for a mixed use urban project. in your output, roads must be grey, water must be blue. Buildings must be completely red with no black outline. Ensure that the areas closest to the water have buildings."
-      );
+      setPrompt("");
+      setSelectedStyle(null);
     }
   }, [isOpen]);
 
@@ -59,6 +89,14 @@ export function ScreenshotDialog({
       api.scrollTo(1);
     }
   }, [generatedImageUrl, api]);
+
+  const handleStyleSelect = (styleId: string) => {
+    const style = STYLE_PRESETS.find((s) => s.id === styleId);
+    if (style) {
+      setPrompt(style.prompt);
+      setSelectedStyle(styleId);
+    }
+  };
 
   const handleSubmit = async () => {
     if (!screenshotUrl) return;
@@ -137,7 +175,7 @@ export function ScreenshotDialog({
         const apiUrl =
           process.env.NEXT_PUBLIC_PYTHON_API_URL || "http://localhost:8000";
 
-        // Send to Python API endpoint - FIX THE PATH
+        // Send to Python API endpoint
         const apiResponse = await fetch(`${apiUrl}/api/py/vectorise`, {
           method: "POST",
           headers: {
@@ -188,102 +226,139 @@ export function ScreenshotDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl bg-white opacity-100">
-        <DialogHeader>
+      <DialogContent className="max-w-[95vw] w-[95vw] h-[90vh] bg-white opacity-100 p-6 sm:max-w-[95vw]">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>
             {generatedImageUrl ? "Generated Result" : "Screenshot Captured"}
           </DialogTitle>
           <DialogDescription>
             {generatedImageUrl
               ? "Review your generated image"
-              : "Review your screenshot and provide instructions for AI generation"}
+              : "Select a style preset or provide custom instructions for AI generation"}
           </DialogDescription>
         </DialogHeader>
 
-        <Carousel setApi={setApi} className="w-full">
-          <CarouselContent>
-            {/* Slide 1: Original Screenshot & Prompt */}
-            <CarouselItem>
-              <div className="space-y-4">
-                {screenshotUrl && (
-                  <div className="border rounded-lg overflow-hidden">
+        <div className="flex gap-6 flex-1 overflow-hidden min-h-0">
+          {/* Style Presets Sidebar */}
+          <div className="w-72 shrink-0 space-y-2 overflow-y-auto pr-2">
+            <h3 className="font-semibold text-sm mb-3">Style Presets</h3>
+            {STYLE_PRESETS.map((style) => (
+              <button
+                key={style.id}
+                onClick={() => handleStyleSelect(style.id)}
+                disabled={isLoading}
+                className={cn(
+                  "w-full p-3 border rounded-lg hover:border-green-500 transition-colors text-left",
+                  selectedStyle === style.id
+                    ? "border-green-600 bg-green-50"
+                    : "border-gray-200"
+                )}
+              >
+                <div className="flex gap-3 items-center">
+                  <div className="w-20 h-20 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
                     <img
-                      src={screenshotUrl}
-                      alt="Screenshot"
-                      className="w-full h-auto"
+                      src={style.image}
+                      alt={style.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = "none";
+                      }}
                     />
                   </div>
-                )}
-                <div className="space-y-2">
-                  <label
-                    htmlFor="prompt"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    AI Prompt
-                  </label>
-                  <Textarea
-                    id="prompt"
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    placeholder="Enter your prompt..."
-                    className="min-h-[100px]"
-                    disabled={isLoading}
-                  />
+                  <div className="text-sm font-medium">{style.name}</div>
                 </div>
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="outline"
-                    onClick={onClose}
-                    disabled={isLoading}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={isLoading}
-                    className="bg-green-600 hover:bg-green-700 text-white"
-                  >
-                    {isLoading ? "Generating..." : "Generate"}
-                  </Button>
-                </div>
-              </div>
-            </CarouselItem>
+              </button>
+            ))}
+          </div>
 
-            {/* Slide 2: Generated Image */}
-            <CarouselItem>
-              <div className="space-y-4">
-                {generatedImageUrl ? (
-                  <>
-                    <div className="border rounded-lg overflow-hidden">
-                      <img
-                        src={generatedImageUrl}
-                        alt="Generated"
-                        className="w-full h-auto"
+          {/* Main Content */}
+          <div className="flex-1 overflow-hidden relative min-w-0">
+            <Carousel setApi={setApi} className="w-full h-full">
+              <CarouselContent>
+                {/* Slide 1: Original Screenshot & Prompt */}
+                <CarouselItem>
+                  <div className="h-[calc(90vh-180px)] overflow-y-auto pr-4 space-y-4">
+                    {screenshotUrl && (
+                      <div className="border rounded-lg overflow-hidden bg-gray-50">
+                        <img
+                          src={screenshotUrl}
+                          alt="Screenshot"
+                          className="w-full h-auto"
+                        />
+                      </div>
+                    )}
+                    <div className="space-y-2">
+                      <label
+                        htmlFor="prompt"
+                        className="text-sm font-medium text-gray-700"
+                      >
+                        AI Prompt
+                      </label>
+                      <Textarea
+                        id="prompt"
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        placeholder="Select a style preset or enter your custom prompt..."
+                        className="min-h-[120px]"
+                        disabled={isLoading}
                       />
                     </div>
-                    <div className="flex justify-end gap-2">
-                      <Button variant="outline" onClick={onClose}>
-                        Close
+                    <div className="flex justify-end gap-2 sticky bottom-0 bg-white pt-4 pb-2">
+                      <Button
+                        variant="outline"
+                        onClick={onClose}
+                        disabled={isLoading}
+                      >
+                        Cancel
                       </Button>
                       <Button
-                        onClick={handleDownload}
+                        onClick={handleSubmit}
+                        disabled={isLoading || !prompt}
                         className="bg-green-600 hover:bg-green-700 text-white"
                       >
-                        Download
+                        {isLoading ? "Generating..." : "Generate"}
                       </Button>
                     </div>
-                  </>
-                ) : (
-                  <div className="flex items-center justify-center h-96 text-gray-400">
-                    {isLoading ? "Generating..." : "No image generated yet"}
                   </div>
-                )}
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+                </CarouselItem>
+
+                {/* Slide 2: Generated Image */}
+                <CarouselItem>
+                  <div className="h-[calc(90vh-180px)] overflow-y-auto pr-4 space-y-4">
+                    {generatedImageUrl ? (
+                      <>
+                        <div className="border rounded-lg overflow-hidden bg-gray-50">
+                          <img
+                            src={generatedImageUrl}
+                            alt="Generated"
+                            className="w-full h-auto"
+                          />
+                        </div>
+                        <div className="flex justify-end gap-2 sticky bottom-0 bg-white pt-4 pb-2">
+                          <Button variant="outline" onClick={onClose}>
+                            Close
+                          </Button>
+                          <Button
+                            onClick={handleDownload}
+                            className="bg-green-600 hover:bg-green-700 text-white"
+                          >
+                            Download
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex items-center justify-center h-full text-gray-400">
+                        {isLoading ? "Generating..." : "No image generated yet"}
+                      </div>
+                    )}
+                  </div>
+                </CarouselItem>
+              </CarouselContent>
+              <CarouselPrevious className="left-4" />
+              <CarouselNext className="right-4" />
+            </Carousel>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
