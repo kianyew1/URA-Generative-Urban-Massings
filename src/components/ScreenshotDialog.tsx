@@ -33,28 +33,28 @@ const STYLE_PRESETS = [
     name: "Punggol style",
     image: "/styles/punggol.jpg",
     prompt:
-      "The attached picture is a 2d top-down city map of Singapore. Generate a Punggol-style mixed residential development with modern high-rise buildings arranged in clusters. Blue areas = water body (do not build here). Green areas = parks. Grey areas = roads. Create buildings with red fill (no black outline) in a contemporary linear arrangement with courtyards. Buildings must be completely red. Water must be blue. Roads must be grey.",
+      "Prompt:A top-down 2D architectural site plan map in a clean vector style. Water bodies are in blue, parks in green, roads and highways in grey. The empty white land areas between the roads and the green park buffer must be populated with a planned residential estate and roads. The buildings are represented as solid red silhouettes with no black outlines. The building shapes mimic complex high-density housing typologies: H-shaped blocks, linear slabs with stepped facades, and interconnected geometric clusters. The buildings are arranged logically to follow the curvature of the roads and the coastline. Flat colors, high contrast, architectural diagram aesthetic. Negative Prompt:black outlines, 3D, shadows, gradient, textured water, residential houses, realistic satellite view, buildings in the water, buildings on the roads, blue buildings, grey buildings.",
   },
   {
     id: "bedok",
     name: "Bedok south Segmented slab style",
     image: "/styles/bedok.jpg",
     prompt:
-      "The attached picture is a 2d top-down city map of Singapore. Generate a Bedok South segmented slab-style development with long parallel residential blocks. Blue areas = water body (do not build here). Green areas = parks. Grey areas = roads. Create rectangular slab buildings with red fill (no black outline) arranged in parallel rows. Buildings must be completely red. Water must be blue. Roads must be grey.",
+      "Prompt:A top-down 2D architectural site plan map in a clean vector style. Water bodies are in blue, parks in green, roads and highways in grey. The empty white land areas between the roads and the green park buffer must be populated with a planned residential estate and roads. The buildings are represented as solid red silhouettes with no black outlines. The building shapes mimic complex high-density housing typologies: H-shaped blocks, linear slabs with stepped facades, and interconnected geometric clusters. The buildings are arranged logically to follow the curvature of the roads and the coastline. Flat colors, high contrast, architectural diagram aesthetic. Negative Prompt:black outlines, 3D, shadows, gradient, textured water, residential houses, realistic satellite view, buildings in the water, buildings on the roads, blue buildings, grey buildings.",
   },
   {
     id: "queenstown",
     name: "Queenstown Dawson style",
     image: "/styles/queenstown.jpg",
     prompt:
-      "The attached picture is a 2d top-down city map of Singapore. Generate a Queenstown Dawson-style development with distinctive curved and horseshoe-shaped blocks. Blue areas = water body (do not build here). Green areas = parks. Grey areas = roads. Create organically shaped buildings with red fill (no black outline) featuring curved forms. Buildings must be completely red. Water must be blue. Roads must be grey.",
+      "Prompt:A top-down 2D architectural site plan map in a clean vector style. Water bodies are in blue, parks in green, roads and highways in grey. The empty white land areas between the roads and the green park buffer must be populated with a planned residential estate and roads. The buildings are represented as solid red silhouettes with no black outlines. The building shapes mimic complex high-density housing typologies in Queenstown Dawson, Singapore : Slim blocks with curved or tapered footprints, arranged in staggered parallel rows. Footprints emphasise slenderness and separation, producing high ventilation permeabilityNegative Prompt:black outlines, 3D, shadows, gradient, textured water, residential houses, realistic satellite view, buildings in the water, buildings on the roads, blue buildings, grey buildings.",
   },
   {
     id: "toapayoh",
     name: "Toa Payoh central courtyard style",
     image: "/styles/toapayoh.jpg",
     prompt:
-      "The attached picture is a 2d top-down city map of Singapore. Generate a Toa Payoh central courtyard-style development with buildings arranged around central open spaces. Blue areas = water body (do not build here). Green areas = parks. Grey areas = roads. Create buildings with red fill (no black outline) forming courtyard arrangements. Buildings must be completely red. Water must be blue. Roads must be grey.",
+      "Prompt:A top-down 2D architectural site plan map in a clean vector style. Water bodies are in blue, parks in green, roads and highways in grey. The empty white land areas between the roads and the green park buffer must be populated with a planned residential estate and roads. The buildings are represented as solid red silhouettes with no black outlines. The building shapes mimic complex high-density housing typologies in Queenstown Dawson, Singapore : Slim blocks with curved or tapered footprints, arranged in staggered parallel rows. Footprints emphasise slenderness and separation, producing high ventilation permeability Negative Prompt: black outlines, 3D, shadows, gradient, textured water, residential houses, realistic satellite view, buildings in the water, buildings on the roads, blue buildings, grey buildings.",
   },
 ];
 
