@@ -179,6 +179,35 @@ export function ScreenshotDialog({
     }
   };
 
+  const calculateAspectRatio = async (imageUrl: string): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const width = img.naturalWidth;
+        const height = img.naturalHeight;
+
+        // Calculate GCD to simplify the ratio
+        const gcd = (a: number, b: number): number =>
+          b === 0 ? a : gcd(b, a % b);
+        const divisor = gcd(width, height);
+
+        const ratioWidth = width / divisor;
+        const ratioHeight = height / divisor;
+
+        // Format as "width:height" (e.g., "16:9", "4:3", "1:1")
+        const aspectRatio = `${Math.round(ratioWidth)}:${Math.round(
+          ratioHeight
+        )}`;
+        resolve(aspectRatio);
+      };
+      img.onerror = () => {
+        // Fallback to 16:9 if image fails to load
+        resolve("16:9");
+      };
+      img.src = imageUrl;
+    });
+  };
+
   const generateImage = async (
     baseImageUrl: string,
     prompt: string
@@ -189,6 +218,13 @@ export function ScreenshotDialog({
     const formData = new FormData();
     formData.append("image", blob, "screenshot.png");
     formData.append("prompt", prompt);
+
+    // Dynamically calculate aspect ratio from the image
+    // const aspectRatio = await calculateAspectRatio(baseImageUrl);
+
+    // Use explicit 4K resolution (3840x2160) instead of ambiguous "2K"
+    // formData.append("resolution", "4K");
+    // formData.append("aspect_ratio", aspectRatio);
 
     const apiResponse = await fetch("/api/nano_banana", {
       method: "POST",
