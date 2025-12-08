@@ -4,7 +4,6 @@ import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { LayerControl } from "./LayerControl";
 import { LayerManager } from "./LayerManager";
-import { THIRD_GENERATION, HUBERT_GENERATION } from "./consts/const";
 import {
   DrawRectangleMode,
   ViewMode,
@@ -70,20 +69,6 @@ export default function DeckGlMap() {
     manager.addLayer({
       id: "water-background",
       name: "Water Background",
-      visible: true,
-      type: "geojson",
-    });
-
-    manager.addLayer({
-      id: "generation-three",
-      name: "Generation Three",
-      visible: true,
-      type: "geojson",
-    });
-
-    manager.addLayer({
-      id: "hubert-generation",
-      name: "Hubert Generation",
       visible: true,
       type: "geojson",
     });
@@ -261,9 +246,7 @@ export default function DeckGlMap() {
       layerManager.createDeckLayers(
         {
           "water-background": WATER_BACKGROUND,
-          "generation-three": THIRD_GENERATION,
           "master-plan": masterPlanData,
-          "hubert-generation": HUBERT_GENERATION,
           "building-outline": buildingOutlineData,
           parcels: parcelsData,
         },
@@ -361,7 +344,7 @@ export default function DeckGlMap() {
                 </>
               )}
 
-            {/* Other layers (Claude Generation, etc) */}
+            {/* Other layers */}
             {hoverInfo.object.properties?.type &&
               !hoverInfo.object.properties?.Description && (
                 <>
@@ -457,11 +440,25 @@ export default function DeckGlMap() {
             ? "Stop Drawing"
             : "Draw Bounding Box"}
         </button>
+
+        <button
+          className="px-4 py-2 rounded shadow-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors"
+          onClick={() => {
+            setViewState({
+              ...viewState,
+              pitch: 0,
+              bearing: 0,
+              transitionDuration: 500,
+            });
+          }}
+        >
+          Reset View
+        </button>
       </div>
 
       <DeckGL
         ref={deckRef}
-        initialViewState={INITIAL_VIEW_STATE}
+        viewState={viewState}
         controller={{
           doubleClickZoom: false,
         }}

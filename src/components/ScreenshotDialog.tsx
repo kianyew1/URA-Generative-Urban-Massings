@@ -50,13 +50,6 @@ const ROAD_STYLE_PRESETS = [
     prompt:
       "Prompt: A top-down 2D site plan showing only a road network. Water bodies are in blue, existing parks in green. The empty white land areas must be filled with a radial road network in grey. Roads radiate from central points with concentric circular or arc roads connecting them. Mix of radial and ring roads. No buildings, only roads. Clean vector style, flat colors. Negative Prompt: buildings, 3D, shadows, pure grid, random placement.",
   },
-  {
-    id: "hybrid",
-    name: "Hybrid Road Network",
-    image: "/styles/road_hybrid.jpg",
-    prompt:
-      "Prompt: A top-down 2D site plan showing only a road network. Water bodies are in blue, existing parks in green. The empty white land areas must be filled with a hybrid road network in grey combining organic curves along natural features with grid sections in flatter areas. Varied road widths showing hierarchy. No buildings, only roads. Clean vector style, flat colors. Negative Prompt: buildings, 3D, shadows, pure grid, completely organic.",
-  },
 ];
 
 // Step 2: Building generation presets (existing ones)
