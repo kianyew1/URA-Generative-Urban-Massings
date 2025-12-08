@@ -71,7 +71,7 @@ export const LAND_USE_COLORS: Record<string, [number, number, number, number]> =
     WATERBODY: [44, 127, 184, 255],
     ROAD: [200, 200, 200, 255],
     "RAPID TRANSIT SYSTEM": [128, 128, 128, 255],
-    "PORT / AIRPORT": [0, 0, 0, 255],
+    "PORT / AIRPORT": [255, 255, 255, 255],
     UTILITY: [255, 255, 255, 255],
     CEMETERY: [166, 97, 26, 255],
     "SPECIAL USE": [255, 255, 255, 255],
