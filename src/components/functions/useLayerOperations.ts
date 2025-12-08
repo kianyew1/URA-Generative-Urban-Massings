@@ -44,6 +44,32 @@ export function useLayerOperations({
           maxLat: Math.max(...lats),
         };
 
+        // Calculate dimensions in meters for bounding box
+        let dimensions: { width: number; height: number } | undefined =
+          undefined;
+        if (isRectangle) {
+          const { minLng, maxLng, minLat, maxLat } = bounds;
+
+          // Calculate real-world distance in meters
+          const centerLat = (maxLat + minLat) / 2;
+          const metersPerDegreeLat = 111320; // roughly constant
+          const metersPerDegreeLng =
+            111320 * Math.cos((centerLat * Math.PI) / 180);
+
+          const widthMeters = (maxLng - minLng) * metersPerDegreeLng;
+          const heightMeters = (maxLat - minLat) * metersPerDegreeLat;
+
+          dimensions = {
+            width: Math.round(widthMeters * 10) / 10, // round to 1 decimal
+            height: Math.round(heightMeters * 10) / 10,
+          };
+
+          console.log("Bounding box dimensions calculated:", {
+            bounds,
+            dimensions,
+          });
+        }
+
         layerManager.addLayer({
           id: layerId,
           name: isRectangle
@@ -67,6 +93,7 @@ export function useLayerOperations({
           },
           geometry: newFeature.geometry,
           bounds: isRectangle ? bounds : undefined,
+          dimensions: dimensions,
         });
 
         // Extract bounding box coordinates

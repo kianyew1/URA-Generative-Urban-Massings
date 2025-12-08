@@ -139,6 +139,15 @@ export function LayerControl({
                             <div>S: {layer.bounds.minLat.toFixed(6)}</div>
                             <div>E: {layer.bounds.maxLng.toFixed(6)}</div>
                             <div>W: {layer.bounds.minLng.toFixed(6)}</div>
+                            {layer.dimensions && (
+                              <div className="mt-2 pt-2 border-t border-gray-300">
+                                <span className="font-semibold">
+                                  Dimensions:{" "}
+                                </span>
+                                {layer.dimensions.width.toFixed(1)}m ×{" "}
+                                {layer.dimensions.height.toFixed(1)}m
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>

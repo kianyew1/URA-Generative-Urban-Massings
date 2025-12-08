@@ -13,6 +13,7 @@ export interface LayerConfig {
   data?: any;
   geometry?: any;
   bounds?: any;
+  dimensions?: { width: number; height: number }; // width x height in meters
 }
 
 export class LayerManager {
