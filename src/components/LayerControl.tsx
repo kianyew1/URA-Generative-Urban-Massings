@@ -113,106 +113,174 @@ export function LayerControl({
                   <p className="text-sm">No layers added yet</p>
                 </div>
               ) : (
-                <div className="space-y-2">
-                  {layers.map((layer) => (
-                    <div
-                      key={layer.id}
-                      className="group flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={layer.visible}
-                        onChange={() => onLayerToggle(layer.id)}
-                        className="mt-1 w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-gray-900 text-sm">
-                          {layer.name}
-                        </div>
-                        {layer.geometry && (
-                          <details className="mt-2">
-                            <summary className="text-xs text-gray-600 cursor-pointer hover:text-gray-800 font-medium">
-                              View GeoJSON ▼
-                            </summary>
-                            <pre className="mt-2 p-3 bg-white rounded-md text-xs overflow-auto max-h-40 border border-gray-200 text-gray-700">
-                              {JSON.stringify(layer.geometry, null, 2)}
-                            </pre>
-                          </details>
-                        )}
-                        {layer.bounds && (
-                          <div className="text-xs text-zinc-950 mt-1 font-mono">
-                            <div>N: {layer.bounds.maxLat.toFixed(6)}</div>
-                            <div>S: {layer.bounds.minLat.toFixed(6)}</div>
-                            <div>E: {layer.bounds.maxLng.toFixed(6)}</div>
-                            <div>W: {layer.bounds.minLng.toFixed(6)}</div>
-                            {layer.dimensions && (
-                              <div className="mt-2 pt-2 border-t border-gray-300">
-                                <span className="font-semibold">
-                                  Dimensions:{" "}
-                                </span>
-                                {layer.dimensions.width.toFixed(1)}m ×{" "}
-                                {layer.dimensions.height.toFixed(1)}m
-                              </div>
-                            )}
-                          </div>
-                        )}
+                <div className="space-y-4">
+                  {/* System Layers Section */}
+                  {layers.filter((l) => l.category === "system").length > 0 && (
+                    <div>
+                      <div className="mb-2 px-2">
+                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                          System Layers
+                        </h3>
                       </div>
-                      <div className="flex flex-col gap-1">
-                        {/* Screenshot button - only for bounding boxes */}
-                        {layer.type === "drawn" &&
-                          layer.bounds &&
-                          !!onCaptureScreenshot && (
-                            <button
-                              onClick={() => handleScreenshotClick(layer.id)}
-                              className="opacity-0 group-hover:opacity-100 p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-all"
-                              title="Capture screenshot"
+                      <div className="space-y-2">
+                        {layers
+                          .filter((l) => l.category === "system")
+                          .map((layer) => (
+                            <div
+                              key={layer.id}
+                              className="group flex items-start gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-200"
                             >
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                                />
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                              </svg>
-                            </button>
-                          )}
-                        {/* Remove button */}
-                        {!!onLayerRemove && (
-                          <button
-                            onClick={() => onLayerRemove(layer.id)}
-                            className="opacity-0 group-hover:opacity-100 p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-all"
-                            title="Remove layer"
-                          >
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
+                              <input
+                                type="checkbox"
+                                checked={layer.visible}
+                                onChange={() => onLayerToggle(layer.id)}
+                                className="mt-1 w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
                               />
-                            </svg>
-                          </button>
-                        )}
+                              <div className="flex-1 min-w-0">
+                                <div className="font-semibold text-gray-900 text-sm">
+                                  {layer.name}
+                                </div>
+                                {layer.geometry && (
+                                  <details className="mt-2">
+                                    <summary className="text-xs text-gray-600 cursor-pointer hover:text-gray-800 font-medium">
+                                      View GeoJSON ▼
+                                    </summary>
+                                    <pre className="mt-2 p-3 bg-white rounded-md text-xs overflow-auto max-h-40 border border-gray-200 text-gray-700">
+                                      {JSON.stringify(layer.geometry, null, 2)}
+                                    </pre>
+                                  </details>
+                                )}
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
-                  ))}
+                  )}
+
+                  {/* User Layers Section */}
+                  {layers.filter((l) => l.category === "user" || !l.category)
+                    .length > 0 && (
+                    <div>
+                      <div className="mb-2 px-2">
+                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                          User Layers
+                        </h3>
+                      </div>
+                      <div className="space-y-2">
+                        {layers
+                          .filter((l) => l.category === "user" || !l.category)
+                          .map((layer) => (
+                            <div
+                              key={layer.id}
+                              className="group flex items-start gap-3 p-3 bg-amber-100 rounded-lg hover:bg-amber-200 transition-colors border border-gray-200"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={layer.visible}
+                                onChange={() => onLayerToggle(layer.id)}
+                                className="mt-1 w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="font-semibold text-gray-900 text-sm">
+                                  {layer.name}
+                                </div>
+                                {layer.geometry && (
+                                  <details className="mt-2">
+                                    <summary className="text-xs text-gray-600 cursor-pointer hover:text-gray-800 font-medium">
+                                      View GeoJSON ▼
+                                    </summary>
+                                    <pre className="mt-2 p-3 bg-white rounded-md text-xs overflow-auto max-h-40 border border-gray-200 text-gray-700">
+                                      {JSON.stringify(layer.geometry, null, 2)}
+                                    </pre>
+                                  </details>
+                                )}
+                                {layer.bounds && (
+                                  <div className="text-xs text-zinc-950 mt-1 font-mono">
+                                    <div>
+                                      N: {layer.bounds.maxLat.toFixed(6)}
+                                    </div>
+                                    <div>
+                                      S: {layer.bounds.minLat.toFixed(6)}
+                                    </div>
+                                    <div>
+                                      E: {layer.bounds.maxLng.toFixed(6)}
+                                    </div>
+                                    <div>
+                                      W: {layer.bounds.minLng.toFixed(6)}
+                                    </div>
+                                    {layer.dimensions && (
+                                      <div className="mt-2 pt-2 border-t border-gray-300">
+                                        <span className="font-semibold">
+                                          Dimensions:{" "}
+                                        </span>
+                                        {layer.dimensions.width.toFixed(1)}m ×{" "}
+                                        {layer.dimensions.height.toFixed(1)}m
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                {/* Screenshot button - only for bounding boxes */}
+                                {layer.type === "drawn" &&
+                                  layer.bounds &&
+                                  !!onCaptureScreenshot && (
+                                    <button
+                                      onClick={() =>
+                                        handleScreenshotClick(layer.id)
+                                      }
+                                      className="opacity-0 group-hover:opacity-100 p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-all"
+                                      title="Capture screenshot"
+                                    >
+                                      <svg
+                                        className="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                                        />
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                                        />
+                                      </svg>
+                                    </button>
+                                  )}
+                                {/* Remove button */}
+                                {!!onLayerRemove && (
+                                  <button
+                                    onClick={() => onLayerRemove(layer.id)}
+                                    className="opacity-0 group-hover:opacity-100 p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-all"
+                                    title="Remove layer"
+                                  >
+                                    <svg
+                                      className="w-4 h-4"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                      />
+                                    </svg>
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

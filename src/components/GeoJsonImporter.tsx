@@ -100,9 +100,9 @@ export const GeoJsonImporter: React.FC<GeoJsonImporterProps> = ({
     <div className="border-b border-gray-200 pb-4">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+        className="w-full flex items-center justify-between p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
       >
-        <span className="font-semibold text-blue-900 text-sm flex items-center gap-2">
+        <span className="font-semibold text-green-900 text-sm flex items-center gap-2">
           <svg
             className="w-5 h-5"
             fill="none"
