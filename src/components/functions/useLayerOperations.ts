@@ -3,6 +3,7 @@ import { LayerManager } from "../LayerManager";
 import {
   DrawRectangleMode,
   ViewMode,
+  DrawSquareMode,
 } from "@deck.gl-community/editable-layers";
 
 interface UseLayerOperationsProps {
@@ -30,8 +31,9 @@ export function useLayerOperations({
           updatedData.features[updatedData.features.length - 1];
 
         const isRectangle = mode instanceof DrawRectangleMode;
+        const isSquare = mode instanceof DrawSquareMode;
         const layerId = `drawn-${
-          isRectangle ? "bbox" : "polygon"
+          isRectangle || isSquare ? "bbox" : "polygon"
         }-${Date.now()}`;
 
         const coordinates = newFeature.geometry.coordinates[0];
@@ -47,7 +49,7 @@ export function useLayerOperations({
         // Calculate dimensions in meters for bounding box
         let dimensions: { width: number; height: number } | undefined =
           undefined;
-        if (isRectangle) {
+        if (isRectangle || isSquare) {
           const { minLng, maxLng, minLat, maxLat } = bounds;
 
           // Calculate real-world distance in meters
@@ -72,12 +74,24 @@ export function useLayerOperations({
 
         layerManager.addLayer({
           id: layerId,
-          name: isRectangle
+          name: isSquare
+            ? `Square ${
+                layerManager
+                  .getAllLayers()
+                  .filter(
+                    (l) => l.type === "drawn" && l.name?.includes("Square")
+                  ).length + 1
+              }`
+            : isRectangle
             ? `Bounding Box ${
                 layerManager
                   .getAllLayers()
-                  .filter((l) => l.type === "drawn" && l.id.includes("bbox"))
-                  .length + 1
+                  .filter(
+                    (l) =>
+                      l.type === "drawn" &&
+                      l.id.includes("bbox") &&
+                      !l.name?.includes("Square")
+                  ).length + 1
               }`
             : `Polygon ${
                 layerManager
@@ -92,7 +106,7 @@ export function useLayerOperations({
             features: [newFeature],
           },
           geometry: newFeature.geometry,
-          bounds: isRectangle ? bounds : undefined,
+          bounds: isRectangle || isSquare ? bounds : undefined,
           dimensions: dimensions,
         });
 

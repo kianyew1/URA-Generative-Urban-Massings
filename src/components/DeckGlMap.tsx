@@ -7,6 +7,7 @@ import { LayerManager } from "./LayerManager";
 import {
   DrawRectangleMode,
   ViewMode,
+  DrawSquareMode,
 } from "@deck.gl-community/editable-layers";
 import { BASEMAPS } from "./consts/const";
 import "@deck.gl/widgets/stylesheet.css";
@@ -439,6 +440,23 @@ export default function DeckGlMap() {
           {mode instanceof DrawRectangleMode
             ? "Stop Drawing"
             : "Draw Bounding Box"}
+        </button>
+
+        <button
+          className={`px-4 py-2 rounded shadow-lg ${
+            mode instanceof DrawSquareMode
+              ? "bg-green-500 text-white"
+              : "bg-white text-gray-700"
+          }`}
+          onClick={() => {
+            setMode((prevMode) =>
+              prevMode instanceof DrawSquareMode
+                ? new ViewMode()
+                : new DrawSquareMode()
+            );
+          }}
+        >
+          {mode instanceof DrawSquareMode ? "Stop Drawing" : "Draw Square"}
         </button>
 
         <button

@@ -215,16 +215,25 @@ export function ScreenshotDialog({
     const response = await fetch(baseImageUrl);
     const blob = await response.blob();
 
+    // LIMITATION: Don't use 4096 here. It will likely trigger a fallback.
+    // Use 1536 or 2048 if your specific model supports "high res" generation.
+    // Otherwise, stick to 1024 for the best composition.
+    // const generationWidth = 2048;
+    // const generationHeight = 2048;
+
     const formData = new FormData();
     formData.append("image", blob, "screenshot.png");
     formData.append("prompt", prompt);
 
-    // Dynamically calculate aspect ratio from the image
-    // const aspectRatio = await calculateAspectRatio(baseImageUrl);
+    // FIX 1: Send flat parameters, not JSON
+    // formData.append("width", generationWidth.toString());
+    // formData.append("height", generationHeight.toString());
 
-    // Use explicit 4K resolution (3840x2160) instead of ambiguous "2K"
-    // formData.append("resolution", "4K");
-    // formData.append("aspect_ratio", aspectRatio);
+    // FIX 2: Some APIs prefer 'resolution' as a string "WxH"
+    // formData.append("resolution", `${generationWidth}x${generationHeight}`);
+
+    // FIX 3: Explicitly tell the model not to preserve the exact input size if possible
+    // formData.append("autosize", "true");
 
     const apiResponse = await fetch("/api/nano_banana", {
       method: "POST",
@@ -236,6 +245,9 @@ export function ScreenshotDialog({
     }
 
     const generatedBlob = await apiResponse.blob();
+
+    // OPTIONAL: If you need 4K for the download file, you can upscale the blob here.
+    // For now, let's just return the generated blob to ensure the pipeline works.
     const url = window.URL.createObjectURL(generatedBlob);
 
     return { url, blob: generatedBlob };
