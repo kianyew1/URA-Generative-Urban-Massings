@@ -4,6 +4,7 @@ import {
   DrawRectangleMode,
   ViewMode,
   DrawSquareMode,
+  ModifyMode,
 } from "@deck.gl-community/editable-layers";
 
 interface UseLayerOperationsProps {
@@ -13,6 +14,11 @@ interface UseLayerOperationsProps {
   setMode: React.Dispatch<React.SetStateAction<any>>;
   mode: any;
   setBoundingBox: any;
+  setBuildingEditData?: React.Dispatch<React.SetStateAction<any>>;
+  setBuildingMode?: React.Dispatch<React.SetStateAction<any>>;
+  setSelectedBuildingIndexes?: React.Dispatch<React.SetStateAction<number[]>>;
+  buildingEditData?: any;
+  activeEditLayerId?: string; // Track which layer is currently being edited
 }
 export function useLayerOperations({
   layerManager,
@@ -21,6 +27,11 @@ export function useLayerOperations({
   setMode,
   mode,
   setBoundingBox,
+  setBuildingEditData,
+  setBuildingMode,
+  setSelectedBuildingIndexes,
+  buildingEditData,
+  activeEditLayerId,
 }: UseLayerOperationsProps) {
   const handleEdit = useCallback(
     ({ updatedData, editType }: any) => {
@@ -183,10 +194,148 @@ export function useLayerOperations({
     [layerManager, setLayerRevision]
   );
 
+  // Building editing handlers
+  const handleBuildingEdit = useCallback(
+    ({ updatedData, editType, editContext }: any) => {
+      console.log("Building edit:", { editType, editContext, updatedData });
+
+      if (setBuildingEditData) {
+        setBuildingEditData(updatedData);
+      }
+
+      // Track modifications in layer manager
+      if (
+        editType === "updateTentativeFeature" ||
+        editType === "finishMovePosition"
+      ) {
+        if (activeEditLayerId) {
+          updatedData.features?.forEach((feature: any, index: number) => {
+            const featureId = feature.id || `feature-${index}`;
+            layerManager.updateBuildingFeature(
+              activeEditLayerId,
+              featureId,
+              feature
+            );
+          });
+        }
+      }
+    },
+    [layerManager, setBuildingEditData, activeEditLayerId]
+  );
+
+  const handleBuildingSelect = useCallback(
+    (info: any) => {
+      if (!info.object || !buildingEditData || !setSelectedBuildingIndexes)
+        return;
+
+      const featureIndex = buildingEditData.features?.findIndex(
+        (f: any) => f === info.object
+      );
+
+      if (featureIndex !== -1) {
+        setSelectedBuildingIndexes([featureIndex]);
+        console.log("Selected building index:", featureIndex);
+      }
+    },
+    [buildingEditData, setSelectedBuildingIndexes]
+  );
+
+  const handleBuildingHeightChange = useCallback(
+    (featureIndex: number, newHeight: number) => {
+      if (!buildingEditData || !setBuildingEditData) return;
+
+      const updatedData = {
+        ...buildingEditData,
+        features: buildingEditData.features.map((feature: any, idx: number) => {
+          if (idx === featureIndex) {
+            return {
+              ...feature,
+              properties: {
+                ...feature.properties,
+                height: newHeight,
+              },
+            };
+          }
+          return feature;
+        }),
+      };
+
+      setBuildingEditData(updatedData);
+
+      if (activeEditLayerId) {
+        const feature = updatedData.features[featureIndex];
+        const featureId = feature.id || `feature-${featureIndex}`;
+        layerManager.updateBuildingFeature(
+          activeEditLayerId,
+          featureId,
+          feature
+        );
+      }
+      setLayerRevision((prev) => prev + 1);
+    },
+    [
+      buildingEditData,
+      setBuildingEditData,
+      layerManager,
+      setLayerRevision,
+      activeEditLayerId,
+    ]
+  );
+
+  const toggleBuildingEditMode = useCallback(
+    (enabled: boolean, layerId?: string) => {
+      // If enabling, use the provided layerId or default to building-outline
+      const targetLayerId = layerId || activeEditLayerId || "building-outline";
+
+      // If disabling, apply the modified features back to the layer data
+      if (!enabled && activeEditLayerId && buildingEditData) {
+        console.log("Applying modified features to layer:", activeEditLayerId);
+        layerManager.applyModifiedFeaturesToLayer(
+          activeEditLayerId,
+          buildingEditData
+        );
+      }
+
+      // Disable all other layers first
+      layerManager.getAllLayers().forEach((layer) => {
+        if (layer.isEditable) {
+          layerManager.setLayerEditable(layer.id, false);
+        }
+      });
+
+      // Enable the target layer
+      if (enabled) {
+        layerManager.setLayerEditable(targetLayerId, true);
+      }
+
+      if (setBuildingMode) {
+        setBuildingMode(enabled ? new ModifyMode() : new ViewMode());
+      }
+
+      if (setSelectedBuildingIndexes) {
+        setSelectedBuildingIndexes([]);
+      }
+
+      setLayerRevision((prev) => prev + 1);
+    },
+    [
+      layerManager,
+      setBuildingMode,
+      setSelectedBuildingIndexes,
+      setLayerRevision,
+      activeEditLayerId,
+      buildingEditData,
+    ]
+  );
+
   return {
     handleEdit,
     handleGeoJsonImport,
     handleLayerToggle,
     handleLayerRemove,
+    handleBuildingEdit,
+    handleBuildingSelect,
+    handleBuildingHeightChange,
+    toggleBuildingEditMode,
   };
 }

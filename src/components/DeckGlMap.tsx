@@ -8,6 +8,7 @@ import {
   DrawRectangleMode,
   ViewMode,
   DrawSquareMode,
+  ModifyMode,
 } from "@deck.gl-community/editable-layers";
 import { BASEMAPS } from "./consts/const";
 import "@deck.gl/widgets/stylesheet.css";
@@ -20,6 +21,8 @@ import {
   RotateCcw,
   Map as MapIcon,
   GripVertical,
+  Move,
+  ArrowUpDown,
 } from "lucide-react";
 
 // Initial camera position - Sembawang waterfront area, Singapore
@@ -72,6 +75,21 @@ export default function DeckGlMap() {
   const [isDraggingToolbar, setIsDraggingToolbar] = useState(false);
   const [dragStart, setDragStart] = useState(0);
   const toolbarRef = useRef<HTMLDivElement>(null);
+
+  // Building editing state
+  const [buildingEditMode, setBuildingEditMode] = useState<
+    "view" | "move" | "extrude"
+  >("view");
+  const [buildingEditData, setBuildingEditData] = useState<any>(null);
+  const [buildingMode, setBuildingMode] = useState<any>(new ViewMode());
+  const [selectedBuildingIndexes, setSelectedBuildingIndexes] = useState<
+    number[]
+  >([]);
+  const [selectedBuildingHeight, setSelectedBuildingHeight] =
+    useState<number>(0);
+  const [activeEditLayerId, setActiveEditLayerId] = useState<
+    string | undefined
+  >(undefined);
 
   // layers
   const [layerManager] = useState(() => {
@@ -185,6 +203,7 @@ export default function DeckGlMap() {
         if (!isCancelled) {
           setMasterPlanData(masterPlanData);
           setBuildingOutlineData(buildingOutlineData);
+          setBuildingEditData(buildingOutlineData); // Initialize edit data
           setParcelsData(parcelsData);
           console.log(
             `Loaded ${
@@ -248,6 +267,10 @@ export default function DeckGlMap() {
     handleGeoJsonImport,
     handleLayerToggle,
     handleLayerRemove,
+    handleBuildingEdit,
+    handleBuildingSelect,
+    handleBuildingHeightChange,
+    toggleBuildingEditMode,
   } = useLayerOperations({
     layerManager,
     setLayerRevision,
@@ -255,6 +278,11 @@ export default function DeckGlMap() {
     setMode,
     mode,
     setBoundingBox,
+    setBuildingEditData,
+    setBuildingMode,
+    setSelectedBuildingIndexes,
+    buildingEditData,
+    activeEditLayerId,
   });
 
   // Toolbar drag handlers
@@ -310,7 +338,11 @@ export default function DeckGlMap() {
         features,
         selectedFeatureIndexes,
         handleEdit,
-        mode
+        mode,
+        buildingEditData,
+        selectedBuildingIndexes,
+        handleBuildingEdit,
+        buildingMode
       ),
     [
       layerManager,
@@ -321,6 +353,10 @@ export default function DeckGlMap() {
       handleEdit,
       mode,
       layerRevision,
+      buildingEditData,
+      selectedBuildingIndexes,
+      handleBuildingEdit,
+      buildingMode,
     ]
   );
 
@@ -508,6 +544,87 @@ export default function DeckGlMap() {
 
           <div className="h-6 w-px bg-gray-300 mx-1" />
 
+          {/* Building Edit Controls */}
+          <button
+            className={`px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+              buildingEditMode === "move"
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => {
+              if (buildingEditMode === "move") {
+                // Save changes before stopping edit mode
+                if (activeEditLayerId && buildingEditData) {
+                  console.log("Saving changes for layer:", activeEditLayerId);
+                  console.log("Updated data:", buildingEditData);
+
+                  // If we were editing the building-outline layer, update its state
+                  if (activeEditLayerId === "building-outline") {
+                    setBuildingOutlineData(buildingEditData);
+                    console.log("Updated buildingOutlineData state");
+                  }
+                  // For imported layers, the data is already in the layer manager
+                }
+
+                setBuildingEditMode("view");
+                toggleBuildingEditMode(false);
+                setActiveEditLayerId(undefined);
+              } else {
+                setBuildingEditMode("move");
+                // Find the first visible layer that can be edited (building-outline or imported)
+                const editableLayers = layerManager
+                  .getAllLayers()
+                  .filter(
+                    (l) =>
+                      l.visible &&
+                      (l.id === "building-outline" || l.type === "imported")
+                  );
+                if (editableLayers.length > 0) {
+                  const targetLayer = editableLayers[0];
+                  setActiveEditLayerId(targetLayer.id);
+
+                  // Set the building edit data to the target layer's data
+                  const layerData =
+                    targetLayer.id === "building-outline"
+                      ? buildingOutlineData
+                      : targetLayer.data;
+                  setBuildingEditData(layerData);
+
+                  toggleBuildingEditMode(true, targetLayer.id);
+                  setSelectedBuildingIndexes([]);
+                }
+              }
+            }}
+          >
+            <Move className="w-3.5 h-3.5" />
+            {buildingEditMode === "move" ? "Stop Editing" : "Move Buildings"}
+          </button>
+
+          {/* Height adjustment control - show when building is selected */}
+          {selectedBuildingIndexes.length > 0 &&
+            buildingEditMode !== "view" && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded">
+                <ArrowUpDown className="w-3.5 h-3.5 text-blue-600" />
+                <input
+                  type="number"
+                  value={selectedBuildingHeight}
+                  onChange={(e) => {
+                    const newHeight = parseFloat(e.target.value) || 0;
+                    setSelectedBuildingHeight(newHeight);
+                    handleBuildingHeightChange(
+                      selectedBuildingIndexes[0],
+                      newHeight
+                    );
+                  }}
+                  className="w-20 px-2 py-1 text-sm border rounded"
+                  placeholder="Height"
+                />
+                <span className="text-xs text-gray-600">m</span>
+              </div>
+            )}
+
+          <div className="h-6 w-px bg-gray-300 mx-1" />
+
           {/* Basemap Selector */}
           <div className="relative">
             <button
@@ -553,6 +670,17 @@ export default function DeckGlMap() {
         onViewStateChange={({ viewState }) => setViewState(viewState)}
         getCursor={({ isDragging }) => (isDragging ? "grabbing" : "grab")}
         onHover={(info) => setHoverInfo(info)}
+        onClick={(info) => {
+          if (buildingEditMode !== "view" && info.object) {
+            handleBuildingSelect(info);
+            // Update height control with selected building's height
+            const height =
+              info.object.properties?.height ||
+              info.object.properties?.elevation ||
+              0;
+            setSelectedBuildingHeight(height);
+          }
+        }}
       >
         <Map
           ref={mapRef}

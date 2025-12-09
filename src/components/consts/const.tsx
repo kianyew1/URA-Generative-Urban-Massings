@@ -238,7 +238,7 @@ export const GEOJSON_DATA = {
   ],
 };
 
-export const LATEST_GENERATION = {
+export const BERLARYAR_CREEK_PARCELWISE_GENERATION = {
   type: "FeatureCollection",
   crs: { type: "name", properties: { name: "EPSG:4326" } },
   features: [
