@@ -24,12 +24,14 @@ interface ScreenshotDialogProps {
   onSubmit: (prompt: string) => void;
   boundingBox: any;
   layerManager: any;
+  dimensions?: { width: number; height: number };
 }
 
 // Road generation JSON prompt structure
 interface RoadPromptConfig {
   style: string;
   view: string;
+  site_dimensions: string;
   map_elements: {
     water: string;
     land: string;
@@ -49,6 +51,7 @@ interface RoadPromptConfig {
 interface BuildingPromptConfig {
   style: string;
   view: string;
+  site_dimensions: string;
   map_elements: {
     roads: string;
     water: string;
@@ -100,6 +103,7 @@ const ROAD_STYLE_PRESETS: Array<{
     config: {
       style: "Singapore Urban Planning Zoning Map",
       view: "Top-down 2D digital map",
+      site_dimensions: "To be filled",
       map_elements: {
         water: "Blue; no roads allowed",
         land: "White areas; preserve natural parcel irregularity; do not generate new green spaces",
@@ -126,6 +130,7 @@ const ROAD_STYLE_PRESETS: Array<{
     config: {
       style: "Singapore Urban Planning Zoning Map",
       view: "Top-down 2D digital map",
+      site_dimensions: "To be filled",
       map_elements: {
         water: "Blue; no roads allowed",
         land: "White areas; maintain for road network",
@@ -153,6 +158,7 @@ const ROAD_STYLE_PRESETS: Array<{
     config: {
       style: "Singapore Urban Planning Zoning Map",
       view: "Top-down 2D digital map",
+      site_dimensions: "To be filled",
       map_elements: {
         water: "Blue; no roads allowed",
         land: "White areas; for radial road network",
@@ -226,6 +232,7 @@ const BUILDING_STYLE_PRESETS: Array<{
     config: {
       style: "Singapore HDB residential architectural site plan",
       view: "Top-down 2D architectural diagram",
+      site_dimensions: "To be filled",
       map_elements: {
         roads: "Grey; existing road network preserved",
         water: "Blue; no buildings allowed",
@@ -255,6 +262,7 @@ const BUILDING_STYLE_PRESETS: Array<{
     config: {
       style: "Singapore HDB residential architectural site plan",
       view: "Top-down 2D architectural diagram",
+      site_dimensions: "To be filled",
       map_elements: {
         roads: "Grey; existing road network preserved",
         water: "Blue; no buildings allowed",
@@ -284,6 +292,7 @@ const BUILDING_STYLE_PRESETS: Array<{
     config: {
       style: "Singapore HDB residential architectural site plan",
       view: "Top-down 2D architectural diagram",
+      site_dimensions: "To be filled",
       map_elements: {
         roads: "Grey; existing road network preserved",
         water: "Blue; no buildings allowed",
@@ -313,6 +322,7 @@ const BUILDING_STYLE_PRESETS: Array<{
     config: {
       style: "Singapore HDB residential architectural site plan",
       view: "Top-down 2D architectural diagram",
+      site_dimensions: "To be filled",
       map_elements: {
         roads: "Grey; existing road network preserved",
         water: "Blue; no buildings allowed",
@@ -347,6 +357,7 @@ export function ScreenshotDialog({
   onSubmit,
   boundingBox,
   layerManager,
+  dimensions,
 }: ScreenshotDialogProps) {
   const [currentStep, setCurrentStep] = useState<GenerationStep>("road");
   const [generationMethod, setGenerationMethod] =
@@ -354,6 +365,7 @@ export function ScreenshotDialog({
   const [roadConfig, setRoadConfig] = useState<RoadPromptConfig>({
     style: "",
     view: "",
+    site_dimensions: "",
     map_elements: { water: "", land: "" },
     road_design: { type: "", geometry: "", hierarchy: "", placement_rules: "" },
     visual_style: "",
@@ -378,6 +390,7 @@ export function ScreenshotDialog({
   const [buildingConfig, setBuildingConfig] = useState<BuildingPromptConfig>({
     style: "",
     view: "",
+    site_dimensions: "",
     map_elements: { roads: "", water: "", parks: "", land: "" },
     building_design: {
       type: "",
@@ -437,6 +450,7 @@ export function ScreenshotDialog({
       setRoadConfig({
         style: "",
         view: "",
+        site_dimensions: "",
         map_elements: { water: "", land: "" },
         road_design: {
           type: "",
@@ -465,6 +479,7 @@ export function ScreenshotDialog({
       setBuildingConfig({
         style: "",
         view: "",
+        site_dimensions: "",
         map_elements: { roads: "", water: "", parks: "", land: "" },
         building_design: {
           type: "",
@@ -524,7 +539,13 @@ export function ScreenshotDialog({
   const handleRoadStyleSelect = (styleId: string) => {
     const style = ROAD_STYLE_PRESETS.find((s) => s.id === styleId);
     if (style) {
-      setRoadConfig(style.config);
+      const configWithDimensions = {
+        ...style.config,
+        site_dimensions: dimensions
+          ? `${dimensions.width.toFixed(1)}m × ${dimensions.height.toFixed(1)}m`
+          : "To be filled",
+      };
+      setRoadConfig(configWithDimensions);
       setSelectedRoadStyle(styleId);
     }
   };
@@ -540,7 +561,13 @@ export function ScreenshotDialog({
   const handleBuildingStyleSelect = (styleId: string) => {
     const style = BUILDING_STYLE_PRESETS.find((s) => s.id === styleId);
     if (style) {
-      setBuildingConfig(style.config);
+      const configWithDimensions = {
+        ...style.config,
+        site_dimensions: dimensions
+          ? `${dimensions.width.toFixed(1)}m × ${dimensions.height.toFixed(1)}m`
+          : "To be filled",
+      };
+      setBuildingConfig(configWithDimensions);
       setSelectedBuildingStyle(styleId);
     }
   };
@@ -1131,6 +1158,25 @@ export function ScreenshotDialog({
                         <div className="mt-3 space-y-3">
                           <div>
                             <label className="text-xs font-medium text-gray-700">
+                              Site Dimensions
+                            </label>
+                            <input
+                              type="text"
+                              value={roadConfig.site_dimensions}
+                              onChange={(e) =>
+                                setRoadConfig({
+                                  ...roadConfig,
+                                  site_dimensions: e.target.value,
+                                })
+                              }
+                              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50"
+                              placeholder="Auto-filled from bounding box"
+                              disabled={isLoading}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-gray-700">
                               Style
                             </label>
                             <input
@@ -1399,6 +1445,25 @@ export function ScreenshotDialog({
 
                         {isAdvancedOpen && (
                           <div className="mt-3 space-y-3">
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Site Dimensions
+                              </label>
+                              <input
+                                type="text"
+                                value={buildingConfig.site_dimensions}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    site_dimensions: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50"
+                                placeholder="Auto-filled from bounding box"
+                                disabled={isLoading}
+                              />
+                            </div>
+
                             <div>
                               <label className="text-xs font-medium text-gray-700">
                                 Style

@@ -29,6 +29,7 @@ export function LayerControl({
     isOpen: boolean;
     imageUrl: string | null;
     layerId: string | null;
+    dimensions?: { width: number; height: number };
   }>({
     isOpen: false,
     imageUrl: null,
@@ -38,14 +39,19 @@ export function LayerControl({
   const handleScreenshotClick = async (layerId: string) => {
     if (!onCaptureScreenshot) return;
 
+    // Get the layer to extract dimensions
+    const layer = layers.find((l) => l.id === layerId);
+    const dimensions = layer?.dimensions;
+
     // Capture screenshot and get the image URL
     const imageUrl = await onCaptureScreenshot(layerId);
 
-    // Open dialog with the screenshot
+    // Open dialog with the screenshot and dimensions
     setScreenshotDialog({
       isOpen: true,
       imageUrl: imageUrl,
       layerId: layerId,
+      dimensions: dimensions,
     });
   };
 
@@ -247,6 +253,7 @@ export function LayerControl({
         onSubmit={handlePromptSubmit}
         boundingBox={boundingBox}
         layerManager={manager}
+        dimensions={screenshotDialog.dimensions}
       />
     </>
   );
