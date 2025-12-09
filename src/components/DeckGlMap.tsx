@@ -14,6 +14,7 @@ import "@deck.gl/widgets/stylesheet.css";
 import { parseDescription } from "./functions/functions";
 import { useScreenshot } from "./functions/useScreenshot";
 import { useLayerOperations } from "./functions/useLayerOperations";
+import { Box, Square, RotateCcw, Map as MapIcon } from "lucide-react";
 
 // Initial camera position - Sembawang waterfront area, Singapore
 const INITIAL_VIEW_STATE = {
@@ -72,6 +73,7 @@ export default function DeckGlMap() {
       name: "Water Background",
       visible: true,
       type: "geojson",
+      category: "system",
     });
 
     // Add Master Plan layer
@@ -80,6 +82,7 @@ export default function DeckGlMap() {
       name: "URA Master Plan 2019",
       visible: false,
       type: "geojson",
+      category: "system",
     });
 
     // Add Building Outline layer
@@ -88,6 +91,7 @@ export default function DeckGlMap() {
       name: "SG Building Outlines",
       visible: false,
       type: "geojson",
+      category: "system",
     });
 
     // Add Parcels layer
@@ -96,6 +100,7 @@ export default function DeckGlMap() {
       name: "Land Parcels",
       visible: false,
       type: "geojson",
+      category: "system",
     });
     return manager;
   });
@@ -376,102 +381,99 @@ export default function DeckGlMap() {
         manager={layerManager}
       />
 
-      {/* Basemap Selector */}
-      <div className="absolute bottom-4 right-4 z-10">
-        <div className="relative">
+      {/* Fixed Bottom Toolbar */}
+      <div
+        className="absolute bottom-4 left-1/2 z-10"
+        style={{ transform: "translate(calc(-50% + 4rem), 0)" }}
+      >
+        <div className="bg-white rounded-lg shadow-lg px-3 py-2 flex items-center gap-2 text-sm">
           <button
-            className="bg-white text-gray-700 px-4 py-2 rounded shadow-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
-            onClick={() => setBasemapSelectorOpen(!basemapSelectorOpen)}
+            className={`px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+              mode instanceof DrawRectangleMode
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => {
+              setMode((prevMode) =>
+                prevMode instanceof DrawRectangleMode
+                  ? new ViewMode()
+                  : new DrawRectangleMode()
+              );
+            }}
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-              />
-            </svg>
-            {BASEMAPS[currentBasemap].name}
+            <Box className="w-3.5 h-3.5" />
+            {mode instanceof DrawRectangleMode
+              ? "Stop Drawing"
+              : "Draw Bounding Box"}
           </button>
 
-          {basemapSelectorOpen && (
-            <div className="absolute bottom-full mb-2 right-0 bg-white rounded shadow-lg overflow-hidden min-w-[200px]">
-              {Object.entries(BASEMAPS).map(([key, basemap]) => (
-                <button
-                  key={key}
-                  className={`w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors ${
-                    currentBasemap === key
-                      ? "bg-blue-50 text-blue-600 font-medium"
-                      : "text-gray-700"
-                  }`}
-                  onClick={() => {
-                    setCurrentBasemap(key as keyof typeof BASEMAPS);
-                    setBasemapSelectorOpen(false);
-                  }}
-                >
-                  {basemap.name}
-                </button>
-              ))}
-            </div>
-          )}
+          <button
+            className={`px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+              mode instanceof DrawSquareMode
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => {
+              setMode((prevMode) =>
+                prevMode instanceof DrawSquareMode
+                  ? new ViewMode()
+                  : new DrawSquareMode()
+              );
+            }}
+          >
+            <Square className="w-3.5 h-3.5" />
+            {mode instanceof DrawSquareMode ? "Stop Drawing" : "Draw Square"}
+          </button>
+
+          <button
+            className="px-3 py-1.5 rounded flex items-center gap-1.5 bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors whitespace-nowrap"
+            onClick={() => {
+              setViewState({
+                ...viewState,
+                pitch: 0,
+                bearing: 0,
+                transitionDuration: 500,
+              });
+            }}
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Reset View
+          </button>
+
+          <div className="h-6 w-px bg-gray-300 mx-1" />
+
+          {/* Basemap Selector */}
+          <div className="relative">
+            <button
+              className="px-3 py-1.5 rounded flex items-center gap-1.5 bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors whitespace-nowrap"
+              onClick={() => setBasemapSelectorOpen(!basemapSelectorOpen)}
+            >
+              <MapIcon className="w-3.5 h-3.5" />
+              {BASEMAPS[currentBasemap].name}
+            </button>
+
+            {basemapSelectorOpen && (
+              <div className="absolute bottom-full mb-2 left-0 bg-white rounded-lg shadow-lg overflow-hidden min-w-[200px]">
+                {Object.entries(BASEMAPS).map(([key, basemap]) => (
+                  <button
+                    key={key}
+                    className={`w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors ${
+                      currentBasemap === key
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "text-gray-700"
+                    }`}
+                    onClick={() => {
+                      setCurrentBasemap(key as keyof typeof BASEMAPS);
+                      setBasemapSelectorOpen(false);
+                    }}
+                  >
+                    {basemap.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
-        <button
-          className={`px-4 py-2 rounded shadow-lg ${
-            mode instanceof DrawRectangleMode
-              ? "bg-green-500 text-white"
-              : "bg-white text-gray-700"
-          }`}
-          onClick={() => {
-            setMode((prevMode) =>
-              prevMode instanceof DrawRectangleMode
-                ? new ViewMode()
-                : new DrawRectangleMode()
-            );
-          }}
-        >
-          {mode instanceof DrawRectangleMode
-            ? "Stop Drawing"
-            : "Draw Bounding Box"}
-        </button>
-
-        <button
-          className={`px-4 py-2 rounded shadow-lg ${
-            mode instanceof DrawSquareMode
-              ? "bg-green-500 text-white"
-              : "bg-white text-gray-700"
-          }`}
-          onClick={() => {
-            setMode((prevMode) =>
-              prevMode instanceof DrawSquareMode
-                ? new ViewMode()
-                : new DrawSquareMode()
-            );
-          }}
-        >
-          {mode instanceof DrawSquareMode ? "Stop Drawing" : "Draw Square"}
-        </button>
-
-        <button
-          className="px-4 py-2 rounded shadow-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors"
-          onClick={() => {
-            setViewState({
-              ...viewState,
-              pitch: 0,
-              bearing: 0,
-              transitionDuration: 500,
-            });
-          }}
-        >
-          Reset View
-        </button>
       </div>
 
       <DeckGL

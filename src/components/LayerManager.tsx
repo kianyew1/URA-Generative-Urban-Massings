@@ -10,6 +10,7 @@ export interface LayerConfig {
   name: string;
   visible: boolean;
   type: "geojson" | "editable" | "drawn" | "imported";
+  category?: "system" | "user"; // system = seeded layers, user = drawn/imported layers
   data?: any;
   geometry?: any;
   bounds?: any;

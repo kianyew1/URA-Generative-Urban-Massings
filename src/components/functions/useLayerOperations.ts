@@ -101,6 +101,7 @@ export function useLayerOperations({
               }`,
           visible: true,
           type: "drawn",
+          category: "user",
           data: {
             type: "FeatureCollection",
             features: [newFeature],
@@ -156,6 +157,7 @@ export function useLayerOperations({
         name: name,
         visible: true,
         type: "imported",
+        category: "user",
         data: data,
       });
 
