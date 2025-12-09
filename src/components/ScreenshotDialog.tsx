@@ -62,7 +62,40 @@ const PARCELISATION_PRESETS = [
   },
 ];
 
+// Step 2 Alternative: Building generation presets (zero-shot method)
+const BUILDING_STYLE_PRESETS = [
+  {
+    id: "punggol",
+    name: "Punggol style",
+    image: "/styles/punggol.jpg",
+    prompt:
+      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are H-shaped blocks, linear slabs with stepped facades, and interconnected geometric clusters arranged to follow road curvature. High-density housing. Flat colors, architectural diagram aesthetic. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+  },
+  {
+    id: "bedok",
+    name: "Bedok South Segmented Slab",
+    image: "/styles/bedok.jpg",
+    prompt:
+      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are rectilinear slab blocks forming U- and L-shaped enclosures. Modular, mid-rise footprints with consistent grid geometry, placed orthogonally. Classic HDB pattern. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+  },
+  {
+    id: "queenstown",
+    name: "Queenstown Dawson",
+    image: "/styles/queenstown.jpg",
+    prompt:
+      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are slim blocks with curved or tapered footprints, arranged in staggered parallel rows emphasizing slenderness and separation. High ventilation permeability. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+  },
+  {
+    id: "toapayoh",
+    name: "Toa Payoh Central Courtyard",
+    image: "/styles/toapayoh.jpg",
+    prompt:
+      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are long rectilinear slabs broken into articulated segments with rhythmic sawtooth setbacks. Follow sweeping arcs shaped by coastal alignments. Semi-open clusters with wide green buffers. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+  },
+];
+
 type GenerationStep = "road" | "parcelisation" | "building";
+type GenerationMethod = "parcel-based" | "zero-shot";
 
 export function ScreenshotDialog({
   isOpen,
@@ -73,6 +106,8 @@ export function ScreenshotDialog({
   layerManager,
 }: ScreenshotDialogProps) {
   const [currentStep, setCurrentStep] = useState<GenerationStep>("road");
+  const [generationMethod, setGenerationMethod] =
+    useState<GenerationMethod>("parcel-based");
   const [roadPrompt, setRoadPrompt] = useState("");
   const [parcelisationPrompt, setParcelisationPrompt] = useState("");
   const [buildingPrompt, setBuildingPrompt] = useState("");
@@ -80,6 +115,9 @@ export function ScreenshotDialog({
     null
   );
   const [selectedParcelisationStyle, setSelectedParcelisationStyle] = useState<
+    string | null
+  >(null);
+  const [selectedBuildingStyle, setSelectedBuildingStyle] = useState<
     string | null
   >(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -115,12 +153,14 @@ export function ScreenshotDialog({
       });
 
       setCurrentStep("road");
+      setGenerationMethod("parcel-based");
       setGeneratedBlobs({ road: null, parcelisation: null, building: null });
       setRoadPrompt("");
       setParcelisationPrompt("");
       setBuildingPrompt("");
       setSelectedRoadStyle(null);
       setSelectedParcelisationStyle(null);
+      setSelectedBuildingStyle(null);
     }
   }, [isOpen]);
 
@@ -132,8 +172,11 @@ export function ScreenshotDialog({
       api.scrollTo(0);
     } else if (currentStep === "parcelisation" && generatedImages.road) {
       api.scrollTo(1);
-    } else if (currentStep === "building" && generatedImages.parcelisation) {
-      api.scrollTo(2);
+    } else if (currentStep === "building") {
+      // For both zero-shot and parcel-based, show the result on slide 3
+      if (generatedImages.building || generatedImages.parcelisation) {
+        api.scrollTo(2);
+      }
     }
   }, [currentStep, generatedImages, api]);
 
@@ -147,8 +190,10 @@ export function ScreenshotDialog({
         setCurrentStep("road");
       } else if (selectedIndex === 1 && generatedImages.road) {
         setCurrentStep("parcelisation");
-      } else if (selectedIndex === 2 && generatedImages.parcelisation) {
-        setCurrentStep("building");
+      } else if (selectedIndex === 2) {
+        if (generatedImages.parcelisation || generatedImages.building) {
+          setCurrentStep("building");
+        }
       }
     };
 
@@ -171,6 +216,14 @@ export function ScreenshotDialog({
     if (style) {
       setParcelisationPrompt(style.prompt);
       setSelectedParcelisationStyle(styleId);
+    }
+  };
+
+  const handleBuildingStyleSelect = (styleId: string) => {
+    const style = BUILDING_STYLE_PRESETS.find((s) => s.id === styleId);
+    if (style) {
+      setBuildingPrompt(style.prompt);
+      setSelectedBuildingStyle(styleId);
     }
   };
 
@@ -253,6 +306,30 @@ export function ScreenshotDialog({
     }
   };
 
+  const handleGenerateZeroShotBuildings = async () => {
+    if (!generatedBlobs.road || !buildingPrompt) return;
+
+    setIsLoading(true);
+    try {
+      const roadUrl = window.URL.createObjectURL(generatedBlobs.road);
+      const { url, blob } = await generateImage(roadUrl, buildingPrompt);
+      window.URL.revokeObjectURL(roadUrl);
+
+      setGeneratedImages((prev) => ({ ...prev, building: url }));
+      setGeneratedBlobs((prev) => ({ ...prev, building: blob }));
+
+      downloadImage(blob, `buildings-${Date.now()}.png`);
+
+      // Move to building step to show result and give user add to map option
+      setCurrentStep("building");
+    } catch (error) {
+      console.error("Error generating buildings:", error);
+      alert("Failed to generate buildings. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleGenerateAndAddBuildings = async () => {
     if (!generatedBlobs.parcelisation) return;
 
@@ -275,6 +352,95 @@ export function ScreenshotDialog({
     }
   };
 
+  const handleAddZeroShotBuildingsToMap = async () => {
+    if (!generatedBlobs.building) return;
+
+    setIsLoading(true);
+    try {
+      await vectoriseAndAddToMap(generatedBlobs.building);
+      onClose();
+    } catch (error) {
+      console.error("Error adding buildings to map:", error);
+      alert("Failed to add buildings to map. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const vectoriseAndAddToMap = async (imageBlob: Blob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(imageBlob);
+
+    return new Promise<void>((resolve, reject) => {
+      reader.onloadend = async () => {
+        try {
+          const base64Image = (reader.result as string).split(",")[1];
+
+          const requestBody = {
+            image: base64Image,
+            bbox: boundingBox,
+            use_mix: [0.7, 0.2, 0.1],
+            density: [
+              [25, 35],
+              [4, 9],
+              [10, 20],
+            ],
+            sigma: 30,
+            falloff_k: 1,
+            w_threshold: 200,
+            b_threshold: 170,
+            simplify_tolerance: 5.0,
+            min_area_ratio: 0.0001,
+          };
+
+          const apiUrl =
+            process.env.NEXT_PUBLIC_PYTHON_API_URL || "http://localhost:8000";
+
+          const apiResponse = await fetch(`${apiUrl}/api/py/vectorise`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          if (!apiResponse.ok) {
+            throw new Error("Failed to vectorise image");
+          }
+
+          const geojsonData = await apiResponse.json();
+
+          const layerId = `generated-buildings-${Date.now()}`;
+          layerManager.addLayer({
+            id: layerId,
+            name: `Generated Buildings ${new Date().toLocaleTimeString()}`,
+            visible: true,
+            type: "geojson",
+            data: geojsonData,
+          });
+
+          const geojsonBlob = new Blob([JSON.stringify(geojsonData, null, 2)], {
+            type: "application/json",
+          });
+          const geojsonUrl = window.URL.createObjectURL(geojsonBlob);
+
+          const a = document.createElement("a");
+          a.href = geojsonUrl;
+          a.download = `vectorised-buildings-${Date.now()}.geojson`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(geojsonUrl);
+          document.body.removeChild(a);
+
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () => reject(new Error("Failed to read image blob"));
+    });
+  };
+
   const handleRegenerateRoad = () => {
     setGeneratedImages({ road: null, parcelisation: null, building: null });
     setCurrentStep("road");
@@ -291,21 +457,39 @@ export function ScreenshotDialog({
     setCurrentStep("parcelisation");
   };
 
+  const handleRegenerateZeroShotBuildings = () => {
+    setGeneratedImages((prev) => ({ ...prev, building: null }));
+    setGeneratedBlobs((prev) => ({ ...prev, building: null }));
+    setCurrentStep("parcelisation");
+  };
+
   const getCurrentPresets = () => {
     if (currentStep === "road") return ROAD_STYLE_PRESETS;
-    if (currentStep === "parcelisation") return PARCELISATION_PRESETS;
+    if (currentStep === "parcelisation") {
+      return generationMethod === "parcel-based"
+        ? PARCELISATION_PRESETS
+        : BUILDING_STYLE_PRESETS;
+    }
     return [];
   };
 
   const getCurrentPrompt = () => {
     if (currentStep === "road") return roadPrompt;
-    if (currentStep === "parcelisation") return parcelisationPrompt;
+    if (currentStep === "parcelisation") {
+      return generationMethod === "parcel-based"
+        ? parcelisationPrompt
+        : buildingPrompt;
+    }
     return buildingPrompt;
   };
 
   const getCurrentSelectedStyle = () => {
     if (currentStep === "road") return selectedRoadStyle;
-    if (currentStep === "parcelisation") return selectedParcelisationStyle;
+    if (currentStep === "parcelisation") {
+      return generationMethod === "parcel-based"
+        ? selectedParcelisationStyle
+        : selectedBuildingStyle;
+    }
     return null;
   };
 
@@ -313,7 +497,11 @@ export function ScreenshotDialog({
     if (currentStep === "road") {
       handleRoadStyleSelect(styleId);
     } else if (currentStep === "parcelisation") {
-      handleParcelisationStyleSelect(styleId);
+      if (generationMethod === "parcel-based") {
+        handleParcelisationStyleSelect(styleId);
+      } else {
+        handleBuildingStyleSelect(styleId);
+      }
     }
   };
 
@@ -329,17 +517,27 @@ export function ScreenshotDialog({
 
   const getStepTitle = () => {
     if (currentStep === "road") return "Step 1: Generate Road Network";
-    if (currentStep === "parcelisation")
-      return "Step 2: Generate Parcelisation";
-    return "Step 3: Generate Buildings";
+    if (currentStep === "parcelisation") {
+      return generationMethod === "parcel-based"
+        ? "Step 2: Generate Parcelisation"
+        : "Step 2: Generate Buildings";
+    }
+    return generationMethod === "parcel-based"
+      ? "Step 3: Generate Buildings"
+      : "Step 3: Add Buildings to Map";
   };
 
   const getStepDescription = () => {
     if (currentStep === "road")
       return "First, generate the road network for your site";
-    if (currentStep === "parcelisation")
-      return "Now generate land-use parcels based on the road network";
-    return "Finally, generate building footprints and add them to the map";
+    if (currentStep === "parcelisation") {
+      return generationMethod === "parcel-based"
+        ? "Now generate land-use parcels based on the road network"
+        : "Generate buildings directly from the road network";
+    }
+    return generationMethod === "parcel-based"
+      ? "Finally, generate building footprints and add them to the map"
+      : "Review the generated buildings and add them to the map";
   };
 
   return (
@@ -358,6 +556,43 @@ export function ScreenshotDialog({
                 {getStepDescription()}
               </DialogDescription>
             </div>
+
+            {/* Method Toggle - only show in Step 2 (parcelisation step) */}
+            {currentStep === "parcelisation" && generatedImages.road && (
+              <div className="p-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+                <div className="flex items-center justify-center gap-3">
+                  <span className="text-sm font-medium text-gray-700">
+                    Choose Method:
+                  </span>
+                  <div className="inline-flex rounded-lg border border-gray-300 p-1 bg-white">
+                    <button
+                      onClick={() => setGenerationMethod("parcel-based")}
+                      disabled={isLoading}
+                      className={cn(
+                        "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                        generationMethod === "parcel-based"
+                          ? "bg-green-600 text-white shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      )}
+                    >
+                      Parcel-Based
+                    </button>
+                    <button
+                      onClick={() => setGenerationMethod("zero-shot")}
+                      disabled={isLoading}
+                      className={cn(
+                        "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
+                        generationMethod === "zero-shot"
+                          ? "bg-green-600 text-white shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      )}
+                    >
+                      Zero-Shot
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -407,7 +642,12 @@ export function ScreenshotDialog({
                   className="text-sm font-medium text-gray-700"
                 >
                   {currentStep === "road" && "Road Network Generation Prompt"}
-                  {currentStep === "parcelisation" && "Parcelisation Prompt"}
+                  {currentStep === "parcelisation" &&
+                    generationMethod === "parcel-based" &&
+                    "Parcelisation Prompt"}
+                  {currentStep === "parcelisation" &&
+                    generationMethod === "zero-shot" &&
+                    "Building Generation Prompt"}
                   {currentStep === "building" && "Building Generation"}
                 </label>
                 {currentStep === "building" ? (
@@ -458,38 +698,78 @@ export function ScreenshotDialog({
                     >
                       Regenerate Roads
                     </Button>
-                    <Button
-                      onClick={handleGenerateParcelisation}
-                      disabled={isLoading || !parcelisationPrompt}
-                      className="bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      {isLoading ? "Generating..." : "Generate Parcelisation"}
-                    </Button>
+                    {generationMethod === "parcel-based" ? (
+                      <Button
+                        onClick={handleGenerateParcelisation}
+                        disabled={isLoading || !parcelisationPrompt}
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        {isLoading ? "Generating..." : "Generate Parcelisation"}
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleGenerateZeroShotBuildings}
+                        disabled={isLoading || !buildingPrompt}
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        {isLoading ? "Generating..." : "Generate Buildings"}
+                      </Button>
+                    )}
                   </>
                 )}
                 {currentStep === "building" && (
                   <>
-                    <Button
-                      variant="outline"
-                      onClick={handleRegenerateParcelisation}
-                      disabled={isLoading}
-                    >
-                      Regenerate Parcelisation
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={onClose}
-                      disabled={isLoading}
-                    >
-                      Close
-                    </Button>
-                    <Button
-                      onClick={handleGenerateAndAddBuildings}
-                      disabled={isLoading}
-                      className="bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      {isLoading ? "Generating..." : "Generate & Add Buildings"}
-                    </Button>
+                    {generationMethod === "parcel-based" ? (
+                      <>
+                        <Button
+                          variant="outline"
+                          onClick={handleRegenerateParcelisation}
+                          disabled={isLoading}
+                        >
+                          Regenerate Parcelisation
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={onClose}
+                          disabled={isLoading}
+                        >
+                          Close
+                        </Button>
+                        <Button
+                          onClick={handleGenerateAndAddBuildings}
+                          disabled={isLoading}
+                          className="bg-green-600 hover:bg-green-700 text-white"
+                        >
+                          {isLoading
+                            ? "Generating..."
+                            : "Generate & Add Buildings"}
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          variant="outline"
+                          onClick={handleRegenerateZeroShotBuildings}
+                          disabled={isLoading}
+                        >
+                          Regenerate Buildings
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={onClose}
+                          disabled={isLoading}
+                        >
+                          Close
+                        </Button>
+                        <Button
+                          onClick={handleAddZeroShotBuildingsToMap}
+                          disabled={isLoading}
+                          className="bg-green-600 hover:bg-green-700 text-white"
+                        >
+                          {isLoading ? "Adding..." : "Add to Map"}
+                        </Button>
+                      </>
+                    )}
                   </>
                 )}
               </div>
@@ -557,13 +837,22 @@ export function ScreenshotDialog({
                   </div>
                 </CarouselItem>
 
-                {/* Slide 3: Generated Parcelisation */}
+                {/* Slide 3: Generated Parcelisation or Buildings (depending on method) */}
                 <CarouselItem className="h-full">
                   <div className="w-full h-full flex items-center justify-center p-6">
-                    {generatedImages.parcelisation ? (
+                    {generationMethod === "parcel-based" &&
+                    generatedImages.parcelisation ? (
                       <img
                         src={generatedImages.parcelisation}
                         alt="Generated Parcelisation"
+                        className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
+                        style={{ maxHeight: "calc(90vh - 3rem)" }}
+                      />
+                    ) : generationMethod === "zero-shot" &&
+                      generatedImages.building ? (
+                      <img
+                        src={generatedImages.building}
+                        alt="Generated Buildings"
                         className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
                         style={{ maxHeight: "calc(90vh - 3rem)" }}
                       />
@@ -575,16 +864,22 @@ export function ScreenshotDialog({
                               Generating...
                             </div>
                             <div className="text-sm">
-                              Creating parcelisation
+                              {generationMethod === "parcel-based"
+                                ? "Creating parcelisation"
+                                : "Creating buildings"}
                             </div>
                           </>
                         ) : (
                           <>
                             <div className="text-lg font-medium">
-                              No parcelisation generated yet
+                              {generationMethod === "parcel-based"
+                                ? "No parcelisation generated yet"
+                                : "No buildings generated yet"}
                             </div>
                             <div className="text-sm">
-                              Generate parcelisation from Step 2
+                              {generationMethod === "parcel-based"
+                                ? "Generate parcelisation from Step 2"
+                                : "Generate buildings from Step 2"}
                             </div>
                           </>
                         )}
