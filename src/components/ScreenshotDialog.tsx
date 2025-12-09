@@ -777,18 +777,17 @@ export function ScreenshotDialog({
           </div>
 
           {/* Right Column: Carousel Image Display */}
-          <div className="w-[60%] bg-gray-50 relative flex flex-col overflow-hidden">
-            <Carousel setApi={setApi} className="flex-1 w-full">
+          <div className="w-[60%] bg-gray-50 relative flex items-center justify-center overflow-hidden">
+            <Carousel setApi={setApi} className="">
               <CarouselContent className="h-full">
                 {/* Slide 1: Original Screenshot */}
-                <CarouselItem className="h-full">
-                  <div className="w-full h-full flex items-center justify-center p-6">
+                <CarouselItem className="h-full flex items-center justify-center">
+                  <div className="w-full h-full flex items-center justify-center px-16 py-6">
                     {screenshotUrl ? (
                       <img
                         src={screenshotUrl}
                         alt="Base Map"
                         className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
-                        style={{ maxHeight: "calc(90vh - 3rem)" }}
                       />
                     ) : (
                       <div className="text-gray-400 text-center">
@@ -804,14 +803,13 @@ export function ScreenshotDialog({
                 </CarouselItem>
 
                 {/* Slide 2: Generated Road Network */}
-                <CarouselItem className="h-full">
-                  <div className="w-full h-full flex items-center justify-center p-6">
+                <CarouselItem className="h-full flex items-center justify-center">
+                  <div className="w-full h-full flex items-center justify-center px-16 py-6">
                     {generatedImages.road ? (
                       <img
                         src={generatedImages.road}
                         alt="Generated Road Network"
                         className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
-                        style={{ maxHeight: "calc(90vh - 3rem)" }}
                       />
                     ) : (
                       <div className="text-gray-400 text-center">
@@ -838,15 +836,14 @@ export function ScreenshotDialog({
                 </CarouselItem>
 
                 {/* Slide 3: Generated Parcelisation or Buildings (depending on method) */}
-                <CarouselItem className="h-full">
-                  <div className="w-full h-full flex items-center justify-center p-6">
+                <CarouselItem className="h-full flex items-center justify-center">
+                  <div className="w-full h-full flex items-center justify-center px-16 py-6">
                     {generationMethod === "parcel-based" &&
                     generatedImages.parcelisation ? (
                       <img
                         src={generatedImages.parcelisation}
                         alt="Generated Parcelisation"
                         className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
-                        style={{ maxHeight: "calc(90vh - 3rem)" }}
                       />
                     ) : generationMethod === "zero-shot" &&
                       generatedImages.building ? (
@@ -854,7 +851,6 @@ export function ScreenshotDialog({
                         src={generatedImages.building}
                         alt="Generated Buildings"
                         className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
-                        style={{ maxHeight: "calc(90vh - 3rem)" }}
                       />
                     ) : (
                       <div className="text-gray-400 text-center">
