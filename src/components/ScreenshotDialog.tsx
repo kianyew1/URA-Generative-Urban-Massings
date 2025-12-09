@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
@@ -52,45 +51,18 @@ const ROAD_STYLE_PRESETS = [
   },
 ];
 
-// Step 2: Building generation presets (existing ones)
-const BUILDING_STYLE_PRESETS = [
+// Step 2: Parcelisation presets
+const PARCELISATION_PRESETS = [
   {
-    id: "punggol",
-    name: "Punggol style",
-    image: "/styles/punggol.jpg",
+    id: "default",
+    name: "Standard Zoning",
+    image: "/styles/parcelisation_default.jpg",
     prompt:
-      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are H-shaped blocks, linear slabs with stepped facades, and interconnected geometric clusters arranged to follow road curvature. High-density housing. Flat colors, architectural diagram aesthetic. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
-  },
-  {
-    id: "bedok",
-    name: "Bedok South Segmented Slab",
-    image: "/styles/bedok.jpg",
-    prompt:
-      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are rectilinear slab blocks forming U- and L-shaped enclosures. Modular, mid-rise footprints with consistent grid geometry, placed orthogonally. Classic HDB pattern. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
-  },
-  {
-    id: "queenstown",
-    name: "Queenstown Dawson",
-    image: "/styles/queenstown.jpg",
-    prompt:
-      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are slim blocks with curved or tapered footprints, arranged in staggered parallel rows emphasizing slenderness and separation. High ventilation permeability. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
-  },
-  {
-    id: "toapayoh",
-    name: "Toa Payoh Central Courtyard",
-    image: "/styles/toapayoh.jpg",
-    prompt:
-      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are long rectilinear slabs broken into articulated segments with rhythmic sawtooth setbacks. Follow sweeping arcs shaped by coastal alignments. Semi-open clusters with wide green buffers. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+      "Top-down 2D vector site plan. Blue = water. Convert ONLY the white empty areas that directly touch the blue water into green landscape. No other areas should be green. Roads and highways remain grey. For all other white empty land areas fully bounded by roads (and not touching water), apply land-use zoning by recoloring the ground plane itself: 70% of the area becomes a Red Zone (Residential land-use) 30% of the area becomes a Yellow Zone (Commercial land-use) Do not populate zones with buildings. Negative Prompt: black outlines, 3D, shadows, gradients, textured water, satellite realism, buildings in water, buildings on roads, multi-colored buildings.",
   },
 ];
 
-type GenerationStep = "road" | "building" | "final";
-
-interface GeneratedImage {
-  url: string;
-  prompt: string;
-  step: GenerationStep;
-}
+type GenerationStep = "road" | "parcelisation" | "building";
 
 export function ScreenshotDialog({
   isOpen,
@@ -102,31 +74,32 @@ export function ScreenshotDialog({
 }: ScreenshotDialogProps) {
   const [currentStep, setCurrentStep] = useState<GenerationStep>("road");
   const [roadPrompt, setRoadPrompt] = useState("");
+  const [parcelisationPrompt, setParcelisationPrompt] = useState("");
   const [buildingPrompt, setBuildingPrompt] = useState("");
-  const [finalPrompt, setFinalPrompt] = useState("");
   const [selectedRoadStyle, setSelectedRoadStyle] = useState<string | null>(
     null
   );
-  const [selectedBuildingStyle, setSelectedBuildingStyle] = useState<
+  const [selectedParcelisationStyle, setSelectedParcelisationStyle] = useState<
     string | null
   >(null);
   const [isLoading, setIsLoading] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<{
     road: string | null;
+    parcelisation: string | null;
     building: string | null;
-    final: string | null;
   }>({
     road: null,
+    parcelisation: null,
     building: null,
-    final: null,
   });
   const [api, setApi] = useState<CarouselApi>();
-  // Add this to your state initialization (around line 120)
   const [generatedBlobs, setGeneratedBlobs] = useState<{
     road: Blob | null;
+    parcelisation: Blob | null;
     building: Blob | null;
   }>({
     road: null,
+    parcelisation: null,
     building: null,
   });
 
@@ -136,17 +109,18 @@ export function ScreenshotDialog({
       // Clean up blob URLs when dialog closes
       setGeneratedImages((prev) => {
         if (prev.road) window.URL.revokeObjectURL(prev.road);
+        if (prev.parcelisation) window.URL.revokeObjectURL(prev.parcelisation);
         if (prev.building) window.URL.revokeObjectURL(prev.building);
-        return { road: null, building: null, final: null };
+        return { road: null, parcelisation: null, building: null };
       });
 
       setCurrentStep("road");
-      setGeneratedBlobs({ road: null, building: null });
+      setGeneratedBlobs({ road: null, parcelisation: null, building: null });
       setRoadPrompt("");
+      setParcelisationPrompt("");
       setBuildingPrompt("");
-      setFinalPrompt("");
       setSelectedRoadStyle(null);
-      setSelectedBuildingStyle(null);
+      setSelectedParcelisationStyle(null);
     }
   }, [isOpen]);
 
@@ -156,12 +130,33 @@ export function ScreenshotDialog({
 
     if (currentStep === "road") {
       api.scrollTo(0);
-    } else if (currentStep === "building" && generatedImages.road) {
+    } else if (currentStep === "parcelisation" && generatedImages.road) {
       api.scrollTo(1);
-    } else if (currentStep === "final" && generatedImages.building) {
+    } else if (currentStep === "building" && generatedImages.parcelisation) {
       api.scrollTo(2);
     }
   }, [currentStep, generatedImages, api]);
+
+  // Sync currentStep with carousel position
+  useEffect(() => {
+    if (!api) return;
+
+    const handleSelect = () => {
+      const selectedIndex = api.selectedScrollSnap();
+      if (selectedIndex === 0) {
+        setCurrentStep("road");
+      } else if (selectedIndex === 1 && generatedImages.road) {
+        setCurrentStep("parcelisation");
+      } else if (selectedIndex === 2 && generatedImages.parcelisation) {
+        setCurrentStep("building");
+      }
+    };
+
+    api.on("select", handleSelect);
+    return () => {
+      api.off("select", handleSelect);
+    };
+  }, [api, generatedImages]);
 
   const handleRoadStyleSelect = (styleId: string) => {
     const style = ROAD_STYLE_PRESETS.find((s) => s.id === styleId);
@@ -171,11 +166,11 @@ export function ScreenshotDialog({
     }
   };
 
-  const handleBuildingStyleSelect = (styleId: string) => {
-    const style = BUILDING_STYLE_PRESETS.find((s) => s.id === styleId);
+  const handleParcelisationStyleSelect = (styleId: string) => {
+    const style = PARCELISATION_PRESETS.find((s) => s.id === styleId);
     if (style) {
-      setBuildingPrompt(style.prompt);
-      setSelectedBuildingStyle(styleId);
+      setParcelisationPrompt(style.prompt);
+      setSelectedParcelisationStyle(styleId);
     }
   };
 
@@ -200,9 +195,6 @@ export function ScreenshotDialog({
     }
 
     const generatedBlob = await apiResponse.blob();
-
-    // OPTIONAL: If you need 4K for the download file, you can upscale the blob here.
-    // For now, let's just return the generated blob to ensure the pipeline works.
     const url = window.URL.createObjectURL(generatedBlob);
 
     return { url, blob: generatedBlob };
@@ -216,11 +208,8 @@ export function ScreenshotDialog({
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    // Don't revoke the URL immediately - keep it for display
-    // It will be cleaned up when the dialog closes
   };
 
-  // Update handleGenerateRoad to store the blob:
   const handleGenerateRoad = async () => {
     if (!screenshotUrl || !roadPrompt) return;
 
@@ -230,10 +219,9 @@ export function ScreenshotDialog({
       setGeneratedImages((prev) => ({ ...prev, road: url }));
       setGeneratedBlobs((prev) => ({ ...prev, road: blob }));
 
-      // Download the road image - pass blob instead of url
       downloadImage(blob, `road-network-${Date.now()}.png`);
 
-      setCurrentStep("building");
+      setCurrentStep("parcelisation");
     } catch (error) {
       console.error("Error generating road network:", error);
       alert("Failed to generate road network. Please try again.");
@@ -242,27 +230,43 @@ export function ScreenshotDialog({
     }
   };
 
-  const handleGenerateBuildings = async () => {
-    if (!generatedBlobs.road || !buildingPrompt) return;
+  const handleGenerateParcelisation = async () => {
+    if (!generatedBlobs.road || !parcelisationPrompt) return;
 
     setIsLoading(true);
     try {
-      // Convert blob back to URL for generateImage function
       const roadUrl = window.URL.createObjectURL(generatedBlobs.road);
-      const { url, blob } = await generateImage(roadUrl, buildingPrompt);
-      window.URL.revokeObjectURL(roadUrl); // Clean up temp URL
+      const { url, blob } = await generateImage(roadUrl, parcelisationPrompt);
+      window.URL.revokeObjectURL(roadUrl);
 
-      setGeneratedImages((prev) => ({ ...prev, building: url }));
-      setGeneratedBlobs((prev) => ({ ...prev, building: blob }));
+      setGeneratedImages((prev) => ({ ...prev, parcelisation: url }));
+      setGeneratedBlobs((prev) => ({ ...prev, parcelisation: blob }));
 
-      // Download the buildings image - pass blob instead of url
-      downloadImage(blob, `buildings-${Date.now()}.png`);
+      downloadImage(blob, `parcelisation-${Date.now()}.png`);
 
-      // Set final prompt as combination
-      setFinalPrompt(
-        `Step 1 - Roads:\n${roadPrompt}\n\nStep 2 - Buildings:\n${buildingPrompt}`
-      );
-      setCurrentStep("final");
+      setCurrentStep("building");
+    } catch (error) {
+      console.error("Error generating parcelisation:", error);
+      alert("Failed to generate parcelisation. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGenerateAndAddBuildings = async () => {
+    if (!generatedBlobs.parcelisation) return;
+
+    setIsLoading(true);
+    try {
+      // TODO: Implement building footprint generation logic here
+      // This function should:
+      // 1. Generate the building image using the parcelisation image
+      // 2. Vectorise the building image
+      // 3. Add the GeoJSON to the map
+      // 4. Download the vectorised GeoJSON
+
+      console.log("Building generation logic to be implemented");
+      alert("Building generation logic is not yet implemented.");
     } catch (error) {
       console.error("Error generating buildings:", error);
       alert("Failed to generate buildings. Please try again.");
@@ -271,347 +275,319 @@ export function ScreenshotDialog({
     }
   };
 
-  const handleVectoriseAndClose = async () => {
-    if (!generatedBlobs.building) return;
-
-    setIsLoading(true);
-    try {
-      const reader = new FileReader();
-      reader.readAsDataURL(generatedBlobs.building);
-
-      reader.onloadend = async () => {
-        const base64Image = (reader.result as string).split(",")[1];
-
-        const requestBody = {
-          image: base64Image,
-          bbox: boundingBox,
-          use_mix: [0.7, 0.2, 0.1],
-          density: [
-            [25, 35],
-            [4, 9],
-            [10, 20],
-          ],
-          sigma: 30,
-          falloff_k: 1,
-          w_threshold: 200,
-          b_threshold: 170,
-          simplify_tolerance: 5.0,
-          min_area_ratio: 0.0001,
-        };
-
-        const apiUrl =
-          process.env.NEXT_PUBLIC_PYTHON_API_URL || "http://localhost:8000";
-
-        const apiResponse = await fetch(`${apiUrl}/api/py/vectorise`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        });
-
-        if (!apiResponse.ok) {
-          throw new Error("Failed to vectorise image");
-        }
-
-        const geojsonData = await apiResponse.json();
-
-        const layerId = `generated-buildings-${Date.now()}`;
-        layerManager.addLayer({
-          id: layerId,
-          name: `Generated Buildings ${new Date().toLocaleTimeString()}`,
-          visible: true,
-          type: "geojson",
-          data: geojsonData,
-        });
-
-        const geojsonBlob = new Blob([JSON.stringify(geojsonData, null, 2)], {
-          type: "application/json",
-        });
-        const geojsonUrl = window.URL.createObjectURL(geojsonBlob);
-
-        const a = document.createElement("a");
-        a.href = geojsonUrl;
-        a.download = `vectorised-buildings-${Date.now()}.geojson`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(geojsonUrl);
-        document.body.removeChild(a);
-
-        onSubmit(finalPrompt);
-        onClose();
-      };
-    } catch (error) {
-      console.error("Error vectorising image:", error);
-      alert("Failed to vectorise image. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleRegenerateRoad = () => {
-    setGeneratedImages({ road: null, building: null, final: null });
+    setGeneratedImages({ road: null, parcelisation: null, building: null });
     setCurrentStep("road");
-    setSelectedBuildingStyle(null);
-    setBuildingPrompt("");
-    setFinalPrompt("");
+    setSelectedParcelisationStyle(null);
+    setParcelisationPrompt("");
   };
 
-  const handleRegenerateBuildings = () => {
-    setGeneratedImages((prev) => ({ ...prev, building: null, final: null }));
-    setCurrentStep("building");
-    setFinalPrompt("");
+  const handleRegenerateParcelisation = () => {
+    setGeneratedImages((prev) => ({
+      ...prev,
+      parcelisation: null,
+      building: null,
+    }));
+    setCurrentStep("parcelisation");
   };
 
   const getCurrentPresets = () => {
-    return currentStep === "road" ? ROAD_STYLE_PRESETS : BUILDING_STYLE_PRESETS;
+    if (currentStep === "road") return ROAD_STYLE_PRESETS;
+    if (currentStep === "parcelisation") return PARCELISATION_PRESETS;
+    return [];
   };
 
   const getCurrentPrompt = () => {
     if (currentStep === "road") return roadPrompt;
-    if (currentStep === "building") return buildingPrompt;
-    return finalPrompt;
+    if (currentStep === "parcelisation") return parcelisationPrompt;
+    return buildingPrompt;
   };
 
   const getCurrentSelectedStyle = () => {
-    return currentStep === "road" ? selectedRoadStyle : selectedBuildingStyle;
+    if (currentStep === "road") return selectedRoadStyle;
+    if (currentStep === "parcelisation") return selectedParcelisationStyle;
+    return null;
   };
 
   const handleStyleSelect = (styleId: string) => {
     if (currentStep === "road") {
       handleRoadStyleSelect(styleId);
-    } else if (currentStep === "building") {
-      handleBuildingStyleSelect(styleId);
+    } else if (currentStep === "parcelisation") {
+      handleParcelisationStyleSelect(styleId);
     }
   };
 
   const handlePromptChange = (value: string) => {
     if (currentStep === "road") {
       setRoadPrompt(value);
-    } else if (currentStep === "building") {
-      setBuildingPrompt(value);
+    } else if (currentStep === "parcelisation") {
+      setParcelisationPrompt(value);
     } else {
-      setFinalPrompt(value);
+      setBuildingPrompt(value);
     }
+  };
+
+  const getStepTitle = () => {
+    if (currentStep === "road") return "Step 1: Generate Road Network";
+    if (currentStep === "parcelisation")
+      return "Step 2: Generate Parcelisation";
+    return "Step 3: Generate Buildings";
+  };
+
+  const getStepDescription = () => {
+    if (currentStep === "road")
+      return "First, generate the road network for your site";
+    if (currentStep === "parcelisation")
+      return "Now generate land-use parcels based on the road network";
+    return "Finally, generate building footprints and add them to the map";
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[95vw] w-[95vw] h-[90vh] bg-white opacity-100 p-6 sm:max-w-[95vw]">
-        <DialogHeader className="flex-shrink-0">
-          <DialogTitle>
-            {currentStep === "road" && "Step 1: Generate Road Network"}
-            {currentStep === "building" && "Step 2: Generate Buildings"}
-            {currentStep === "final" && "Step 3: Final Result"}
-          </DialogTitle>
-          <DialogDescription>
-            {currentStep === "road" &&
-              "First, generate the road network for your site"}
-            {currentStep === "building" &&
-              "Now add buildings to your road network"}
-            {currentStep === "final" &&
-              "Review your complete site plan. All images have been downloaded."}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex gap-6 flex-1 overflow-hidden min-h-0">
-          {/* Style Presets Sidebar - only show in road and building steps */}
-          {currentStep !== "final" && (
-            <div className="w-72 shrink-0 space-y-2 overflow-y-auto pr-2">
-              <h3 className="font-semibold text-sm mb-3">Style Presets</h3>
-              {getCurrentPresets().map((style) => (
-                <button
-                  key={style.id}
-                  onClick={() => handleStyleSelect(style.id)}
-                  disabled={isLoading}
-                  className={cn(
-                    "w-full p-3 border rounded-lg hover:border-green-500 transition-colors text-left",
-                    getCurrentSelectedStyle() === style.id
-                      ? "border-green-600 bg-green-50"
-                      : "border-gray-200"
-                  )}
-                >
-                  <div className="flex gap-3 items-center">
-                    <div className="w-20 h-20 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
-                      <img
-                        src={style.image}
-                        alt={style.name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = "none";
-                        }}
-                      />
-                    </div>
-                    <div className="text-sm font-medium">{style.name}</div>
-                  </div>
-                </button>
-              ))}
+      <DialogContent className="max-w-[95vw] w-[95vw] h-[90vh] max-h-[90vh] bg-white opacity-100 p-0 sm:max-w-[95vw] overflow-hidden">
+        {/* 2-Column Layout */}
+        <div className="flex h-full overflow-hidden">
+          {/* Left Column: Controls */}
+          <div className="w-[40%] flex flex-col border-r border-gray-200">
+            {/* Header */}
+            <div className="p-6 border-b border-gray-200 flex-shrink-0">
+              <DialogTitle className="text-xl font-semibold mb-2">
+                {getStepTitle()}
+              </DialogTitle>
+              <DialogDescription className="text-sm text-gray-600">
+                {getStepDescription()}
+              </DialogDescription>
             </div>
-          )}
 
-          {/* Main Content */}
-          <div className="flex-1 overflow-hidden relative min-w-0">
-            <Carousel setApi={setApi} className="w-full h-full">
-              <CarouselContent>
-                {/* Slide 1: Original Screenshot & Road Prompt */}
-                <CarouselItem>
-                  <div className="h-[calc(90vh-180px)] overflow-y-auto pr-4 space-y-4">
-                    {screenshotUrl && (
-                      <div className="border rounded-lg overflow-hidden bg-gray-50">
-                        <img
-                          src={screenshotUrl}
-                          alt="Base Map"
-                          className="w-full h-auto"
-                        />
-                      </div>
-                    )}
-                    <div className="space-y-2">
-                      <label
-                        htmlFor="road-prompt"
-                        className="text-sm font-medium text-gray-700"
-                      >
-                        Road Network Generation Prompt
-                      </label>
-                      <Textarea
-                        id="road-prompt"
-                        value={roadPrompt}
-                        onChange={(e) => setRoadPrompt(e.target.value)}
-                        placeholder="Select a road style preset or enter your custom prompt..."
-                        className="min-h-[120px]"
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+              {/* Style Presets - only show in road and parcelisation steps */}
+              {currentStep !== "building" && (
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-sm">Style Presets</h3>
+                  <div className="space-y-2">
+                    {getCurrentPresets().map((style) => (
+                      <button
+                        key={style.id}
+                        onClick={() => handleStyleSelect(style.id)}
                         disabled={isLoading}
+                        className={cn(
+                          "w-full p-3 border rounded-lg hover:border-green-500 transition-colors text-left",
+                          getCurrentSelectedStyle() === style.id
+                            ? "border-green-600 bg-green-50"
+                            : "border-gray-200"
+                        )}
+                      >
+                        <div className="flex gap-3 items-center">
+                          <div className="w-16 h-16 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
+                            <img
+                              src={style.image}
+                              alt={style.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display =
+                                  "none";
+                              }}
+                            />
+                          </div>
+                          <div className="text-sm font-medium">
+                            {style.name}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Prompt Textarea */}
+              <div className="space-y-2">
+                <label
+                  htmlFor="prompt-textarea"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  {currentStep === "road" && "Road Network Generation Prompt"}
+                  {currentStep === "parcelisation" && "Parcelisation Prompt"}
+                  {currentStep === "building" && "Building Generation"}
+                </label>
+                {currentStep === "building" ? (
+                  <p className="text-sm text-gray-600">
+                    Click the button below to generate building footprints from
+                    the parcelisation and add them to the map.
+                  </p>
+                ) : (
+                  <Textarea
+                    id="prompt-textarea"
+                    value={getCurrentPrompt()}
+                    onChange={(e) => handlePromptChange(e.target.value)}
+                    placeholder="Select a style preset or enter your custom prompt..."
+                    className="min-h-[200px] resize-none"
+                    disabled={isLoading}
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="p-6 border-t border-gray-200 flex-shrink-0">
+              <div className="flex justify-end gap-2">
+                {currentStep === "road" && (
+                  <>
+                    <Button
+                      variant="outline"
+                      onClick={onClose}
+                      disabled={isLoading}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleGenerateRoad}
+                      disabled={isLoading || !roadPrompt}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      {isLoading ? "Generating..." : "Generate Roads"}
+                    </Button>
+                  </>
+                )}
+                {currentStep === "parcelisation" && (
+                  <>
+                    <Button
+                      variant="outline"
+                      onClick={handleRegenerateRoad}
+                      disabled={isLoading}
+                    >
+                      Regenerate Roads
+                    </Button>
+                    <Button
+                      onClick={handleGenerateParcelisation}
+                      disabled={isLoading || !parcelisationPrompt}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      {isLoading ? "Generating..." : "Generate Parcelisation"}
+                    </Button>
+                  </>
+                )}
+                {currentStep === "building" && (
+                  <>
+                    <Button
+                      variant="outline"
+                      onClick={handleRegenerateParcelisation}
+                      disabled={isLoading}
+                    >
+                      Regenerate Parcelisation
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={onClose}
+                      disabled={isLoading}
+                    >
+                      Close
+                    </Button>
+                    <Button
+                      onClick={handleGenerateAndAddBuildings}
+                      disabled={isLoading}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      {isLoading ? "Generating..." : "Generate & Add Buildings"}
+                    </Button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Carousel Image Display */}
+          <div className="w-[60%] bg-gray-50 relative flex flex-col overflow-hidden">
+            <Carousel setApi={setApi} className="flex-1 w-full">
+              <CarouselContent className="h-full">
+                {/* Slide 1: Original Screenshot */}
+                <CarouselItem className="h-full">
+                  <div className="w-full h-full flex items-center justify-center p-6">
+                    {screenshotUrl ? (
+                      <img
+                        src={screenshotUrl}
+                        alt="Base Map"
+                        className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
+                        style={{ maxHeight: "calc(90vh - 3rem)" }}
                       />
-                    </div>
-                    <div className="flex justify-end gap-2 sticky bottom-0 bg-white pt-4 pb-2">
-                      <Button
-                        variant="outline"
-                        onClick={onClose}
-                        disabled={isLoading}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={handleGenerateRoad}
-                        disabled={isLoading || !roadPrompt}
-                        className="bg-green-600 hover:bg-green-700 text-white"
-                      >
-                        {isLoading ? "Generating..." : "Generate Roads"}
-                      </Button>
-                    </div>
-                  </div>
-                </CarouselItem>
-
-                {/* Slide 2: Generated Road Network & Building Prompt */}
-                <CarouselItem>
-                  <div className="h-[calc(90vh-180px)] overflow-y-auto pr-4 space-y-4">
-                    {generatedImages.road ? (
-                      <>
-                        <div className="border rounded-lg overflow-hidden bg-gray-50">
-                          <img
-                            src={generatedImages.road}
-                            alt="Generated Road Network"
-                            className="w-full h-auto"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <label
-                            htmlFor="building-prompt"
-                            className="text-sm font-medium text-gray-700"
-                          >
-                            Building Generation Prompt
-                          </label>
-                          <Textarea
-                            id="building-prompt"
-                            value={buildingPrompt}
-                            onChange={(e) => setBuildingPrompt(e.target.value)}
-                            placeholder="Select a building style preset or enter your custom prompt..."
-                            className="min-h-[120px]"
-                            disabled={isLoading}
-                          />
-                        </div>
-                        <div className="flex justify-end gap-2 sticky bottom-0 bg-white pt-4 pb-2">
-                          <Button
-                            variant="outline"
-                            onClick={handleRegenerateRoad}
-                            disabled={isLoading}
-                          >
-                            Regenerate Roads
-                          </Button>
-                          <Button
-                            onClick={handleGenerateBuildings}
-                            disabled={isLoading || !buildingPrompt}
-                            className="bg-green-600 hover:bg-green-700 text-white"
-                          >
-                            {isLoading ? "Generating..." : "Generate Buildings"}
-                          </Button>
-                        </div>
-                      </>
                     ) : (
-                      <div className="flex items-center justify-center h-full text-gray-400">
-                        {isLoading
-                          ? "Generating road network..."
-                          : "No road network generated yet"}
+                      <div className="text-gray-400 text-center">
+                        <div className="text-lg font-medium">
+                          No image available
+                        </div>
+                        <div className="text-sm">
+                          Take a screenshot to begin
+                        </div>
                       </div>
                     )}
                   </div>
                 </CarouselItem>
 
-                {/* Slide 3: Final Result with Combined Prompt */}
-                <CarouselItem>
-                  <div className="h-[calc(90vh-180px)] overflow-y-auto pr-4 space-y-4">
-                    {generatedImages.building ? (
-                      <>
-                        <div className="border rounded-lg overflow-hidden bg-gray-50">
-                          <img
-                            src={generatedImages.building}
-                            alt="Final Site Plan"
-                            className="w-full h-auto"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <label
-                            htmlFor="final-prompt"
-                            className="text-sm font-medium text-gray-700"
-                          >
-                            Complete Generation Prompts
-                          </label>
-                          <Textarea
-                            id="final-prompt"
-                            value={finalPrompt}
-                            readOnly
-                            className="min-h-[200px] bg-gray-50"
-                          />
-                        </div>
-                        <div className="flex justify-end gap-2 sticky bottom-0 bg-white pt-4 pb-2">
-                          <Button
-                            variant="outline"
-                            onClick={handleRegenerateBuildings}
-                            disabled={isLoading}
-                          >
-                            Regenerate Buildings
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={onClose}
-                            disabled={isLoading}
-                          >
-                            Close
-                          </Button>
-                          <Button
-                            onClick={handleVectoriseAndClose}
-                            disabled={isLoading}
-                            className="bg-green-600 hover:bg-green-700 text-white"
-                          >
-                            {isLoading
-                              ? "Vectorising..."
-                              : "Vectorise & Add to Map"}
-                          </Button>
-                        </div>
-                      </>
+                {/* Slide 2: Generated Road Network */}
+                <CarouselItem className="h-full">
+                  <div className="w-full h-full flex items-center justify-center p-6">
+                    {generatedImages.road ? (
+                      <img
+                        src={generatedImages.road}
+                        alt="Generated Road Network"
+                        className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
+                        style={{ maxHeight: "calc(90vh - 3rem)" }}
+                      />
                     ) : (
-                      <div className="flex items-center justify-center h-full text-gray-400">
-                        {isLoading
-                          ? "Generating buildings..."
-                          : "No buildings generated yet"}
+                      <div className="text-gray-400 text-center">
+                        {isLoading ? (
+                          <>
+                            <div className="text-lg font-medium">
+                              Generating...
+                            </div>
+                            <div className="text-sm">Creating road network</div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-lg font-medium">
+                              No road network generated yet
+                            </div>
+                            <div className="text-sm">
+                              Generate roads from Step 1
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </CarouselItem>
+
+                {/* Slide 3: Generated Parcelisation */}
+                <CarouselItem className="h-full">
+                  <div className="w-full h-full flex items-center justify-center p-6">
+                    {generatedImages.parcelisation ? (
+                      <img
+                        src={generatedImages.parcelisation}
+                        alt="Generated Parcelisation"
+                        className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-lg"
+                        style={{ maxHeight: "calc(90vh - 3rem)" }}
+                      />
+                    ) : (
+                      <div className="text-gray-400 text-center">
+                        {isLoading ? (
+                          <>
+                            <div className="text-lg font-medium">
+                              Generating...
+                            </div>
+                            <div className="text-sm">
+                              Creating parcelisation
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="text-lg font-medium">
+                              No parcelisation generated yet
+                            </div>
+                            <div className="text-sm">
+                              Generate parcelisation from Step 2
+                            </div>
+                          </>
+                        )}
                       </div>
                     )}
                   </div>
