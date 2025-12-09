@@ -15,6 +15,8 @@ export interface LayerConfig {
   geometry?: any;
   bounds?: any;
   dimensions?: { width: number; height: number }; // width x height in meters
+  modifiedFeatures?: Map<string, any>; // Track modified building features by feature ID
+  isEditable?: boolean; // Flag to make layer editable
 }
 
 export class LayerManager {
@@ -59,12 +61,54 @@ export class LayerManager {
     return this.drawnFeatures;
   }
 
+  // Building editing methods
+  updateBuildingFeature(
+    layerId: string,
+    featureId: string,
+    updatedFeature: any
+  ) {
+    const layer = this.layers.get(layerId);
+    if (layer) {
+      if (!layer.modifiedFeatures) {
+        layer.modifiedFeatures = new Map();
+      }
+      layer.modifiedFeatures.set(featureId, updatedFeature);
+    }
+  }
+
+  getModifiedFeatures(layerId: string): Map<string, any> | undefined {
+    return this.layers.get(layerId)?.modifiedFeatures;
+  }
+
+  setLayerEditable(layerId: string, editable: boolean): void {
+    const layer = this.layers.get(layerId);
+    if (layer) {
+      layer.isEditable = editable;
+    }
+  }
+
+  // Apply modified features back to the layer's data when exiting edit mode
+  applyModifiedFeaturesToLayer(layerId: string, updatedData: any): void {
+    const layer = this.layers.get(layerId);
+    if (layer && updatedData) {
+      // Update the layer's data with the modified version
+      layer.data = updatedData;
+      // Clear the modified features tracking since they're now applied
+      layer.modifiedFeatures = new Map();
+      console.log(`Applied modified features to layer ${layerId}`);
+    }
+  }
+
   createDeckLayers(
     dataMap: Record<string, any>,
     editableData: any,
     selectedFeatureIndexes: number[],
     onEdit: (updatedData: any) => void,
-    mode: any
+    mode: any,
+    editableBuildingData?: any,
+    selectedBuildingIndexes?: number[],
+    onBuildingEdit?: (updatedData: any) => void,
+    buildingMode?: any
   ): Layer[] {
     const deckLayers: Layer[] = [];
 
@@ -157,62 +201,143 @@ export class LayerManager {
                 })
               );
             } else {
-              // Regular 3D building layers
-              deckLayers.push(
-                new GeoJsonLayer<GeoJsonFeatureProperties>({
-                  id: layer.id,
-                  data: layerData,
-                  extruded: true,
-                  wireframe: true,
-                  filled: true,
-                  pickable: true,
-                  getElevation: (f) =>
-                    f.properties.elevation || f.properties.height || 0,
-                  getFillColor: (f) =>
-                    getBuildingColor(f.properties.type || f.properties.use) as [
-                      number,
-                      number,
-                      number,
-                      number
-                    ],
-                  getLineColor: [255, 255, 255, 255],
-                  lineWidthMinPixels: 1,
-                  autoHighlight: true,
-                  highlightColor: [255, 255, 0, 100],
-                })
-              );
+              // Regular 3D building layers - make editable if flagged
+              if (
+                layer.isEditable &&
+                editableBuildingData &&
+                buildingMode &&
+                onBuildingEdit
+              ) {
+                // Use editableBuildingData which should contain this layer's data
+                deckLayers.push(
+                  new EditableGeoJsonLayer({
+                    id: `${layer.id}-editable`,
+                    data: editableBuildingData,
+                    mode: buildingMode,
+                    selectedFeatureIndexes: selectedBuildingIndexes || [],
+                    onEdit: onBuildingEdit,
+                    pickable: true,
+                    getFillColor: (f: any) => {
+                      const baseColor = getBuildingColor(
+                        f.properties?.type || f.properties?.use
+                      ) as [number, number, number, number];
+                      // Highlight selected building
+                      if (
+                        selectedBuildingIndexes &&
+                        selectedBuildingIndexes.length > 0
+                      ) {
+                        const featureIndex =
+                          editableBuildingData.features?.indexOf(f);
+                        if (selectedBuildingIndexes.includes(featureIndex)) {
+                          return [255, 255, 0, 200]; // Yellow for selected
+                        }
+                      }
+                      return baseColor;
+                    },
+                    getLineColor: [255, 255, 255, 255],
+                    lineWidthMinPixels: 2,
+                  }) as any // Cast to any to allow 3D properties
+                );
+              } else {
+                // Regular non-editable building layer
+                deckLayers.push(
+                  new GeoJsonLayer<GeoJsonFeatureProperties>({
+                    id: layer.id,
+                    data: layerData,
+                    extruded: true,
+                    wireframe: true,
+                    filled: true,
+                    pickable: true,
+                    getElevation: (f) =>
+                      f.properties.elevation || f.properties.height || 0,
+                    getFillColor: (f) =>
+                      getBuildingColor(
+                        f.properties.type || f.properties.use
+                      ) as [number, number, number, number],
+                    getLineColor: [255, 255, 255, 255],
+                    lineWidthMinPixels: 1,
+                    autoHighlight: true,
+                    highlightColor: [255, 255, 0, 100],
+                  })
+                );
+              }
             }
           }
           break;
 
         case "imported":
           if (layer.data) {
-            deckLayers.push(
-              new GeoJsonLayer({
-                id: layer.id,
-                data: layer.data,
-                extruded: true,
-                wireframe: true,
-                filled: true,
-                stroked: true,
-                pickable: true,
-                getElevation: (f: any) =>
-                  f.properties?.elevation || f.properties?.height || 50,
-                getFillColor: (f: any) =>
-                  (getBuildingColor(
-                    f.properties?.type || f.properties?.use
-                  ) || [255, 200, 100, 200]) as [
-                    number,
-                    number,
-                    number,
-                    number
-                  ],
-                getLineColor: [255, 140, 0, 255],
-                lineWidthMinPixels: 2,
-                autoHighlight: true,
-                highlightColor: [255, 255, 0, 150],
-              })
-            );
+            // Make imported layers editable if flagged (for generated buildings)
+            if (
+              layer.isEditable &&
+              editableBuildingData &&
+              buildingMode &&
+              onBuildingEdit
+            ) {
+              // Use editableBuildingData which should contain this layer's data
+              deckLayers.push(
+                new EditableGeoJsonLayer({
+                  id: `${layer.id}-editable`,
+                  data: editableBuildingData,
+                  mode: buildingMode,
+                  selectedFeatureIndexes: selectedBuildingIndexes || [],
+                  onEdit: onBuildingEdit,
+                  pickable: true,
+                  getFillColor: (f: any) => {
+                    const baseColor = (getBuildingColor(
+                      f.properties?.type || f.properties?.use
+                    ) || [255, 200, 100, 200]) as [
+                      number,
+                      number,
+                      number,
+                      number
+                    ];
+                    // Highlight selected building
+                    if (
+                      selectedBuildingIndexes &&
+                      selectedBuildingIndexes.length > 0
+                    ) {
+                      const featureIndex =
+                        editableBuildingData.features?.indexOf(f);
+                      if (selectedBuildingIndexes.includes(featureIndex)) {
+                        return [255, 255, 0, 200]; // Yellow for selected
+                      }
+                    }
+                    return baseColor;
+                  },
+                  getLineColor: [255, 140, 0, 255],
+                  lineWidthMinPixels: 2,
+                }) as any // Cast to any to allow 3D properties
+              );
+            } else {
+              // Regular non-editable imported layer
+              deckLayers.push(
+                new GeoJsonLayer({
+                  id: layer.id,
+                  data: layer.data,
+                  extruded: true,
+                  wireframe: true,
+                  filled: true,
+                  stroked: true,
+                  pickable: true,
+                  getElevation: (f: any) =>
+                    f.properties?.elevation || f.properties?.height || 50,
+                  getFillColor: (f: any) =>
+                    (getBuildingColor(
+                      f.properties?.type || f.properties?.use
+                    ) || [255, 200, 100, 200]) as [
+                      number,
+                      number,
+                      number,
+                      number
+                    ],
+                  getLineColor: [255, 140, 0, 255],
+                  lineWidthMinPixels: 2,
+                  autoHighlight: true,
+                  highlightColor: [255, 255, 0, 150],
+                })
+              );
+            }
           }
           break;
 
