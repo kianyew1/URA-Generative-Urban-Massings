@@ -26,71 +26,314 @@ interface ScreenshotDialogProps {
   layerManager: any;
 }
 
+// Road generation JSON prompt structure
+interface RoadPromptConfig {
+  style: string;
+  view: string;
+  map_elements: {
+    water: string;
+    land: string;
+  };
+  road_design: {
+    type: string;
+    geometry: string;
+    hierarchy: string;
+    placement_rules: string;
+  };
+  visual_style: string;
+  constraints: string;
+  negative_prompt: string;
+}
+
+// Building generation JSON prompt structure (zero-shot)
+interface BuildingPromptConfig {
+  style: string;
+  view: string;
+  map_elements: {
+    roads: string;
+    water: string;
+    parks: string;
+    land: string;
+  };
+  building_design: {
+    type: string;
+    form: string;
+    arrangement: string;
+    placement_rules: string;
+  };
+  visual_style: string;
+  constraints: string;
+  negative_prompt: string;
+}
+
+// Parcelisation JSON prompt structure
+interface ParcelisationPromptConfig {
+  style: string;
+  view: string;
+  map_elements: {
+    water: string;
+    roads: string;
+    land: string;
+  };
+  zoning_rules: {
+    waterfront_treatment: string;
+    residential_allocation: string;
+    commercial_allocation: string;
+    color_scheme: string;
+  };
+  visual_style: string;
+  constraints: string;
+  negative_prompt: string;
+}
+
 // Step 1: Road generation presets
-const ROAD_STYLE_PRESETS = [
+const ROAD_STYLE_PRESETS: Array<{
+  id: string;
+  name: string;
+  image: string;
+  config: RoadPromptConfig;
+}> = [
   {
-    id: "organic",
-    name: "Organic Road Network",
+    id: "yishun",
+    name: "Yishun Asymmetric Network",
     image: "/styles/road_organic.jpg",
-    prompt:
-      "Prompt: A top-down 2D site plan showing only a road network. Water bodies are in blue, existing parks in green. The empty white land areas must be filled with a curvilinear organic road network in grey. Roads follow natural topography with smooth curves and flowing intersections. Primary arterial roads are wider, secondary roads branch organically. No buildings, only roads. Clean vector style, flat colors. Negative Prompt: buildings, 3D, shadows, straight grid, rigid geometry, Manhattan grid.",
+    config: {
+      style: "Singapore Urban Planning Zoning Map",
+      view: "Top-down 2D digital map",
+      map_elements: {
+        water: "Blue; no roads allowed",
+        land: "White areas; preserve natural parcel irregularity; do not generate new green spaces",
+      },
+      road_design: {
+        type: "Asymmetric irregular road network",
+        geometry:
+          "Roads follow uneven parcel outlines with diagonal connectors and curved segments",
+        hierarchy:
+          "Primary irregular axes thicker; fragmentary secondary roads thinner",
+        placement_rules:
+          "Replicate Yishun-style broken parcel logic, varied shapes, asymmetric blocks; no new white spaces; only draw roads",
+      },
+      visual_style: "Clean vector, flat colours",
+      constraints: "Avoid perfect grids or radial symmetry",
+      negative_prompt:
+        "3D, isometric, realistic satellite view, aerial photography, textured water, dark background, blurry, low resolution, simple square boxes, perspective view, thin roads, roads on water, grey in blue area, green areas, parks, park spaces",
+    },
   },
   {
     id: "grid",
     name: "Grid Road Network",
     image: "/styles/road_grid.jpg",
-    prompt:
-      "Prompt: A top-down 2D site plan showing only a road network. Water bodies are in blue, existing parks in green. The empty white land areas must be filled with an orthogonal grid road network in grey. Roads form a regular grid pattern with perpendicular intersections. Primary roads run north-south and east-west. No buildings, only roads. Clean vector style, flat colors. Negative Prompt: buildings, 3D, shadows, curves, organic shapes, diagonal roads.",
+    config: {
+      style: "Singapore Urban Planning Zoning Map",
+      view: "Top-down 2D digital map",
+      map_elements: {
+        water: "Blue; no roads allowed",
+        land: "White areas; maintain for road network",
+      },
+      road_design: {
+        type: "Orthogonal grid road network",
+        geometry:
+          "Roads form regular grid pattern with perpendicular intersections",
+        hierarchy:
+          "Primary roads run north-south and east-west; secondary roads form uniform grid",
+        placement_rules:
+          "Create Manhattan-style grid; uniform block sizes; only draw roads",
+      },
+      visual_style: "Clean vector, flat colours",
+      constraints:
+        "Maintain strict orthogonal geometry; avoid curves or diagonal roads",
+      negative_prompt:
+        "3D, isometric, buildings, shadows, curves, organic shapes, diagonal roads, parks, green spaces",
+    },
   },
   {
     id: "radial",
     name: "Radial Road Network",
     image: "/styles/road_radial.jpg",
-    prompt:
-      "Prompt: A top-down 2D site plan showing only a road network. Water bodies are in blue, existing parks in green. The empty white land areas must be filled with a radial road network in grey. Roads radiate from central points with concentric circular or arc roads connecting them. Mix of radial and ring roads. No buildings, only roads. Clean vector style, flat colors. Negative Prompt: buildings, 3D, shadows, pure grid, random placement.",
+    config: {
+      style: "Singapore Urban Planning Zoning Map",
+      view: "Top-down 2D digital map",
+      map_elements: {
+        water: "Blue; no roads allowed",
+        land: "White areas; for radial road network",
+      },
+      road_design: {
+        type: "Radial road network",
+        geometry:
+          "Roads radiate from central points with concentric circular or arc roads connecting them",
+        hierarchy:
+          "Primary radial roads from center; secondary concentric ring roads",
+        placement_rules:
+          "Mix of radial and ring roads; avoid pure grid; only draw roads",
+      },
+      visual_style: "Clean vector, flat colours",
+      constraints: "Radiate from central focal points; maintain symmetry",
+      negative_prompt:
+        "3D, isometric, buildings, shadows, straight grid, random placement, parks, green spaces",
+    },
   },
 ];
 
 // Step 2: Parcelisation presets
-const PARCELISATION_PRESETS = [
+const PARCELISATION_PRESETS: Array<{
+  id: string;
+  name: string;
+  image: string;
+  config: ParcelisationPromptConfig;
+}> = [
   {
     id: "default",
     name: "Standard Zoning",
     image: "/styles/parcelisation_default.jpg",
-    prompt:
-      "Top-down 2D vector site plan. Blue = water. Convert ONLY the white empty areas that directly touch the blue water into green landscape. No other areas should be green. Roads and highways remain grey. For all other white empty land areas fully bounded by roads (and not touching water), apply land-use zoning by recoloring the ground plane itself: 70% of the area becomes a Red Zone (Residential land-use) 30% of the area becomes a Yellow Zone (Commercial land-use) Do not populate zones with buildings. Negative Prompt: black outlines, 3D, shadows, gradients, textured water, satellite realism, buildings in water, buildings on roads, multi-colored buildings.",
+    config: {
+      style: "Singapore Urban Planning Zoning Map",
+      view: "Top-down 2D vector site plan",
+      map_elements: {
+        water: "Blue; preserved",
+        roads: "Grey; highways remain grey",
+        land: "White empty areas; to be zoned",
+      },
+      zoning_rules: {
+        waterfront_treatment:
+          "Convert ONLY white empty areas that directly touch blue water into green landscape; no other areas should be green",
+        residential_allocation:
+          "70% of remaining white land areas fully bounded by roads (not touching water) becomes Red Zone for Residential land-use",
+        commercial_allocation:
+          "30% of remaining white land areas fully bounded by roads (not touching water) becomes Yellow Zone for Commercial land-use",
+        color_scheme:
+          "Recolor ground plane itself; do not populate zones with buildings",
+      },
+      visual_style: "Flat colors, clean zoning diagram",
+      constraints:
+        "No buildings; only ground plane recoloring; roads remain grey",
+      negative_prompt:
+        "black outlines, 3D, shadows, gradients, textured water, satellite realism, buildings in water, buildings on roads, multi-colored buildings, buildings",
+    },
   },
 ];
 
 // Step 2 Alternative: Building generation presets (zero-shot method)
-const BUILDING_STYLE_PRESETS = [
+const BUILDING_STYLE_PRESETS: Array<{
+  id: string;
+  name: string;
+  image: string;
+  config: BuildingPromptConfig;
+}> = [
   {
     id: "punggol",
     name: "Punggol style",
     image: "/styles/punggol.jpg",
-    prompt:
-      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are H-shaped blocks, linear slabs with stepped facades, and interconnected geometric clusters arranged to follow road curvature. High-density housing. Flat colors, architectural diagram aesthetic. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+    config: {
+      style: "Singapore HDB residential architectural site plan",
+      view: "Top-down 2D architectural diagram",
+      map_elements: {
+        roads: "Grey; existing road network preserved",
+        water: "Blue; no buildings allowed",
+        parks: "Green; existing parks preserved",
+        land: "White areas between roads; to be populated with buildings",
+      },
+      building_design: {
+        type: "High-density residential buildings",
+        form: "H-shaped blocks, linear slabs with stepped facades, and interconnected geometric clusters",
+        arrangement:
+          "Buildings arranged to follow road curvature; high-density housing pattern",
+        placement_rules:
+          "Populate ONLY white land areas between roads with solid red building silhouettes; no black outlines; no buildings in water or on roads",
+      },
+      visual_style:
+        "Flat colors, architectural diagram aesthetic, solid red silhouettes",
+      constraints:
+        "Buildings must be solid red only; follow road curvature; high-density pattern",
+      negative_prompt:
+        "black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings, multi-colored buildings",
+    },
   },
   {
     id: "bedok",
     name: "Bedok South Segmented Slab",
     image: "/styles/bedok.jpg",
-    prompt:
-      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are rectilinear slab blocks forming U- and L-shaped enclosures. Modular, mid-rise footprints with consistent grid geometry, placed orthogonally. Classic HDB pattern. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+    config: {
+      style: "Singapore HDB residential architectural site plan",
+      view: "Top-down 2D architectural diagram",
+      map_elements: {
+        roads: "Grey; existing road network preserved",
+        water: "Blue; no buildings allowed",
+        parks: "Green; existing parks preserved",
+        land: "White areas between roads; to be populated with buildings",
+      },
+      building_design: {
+        type: "Mid-rise residential buildings",
+        form: "Rectilinear slab blocks forming U- and L-shaped enclosures",
+        arrangement:
+          "Modular footprints with consistent grid geometry, placed orthogonally; classic HDB pattern",
+        placement_rules:
+          "Populate ONLY white land areas between roads with solid red building silhouettes; no black outlines; no buildings in water or on roads",
+      },
+      visual_style:
+        "Flat colors, architectural diagram aesthetic, solid red silhouettes",
+      constraints:
+        "Buildings must be solid red only; orthogonal placement; classic HDB modular pattern",
+      negative_prompt:
+        "black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings, curved buildings",
+    },
   },
   {
     id: "queenstown",
     name: "Queenstown Dawson",
     image: "/styles/queenstown.jpg",
-    prompt:
-      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are slim blocks with curved or tapered footprints, arranged in staggered parallel rows emphasizing slenderness and separation. High ventilation permeability. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+    config: {
+      style: "Singapore HDB residential architectural site plan",
+      view: "Top-down 2D architectural diagram",
+      map_elements: {
+        roads: "Grey; existing road network preserved",
+        water: "Blue; no buildings allowed",
+        parks: "Green; existing parks preserved",
+        land: "White areas between roads; to be populated with buildings",
+      },
+      building_design: {
+        type: "Slender residential towers",
+        form: "Slim blocks with curved or tapered footprints",
+        arrangement:
+          "Staggered parallel rows emphasizing slenderness and separation; high ventilation permeability",
+        placement_rules:
+          "Populate ONLY white land areas between roads with solid red building silhouettes; no black outlines; no buildings in water or on roads",
+      },
+      visual_style:
+        "Flat colors, architectural diagram aesthetic, solid red silhouettes",
+      constraints:
+        "Buildings must be solid red only; emphasize slenderness; high separation between blocks",
+      negative_prompt:
+        "black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings, bulky buildings",
+    },
   },
   {
     id: "toapayoh",
     name: "Toa Payoh Central Courtyard",
     image: "/styles/toapayoh.jpg",
-    prompt:
-      "Prompt: A top-down 2D architectural site plan with the existing road network in grey, water in blue, and parks in green. The empty white land areas between roads must be populated with residential buildings shown as solid red silhouettes with no black outlines. Buildings are long rectilinear slabs broken into articulated segments with rhythmic sawtooth setbacks. Follow sweeping arcs shaped by coastal alignments. Semi-open clusters with wide green buffers. Flat colors. Negative Prompt: black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings.",
+    config: {
+      style: "Singapore HDB residential architectural site plan",
+      view: "Top-down 2D architectural diagram",
+      map_elements: {
+        roads: "Grey; existing road network preserved",
+        water: "Blue; no buildings allowed",
+        parks: "Green; existing parks preserved",
+        land: "White areas between roads; to be populated with buildings",
+      },
+      building_design: {
+        type: "Articulated residential slabs",
+        form: "Long rectilinear slabs broken into articulated segments with rhythmic sawtooth setbacks",
+        arrangement:
+          "Follow sweeping arcs shaped by coastal alignments; semi-open clusters with wide green buffers",
+        placement_rules:
+          "Populate ONLY white land areas between roads with solid red building silhouettes; no black outlines; no buildings in water or on roads",
+      },
+      visual_style:
+        "Flat colors, architectural diagram aesthetic, solid red silhouettes",
+      constraints:
+        "Buildings must be solid red only; follow coastal arcs; maintain wide green buffers",
+      negative_prompt:
+        "black outlines, 3D, shadows, gradient, buildings in water, buildings on roads, blue buildings, grey buildings, compact clusters",
+    },
   },
 ];
 
@@ -108,9 +351,44 @@ export function ScreenshotDialog({
   const [currentStep, setCurrentStep] = useState<GenerationStep>("road");
   const [generationMethod, setGenerationMethod] =
     useState<GenerationMethod>("parcel-based");
-  const [roadPrompt, setRoadPrompt] = useState("");
-  const [parcelisationPrompt, setParcelisationPrompt] = useState("");
-  const [buildingPrompt, setBuildingPrompt] = useState("");
+  const [roadConfig, setRoadConfig] = useState<RoadPromptConfig>({
+    style: "",
+    view: "",
+    map_elements: { water: "", land: "" },
+    road_design: { type: "", geometry: "", hierarchy: "", placement_rules: "" },
+    visual_style: "",
+    constraints: "",
+    negative_prompt: "",
+  });
+  const [parcelisationConfig, setParcelisationConfig] =
+    useState<ParcelisationPromptConfig>({
+      style: "",
+      view: "",
+      map_elements: { water: "", roads: "", land: "" },
+      zoning_rules: {
+        waterfront_treatment: "",
+        residential_allocation: "",
+        commercial_allocation: "",
+        color_scheme: "",
+      },
+      visual_style: "",
+      constraints: "",
+      negative_prompt: "",
+    });
+  const [buildingConfig, setBuildingConfig] = useState<BuildingPromptConfig>({
+    style: "",
+    view: "",
+    map_elements: { roads: "", water: "", parks: "", land: "" },
+    building_design: {
+      type: "",
+      form: "",
+      arrangement: "",
+      placement_rules: "",
+    },
+    visual_style: "",
+    constraints: "",
+    negative_prompt: "",
+  });
   const [selectedRoadStyle, setSelectedRoadStyle] = useState<string | null>(
     null
   );
@@ -120,6 +398,7 @@ export function ScreenshotDialog({
   const [selectedBuildingStyle, setSelectedBuildingStyle] = useState<
     string | null
   >(null);
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<{
     road: string | null;
@@ -155,9 +434,48 @@ export function ScreenshotDialog({
       setCurrentStep("road");
       setGenerationMethod("parcel-based");
       setGeneratedBlobs({ road: null, parcelisation: null, building: null });
-      setRoadPrompt("");
-      setParcelisationPrompt("");
-      setBuildingPrompt("");
+      setRoadConfig({
+        style: "",
+        view: "",
+        map_elements: { water: "", land: "" },
+        road_design: {
+          type: "",
+          geometry: "",
+          hierarchy: "",
+          placement_rules: "",
+        },
+        visual_style: "",
+        constraints: "",
+        negative_prompt: "",
+      });
+      setParcelisationConfig({
+        style: "",
+        view: "",
+        map_elements: { water: "", roads: "", land: "" },
+        zoning_rules: {
+          waterfront_treatment: "",
+          residential_allocation: "",
+          commercial_allocation: "",
+          color_scheme: "",
+        },
+        visual_style: "",
+        constraints: "",
+        negative_prompt: "",
+      });
+      setBuildingConfig({
+        style: "",
+        view: "",
+        map_elements: { roads: "", water: "", parks: "", land: "" },
+        building_design: {
+          type: "",
+          form: "",
+          arrangement: "",
+          placement_rules: "",
+        },
+        visual_style: "",
+        constraints: "",
+        negative_prompt: "",
+      });
       setSelectedRoadStyle(null);
       setSelectedParcelisationStyle(null);
       setSelectedBuildingStyle(null);
@@ -206,7 +524,7 @@ export function ScreenshotDialog({
   const handleRoadStyleSelect = (styleId: string) => {
     const style = ROAD_STYLE_PRESETS.find((s) => s.id === styleId);
     if (style) {
-      setRoadPrompt(style.prompt);
+      setRoadConfig(style.config);
       setSelectedRoadStyle(styleId);
     }
   };
@@ -214,7 +532,7 @@ export function ScreenshotDialog({
   const handleParcelisationStyleSelect = (styleId: string) => {
     const style = PARCELISATION_PRESETS.find((s) => s.id === styleId);
     if (style) {
-      setParcelisationPrompt(style.prompt);
+      setParcelisationConfig(style.config);
       setSelectedParcelisationStyle(styleId);
     }
   };
@@ -222,7 +540,7 @@ export function ScreenshotDialog({
   const handleBuildingStyleSelect = (styleId: string) => {
     const style = BUILDING_STYLE_PRESETS.find((s) => s.id === styleId);
     if (style) {
-      setBuildingPrompt(style.prompt);
+      setBuildingConfig(style.config);
       setSelectedBuildingStyle(styleId);
     }
   };
@@ -264,11 +582,12 @@ export function ScreenshotDialog({
   };
 
   const handleGenerateRoad = async () => {
-    if (!screenshotUrl || !roadPrompt) return;
+    if (!screenshotUrl || !roadConfig.style) return;
 
     setIsLoading(true);
     try {
-      const { url, blob } = await generateImage(screenshotUrl, roadPrompt);
+      const promptJson = JSON.stringify(roadConfig);
+      const { url, blob } = await generateImage(screenshotUrl, promptJson);
       setGeneratedImages((prev) => ({ ...prev, road: url }));
       setGeneratedBlobs((prev) => ({ ...prev, road: blob }));
 
@@ -284,12 +603,13 @@ export function ScreenshotDialog({
   };
 
   const handleGenerateParcelisation = async () => {
-    if (!generatedBlobs.road || !parcelisationPrompt) return;
+    if (!generatedBlobs.road || !parcelisationConfig.style) return;
 
     setIsLoading(true);
     try {
       const roadUrl = window.URL.createObjectURL(generatedBlobs.road);
-      const { url, blob } = await generateImage(roadUrl, parcelisationPrompt);
+      const promptJson = JSON.stringify(parcelisationConfig);
+      const { url, blob } = await generateImage(roadUrl, promptJson);
       window.URL.revokeObjectURL(roadUrl);
 
       setGeneratedImages((prev) => ({ ...prev, parcelisation: url }));
@@ -307,12 +627,13 @@ export function ScreenshotDialog({
   };
 
   const handleGenerateZeroShotBuildings = async () => {
-    if (!generatedBlobs.road || !buildingPrompt) return;
+    if (!generatedBlobs.road || !buildingConfig.style) return;
 
     setIsLoading(true);
     try {
       const roadUrl = window.URL.createObjectURL(generatedBlobs.road);
-      const { url, blob } = await generateImage(roadUrl, buildingPrompt);
+      const promptJson = JSON.stringify(buildingConfig);
+      const { url, blob } = await generateImage(roadUrl, promptJson);
       window.URL.revokeObjectURL(roadUrl);
 
       setGeneratedImages((prev) => ({ ...prev, building: url }));
@@ -445,7 +766,20 @@ export function ScreenshotDialog({
     setGeneratedImages({ road: null, parcelisation: null, building: null });
     setCurrentStep("road");
     setSelectedParcelisationStyle(null);
-    setParcelisationPrompt("");
+    setParcelisationConfig({
+      style: "",
+      view: "",
+      map_elements: { water: "", roads: "", land: "" },
+      zoning_rules: {
+        waterfront_treatment: "",
+        residential_allocation: "",
+        commercial_allocation: "",
+        color_scheme: "",
+      },
+      visual_style: "",
+      constraints: "",
+      negative_prompt: "",
+    });
   };
 
   const handleRegenerateParcelisation = () => {
@@ -474,13 +808,13 @@ export function ScreenshotDialog({
   };
 
   const getCurrentPrompt = () => {
-    if (currentStep === "road") return roadPrompt;
+    if (currentStep === "road") return JSON.stringify(roadConfig, null, 2);
     if (currentStep === "parcelisation") {
       return generationMethod === "parcel-based"
-        ? parcelisationPrompt
-        : buildingPrompt;
+        ? JSON.stringify(parcelisationConfig, null, 2)
+        : JSON.stringify(buildingConfig, null, 2);
     }
-    return buildingPrompt;
+    return "";
   };
 
   const getCurrentSelectedStyle = () => {
@@ -507,11 +841,28 @@ export function ScreenshotDialog({
 
   const handlePromptChange = (value: string) => {
     if (currentStep === "road") {
-      setRoadPrompt(value);
+      try {
+        const parsed = JSON.parse(value);
+        setRoadConfig(parsed);
+      } catch (e) {
+        // Invalid JSON, ignore
+      }
     } else if (currentStep === "parcelisation") {
-      setParcelisationPrompt(value);
-    } else {
-      setBuildingPrompt(value);
+      if (generationMethod === "parcel-based") {
+        try {
+          const parsed = JSON.parse(value);
+          setParcelisationConfig(parsed);
+        } catch (e) {
+          // Invalid JSON, ignore
+        }
+      } else {
+        try {
+          const parsed = JSON.parse(value);
+          setBuildingConfig(parsed);
+        } catch (e) {
+          // Invalid JSON, ignore
+        }
+      }
     }
   };
 
@@ -635,37 +986,901 @@ export function ScreenshotDialog({
                 </div>
               )}
 
-              {/* Prompt Textarea */}
-              <div className="space-y-2">
-                <label
-                  htmlFor="prompt-textarea"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  {currentStep === "road" && "Road Network Generation Prompt"}
-                  {currentStep === "parcelisation" &&
-                    generationMethod === "parcel-based" &&
-                    "Parcelisation Prompt"}
-                  {currentStep === "parcelisation" &&
-                    generationMethod === "zero-shot" &&
-                    "Building Generation Prompt"}
-                  {currentStep === "building" && "Building Generation"}
-                </label>
-                {currentStep === "building" ? (
-                  <p className="text-sm text-gray-600">
-                    Click the button below to generate building footprints from
-                    the parcelisation and add them to the map.
-                  </p>
-                ) : (
-                  <Textarea
-                    id="prompt-textarea"
-                    value={getCurrentPrompt()}
-                    onChange={(e) => handlePromptChange(e.target.value)}
-                    placeholder="Select a style preset or enter your custom prompt..."
-                    className="min-h-[200px] resize-none"
-                    disabled={isLoading}
-                  />
+              {/* Road Generation Form - only for road step */}
+              {currentStep === "road" && (
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-sm">
+                    Road Design Parameters
+                  </h3>
+
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-xs font-medium text-gray-700">
+                        Road Design - Type
+                      </label>
+                      <input
+                        type="text"
+                        value={roadConfig.road_design.type}
+                        onChange={(e) =>
+                          setRoadConfig({
+                            ...roadConfig,
+                            road_design: {
+                              ...roadConfig.road_design,
+                              type: e.target.value,
+                            },
+                          })
+                        }
+                        className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                        placeholder="e.g., Asymmetric irregular road network"
+                        disabled={isLoading}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-medium text-gray-700">
+                        Road Design - Geometry
+                      </label>
+                      <Textarea
+                        value={roadConfig.road_design.geometry}
+                        onChange={(e) =>
+                          setRoadConfig({
+                            ...roadConfig,
+                            road_design: {
+                              ...roadConfig.road_design,
+                              geometry: e.target.value,
+                            },
+                          })
+                        }
+                        className="w-full mt-1 resize-none text-sm"
+                        placeholder="e.g., Roads follow uneven parcel outlines with diagonal connectors"
+                        disabled={isLoading}
+                        rows={2}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-medium text-gray-700">
+                        Road Design - Hierarchy
+                      </label>
+                      <Textarea
+                        value={roadConfig.road_design.hierarchy}
+                        onChange={(e) =>
+                          setRoadConfig({
+                            ...roadConfig,
+                            road_design: {
+                              ...roadConfig.road_design,
+                              hierarchy: e.target.value,
+                            },
+                          })
+                        }
+                        className="w-full mt-1 resize-none text-sm"
+                        placeholder="e.g., Primary irregular axes thicker; fragmentary secondary roads thinner"
+                        disabled={isLoading}
+                        rows={2}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-medium text-gray-700">
+                        Road Design - Placement Rules
+                      </label>
+                      <Textarea
+                        value={roadConfig.road_design.placement_rules}
+                        onChange={(e) =>
+                          setRoadConfig({
+                            ...roadConfig,
+                            road_design: {
+                              ...roadConfig.road_design,
+                              placement_rules: e.target.value,
+                            },
+                          })
+                        }
+                        className="w-full mt-1 resize-none text-sm"
+                        placeholder="e.g., Replicate Yishun-style broken parcel logic"
+                        disabled={isLoading}
+                        rows={2}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-medium text-gray-700">
+                        Constraints
+                      </label>
+                      <Textarea
+                        value={roadConfig.constraints}
+                        onChange={(e) =>
+                          setRoadConfig({
+                            ...roadConfig,
+                            constraints: e.target.value,
+                          })
+                        }
+                        className="w-full mt-1 resize-none text-sm"
+                        placeholder="e.g., Match reference highway at top; avoid perfect grids"
+                        disabled={isLoading}
+                        rows={2}
+                      />
+                    </div>
+
+                    {/* Advanced Settings Dropdown */}
+                    <div className="border-t pt-3">
+                      <button
+                        onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+                        disabled={isLoading}
+                        className="w-full flex items-center justify-between text-sm font-medium text-gray-700 hover:text-gray-900"
+                      >
+                        <span>Advanced Settings</span>
+                        <svg
+                          className={cn(
+                            "w-4 h-4 transition-transform",
+                            isAdvancedOpen ? "rotate-180" : ""
+                          )}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+
+                      {isAdvancedOpen && (
+                        <div className="mt-3 space-y-3">
+                          <div>
+                            <label className="text-xs font-medium text-gray-700">
+                              Style
+                            </label>
+                            <input
+                              type="text"
+                              value={roadConfig.style}
+                              onChange={(e) =>
+                                setRoadConfig({
+                                  ...roadConfig,
+                                  style: e.target.value,
+                                })
+                              }
+                              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                              placeholder="e.g., Singapore Urban Planning Zoning Map"
+                              disabled={isLoading}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-gray-700">
+                              View
+                            </label>
+                            <input
+                              type="text"
+                              value={roadConfig.view}
+                              onChange={(e) =>
+                                setRoadConfig({
+                                  ...roadConfig,
+                                  view: e.target.value,
+                                })
+                              }
+                              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                              placeholder="e.g., Top-down 2D digital map"
+                              disabled={isLoading}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-gray-700">
+                              Map Elements - Water
+                            </label>
+                            <input
+                              type="text"
+                              value={roadConfig.map_elements.water}
+                              onChange={(e) =>
+                                setRoadConfig({
+                                  ...roadConfig,
+                                  map_elements: {
+                                    ...roadConfig.map_elements,
+                                    water: e.target.value,
+                                  },
+                                })
+                              }
+                              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                              placeholder="e.g., Blue; no roads allowed"
+                              disabled={isLoading}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-gray-700">
+                              Map Elements - Land
+                            </label>
+                            <input
+                              type="text"
+                              value={roadConfig.map_elements.land}
+                              onChange={(e) =>
+                                setRoadConfig({
+                                  ...roadConfig,
+                                  map_elements: {
+                                    ...roadConfig.map_elements,
+                                    land: e.target.value,
+                                  },
+                                })
+                              }
+                              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                              placeholder="e.g., White areas; preserve natural parcel irregularity"
+                              disabled={isLoading}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-gray-700">
+                              Visual Style
+                            </label>
+                            <input
+                              type="text"
+                              value={roadConfig.visual_style}
+                              onChange={(e) =>
+                                setRoadConfig({
+                                  ...roadConfig,
+                                  visual_style: e.target.value,
+                                })
+                              }
+                              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                              placeholder="e.g., Clean vector, flat colours"
+                              disabled={isLoading}
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-gray-700">
+                              Negative Prompt
+                            </label>
+                            <Textarea
+                              value={roadConfig.negative_prompt}
+                              onChange={(e) =>
+                                setRoadConfig({
+                                  ...roadConfig,
+                                  negative_prompt: e.target.value,
+                                })
+                              }
+                              className="w-full mt-1 resize-none text-sm"
+                              placeholder="e.g., 3D, isometric, buildings, shadows"
+                              disabled={isLoading}
+                              rows={3}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Building Generation Form - only for zero-shot building generation in parcelisation step */}
+              {currentStep === "parcelisation" &&
+                generationMethod === "zero-shot" && (
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-sm">
+                      Building Design Parameters
+                    </h3>
+
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Building Design - Type
+                        </label>
+                        <input
+                          type="text"
+                          value={buildingConfig.building_design.type}
+                          onChange={(e) =>
+                            setBuildingConfig({
+                              ...buildingConfig,
+                              building_design: {
+                                ...buildingConfig.building_design,
+                                type: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                          placeholder="e.g., High-density residential buildings"
+                          disabled={isLoading}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Building Design - Form
+                        </label>
+                        <Textarea
+                          value={buildingConfig.building_design.form}
+                          onChange={(e) =>
+                            setBuildingConfig({
+                              ...buildingConfig,
+                              building_design: {
+                                ...buildingConfig.building_design,
+                                form: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., H-shaped blocks, linear slabs with stepped facades"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Building Design - Arrangement
+                        </label>
+                        <Textarea
+                          value={buildingConfig.building_design.arrangement}
+                          onChange={(e) =>
+                            setBuildingConfig({
+                              ...buildingConfig,
+                              building_design: {
+                                ...buildingConfig.building_design,
+                                arrangement: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., Buildings arranged to follow road curvature"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Building Design - Placement Rules
+                        </label>
+                        <Textarea
+                          value={buildingConfig.building_design.placement_rules}
+                          onChange={(e) =>
+                            setBuildingConfig({
+                              ...buildingConfig,
+                              building_design: {
+                                ...buildingConfig.building_design,
+                                placement_rules: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., Populate ONLY white land areas with red silhouettes"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Constraints
+                        </label>
+                        <Textarea
+                          value={buildingConfig.constraints}
+                          onChange={(e) =>
+                            setBuildingConfig({
+                              ...buildingConfig,
+                              constraints: e.target.value,
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., Buildings must be solid red only"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      {/* Advanced Settings Dropdown */}
+                      <div className="border-t pt-3">
+                        <button
+                          onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+                          disabled={isLoading}
+                          className="w-full flex items-center justify-between text-sm font-medium text-gray-700 hover:text-gray-900"
+                        >
+                          <span>Advanced Settings</span>
+                          <svg
+                            className={cn(
+                              "w-4 h-4 transition-transform",
+                              isAdvancedOpen ? "rotate-180" : ""
+                            )}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+
+                        {isAdvancedOpen && (
+                          <div className="mt-3 space-y-3">
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Style
+                              </label>
+                              <input
+                                type="text"
+                                value={buildingConfig.style}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    style: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Singapore HDB residential architectural site plan"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                View
+                              </label>
+                              <input
+                                type="text"
+                                value={buildingConfig.view}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    view: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Top-down 2D architectural diagram"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Map Elements - Roads
+                              </label>
+                              <input
+                                type="text"
+                                value={buildingConfig.map_elements.roads}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    map_elements: {
+                                      ...buildingConfig.map_elements,
+                                      roads: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Grey; existing road network preserved"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Map Elements - Water
+                              </label>
+                              <input
+                                type="text"
+                                value={buildingConfig.map_elements.water}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    map_elements: {
+                                      ...buildingConfig.map_elements,
+                                      water: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Blue; no buildings allowed"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Map Elements - Parks
+                              </label>
+                              <input
+                                type="text"
+                                value={buildingConfig.map_elements.parks}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    map_elements: {
+                                      ...buildingConfig.map_elements,
+                                      parks: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Green; existing parks preserved"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Map Elements - Land
+                              </label>
+                              <input
+                                type="text"
+                                value={buildingConfig.map_elements.land}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    map_elements: {
+                                      ...buildingConfig.map_elements,
+                                      land: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., White areas between roads; to be populated"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Visual Style
+                              </label>
+                              <input
+                                type="text"
+                                value={buildingConfig.visual_style}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    visual_style: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Flat colors, solid red silhouettes"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Negative Prompt
+                              </label>
+                              <Textarea
+                                value={buildingConfig.negative_prompt}
+                                onChange={(e) =>
+                                  setBuildingConfig({
+                                    ...buildingConfig,
+                                    negative_prompt: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 resize-none text-sm"
+                                placeholder="e.g., black outlines, 3D, shadows, gradient"
+                                disabled={isLoading}
+                                rows={3}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 )}
-              </div>
+
+              {/* Parcelisation Generation Form - only for parcel-based parcelisation in parcelisation step */}
+              {currentStep === "parcelisation" &&
+                generationMethod === "parcel-based" && (
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-sm">Zoning Parameters</h3>
+
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Waterfront Treatment
+                        </label>
+                        <Textarea
+                          value={
+                            parcelisationConfig.zoning_rules
+                              .waterfront_treatment
+                          }
+                          onChange={(e) =>
+                            setParcelisationConfig({
+                              ...parcelisationConfig,
+                              zoning_rules: {
+                                ...parcelisationConfig.zoning_rules,
+                                waterfront_treatment: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., Convert white areas touching water into green landscape"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Residential Allocation
+                        </label>
+                        <Textarea
+                          value={
+                            parcelisationConfig.zoning_rules
+                              .residential_allocation
+                          }
+                          onChange={(e) =>
+                            setParcelisationConfig({
+                              ...parcelisationConfig,
+                              zoning_rules: {
+                                ...parcelisationConfig.zoning_rules,
+                                residential_allocation: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., 70% of land becomes Red Zone for Residential"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Commercial Allocation
+                        </label>
+                        <Textarea
+                          value={
+                            parcelisationConfig.zoning_rules
+                              .commercial_allocation
+                          }
+                          onChange={(e) =>
+                            setParcelisationConfig({
+                              ...parcelisationConfig,
+                              zoning_rules: {
+                                ...parcelisationConfig.zoning_rules,
+                                commercial_allocation: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., 30% of land becomes Yellow Zone for Commercial"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Color Scheme
+                        </label>
+                        <Textarea
+                          value={parcelisationConfig.zoning_rules.color_scheme}
+                          onChange={(e) =>
+                            setParcelisationConfig({
+                              ...parcelisationConfig,
+                              zoning_rules: {
+                                ...parcelisationConfig.zoning_rules,
+                                color_scheme: e.target.value,
+                              },
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., Recolor ground plane; no buildings"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-xs font-medium text-gray-700">
+                          Constraints
+                        </label>
+                        <Textarea
+                          value={parcelisationConfig.constraints}
+                          onChange={(e) =>
+                            setParcelisationConfig({
+                              ...parcelisationConfig,
+                              constraints: e.target.value,
+                            })
+                          }
+                          className="w-full mt-1 resize-none text-sm"
+                          placeholder="e.g., No buildings; only ground plane recoloring"
+                          disabled={isLoading}
+                          rows={2}
+                        />
+                      </div>
+
+                      {/* Advanced Settings Dropdown */}
+                      <div className="border-t pt-3">
+                        <button
+                          onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+                          disabled={isLoading}
+                          className="w-full flex items-center justify-between text-sm font-medium text-gray-700 hover:text-gray-900"
+                        >
+                          <span>Advanced Settings</span>
+                          <svg
+                            className={cn(
+                              "w-4 h-4 transition-transform",
+                              isAdvancedOpen ? "rotate-180" : ""
+                            )}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+
+                        {isAdvancedOpen && (
+                          <div className="mt-3 space-y-3">
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Style
+                              </label>
+                              <input
+                                type="text"
+                                value={parcelisationConfig.style}
+                                onChange={(e) =>
+                                  setParcelisationConfig({
+                                    ...parcelisationConfig,
+                                    style: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Singapore Urban Planning Zoning Map"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                View
+                              </label>
+                              <input
+                                type="text"
+                                value={parcelisationConfig.view}
+                                onChange={(e) =>
+                                  setParcelisationConfig({
+                                    ...parcelisationConfig,
+                                    view: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Top-down 2D vector site plan"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Map Elements - Water
+                              </label>
+                              <input
+                                type="text"
+                                value={parcelisationConfig.map_elements.water}
+                                onChange={(e) =>
+                                  setParcelisationConfig({
+                                    ...parcelisationConfig,
+                                    map_elements: {
+                                      ...parcelisationConfig.map_elements,
+                                      water: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Blue; preserved"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Map Elements - Roads
+                              </label>
+                              <input
+                                type="text"
+                                value={parcelisationConfig.map_elements.roads}
+                                onChange={(e) =>
+                                  setParcelisationConfig({
+                                    ...parcelisationConfig,
+                                    map_elements: {
+                                      ...parcelisationConfig.map_elements,
+                                      roads: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Grey; highways remain grey"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Map Elements - Land
+                              </label>
+                              <input
+                                type="text"
+                                value={parcelisationConfig.map_elements.land}
+                                onChange={(e) =>
+                                  setParcelisationConfig({
+                                    ...parcelisationConfig,
+                                    map_elements: {
+                                      ...parcelisationConfig.map_elements,
+                                      land: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., White empty areas; to be zoned"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Visual Style
+                              </label>
+                              <input
+                                type="text"
+                                value={parcelisationConfig.visual_style}
+                                onChange={(e) =>
+                                  setParcelisationConfig({
+                                    ...parcelisationConfig,
+                                    visual_style: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                                placeholder="e.g., Flat colors, clean zoning diagram"
+                                disabled={isLoading}
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-xs font-medium text-gray-700">
+                                Negative Prompt
+                              </label>
+                              <Textarea
+                                value={parcelisationConfig.negative_prompt}
+                                onChange={(e) =>
+                                  setParcelisationConfig({
+                                    ...parcelisationConfig,
+                                    negative_prompt: e.target.value,
+                                  })
+                                }
+                                className="w-full mt-1 resize-none text-sm"
+                                placeholder="e.g., black outlines, 3D, shadows, buildings"
+                                disabled={isLoading}
+                                rows={3}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+              {/* Building step message - only for parcel-based method */}
+              {currentStep === "building" &&
+                generationMethod === "parcel-based" && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Building Generation
+                    </label>
+                    <p className="text-sm text-gray-600">
+                      Click the button below to generate building footprints
+                      from the parcelisation and add them to the map.
+                    </p>
+                  </div>
+                )}
             </div>
 
             {/* Action Buttons */}
@@ -682,7 +1897,7 @@ export function ScreenshotDialog({
                     </Button>
                     <Button
                       onClick={handleGenerateRoad}
-                      disabled={isLoading || !roadPrompt}
+                      disabled={isLoading || !roadConfig.style}
                       className="bg-green-600 hover:bg-green-700 text-white"
                     >
                       {isLoading ? "Generating..." : "Generate Roads"}
@@ -701,7 +1916,7 @@ export function ScreenshotDialog({
                     {generationMethod === "parcel-based" ? (
                       <Button
                         onClick={handleGenerateParcelisation}
-                        disabled={isLoading || !parcelisationPrompt}
+                        disabled={isLoading || !parcelisationConfig.style}
                         className="bg-green-600 hover:bg-green-700 text-white"
                       >
                         {isLoading ? "Generating..." : "Generate Parcelisation"}
@@ -709,7 +1924,7 @@ export function ScreenshotDialog({
                     ) : (
                       <Button
                         onClick={handleGenerateZeroShotBuildings}
-                        disabled={isLoading || !buildingPrompt}
+                        disabled={isLoading || !buildingConfig.style}
                         className="bg-green-600 hover:bg-green-700 text-white"
                       >
                         {isLoading ? "Generating..." : "Generate Buildings"}
