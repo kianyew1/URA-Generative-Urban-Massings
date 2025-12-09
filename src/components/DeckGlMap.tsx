@@ -14,7 +14,13 @@ import "@deck.gl/widgets/stylesheet.css";
 import { parseDescription } from "./functions/functions";
 import { useScreenshot } from "./functions/useScreenshot";
 import { useLayerOperations } from "./functions/useLayerOperations";
-import { Box, Square, RotateCcw, Map as MapIcon } from "lucide-react";
+import {
+  Box,
+  Square,
+  RotateCcw,
+  Map as MapIcon,
+  GripVertical,
+} from "lucide-react";
 
 // Initial camera position - Sembawang waterfront area, Singapore
 const INITIAL_VIEW_STATE = {
@@ -62,6 +68,10 @@ export default function DeckGlMap() {
     useState<keyof typeof BASEMAPS>("voyager");
   const [basemapSelectorOpen, setBasemapSelectorOpen] = useState(false);
   const [boundingBox, setBoundingBox] = useState<any>(null);
+  const [toolbarPosition, setToolbarPosition] = useState(0); // Position offset from center
+  const [isDraggingToolbar, setIsDraggingToolbar] = useState(false);
+  const [dragStart, setDragStart] = useState(0);
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
   // layers
   const [layerManager] = useState(() => {
@@ -247,6 +257,47 @@ export default function DeckGlMap() {
     setBoundingBox,
   });
 
+  // Toolbar drag handlers
+  const handleToolbarMouseDown = (e: React.MouseEvent) => {
+    setIsDraggingToolbar(true);
+    setDragStart(e.clientX - toolbarPosition);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDraggingToolbar && toolbarRef.current) {
+        const newPosition = e.clientX - dragStart;
+        const windowWidth = window.innerWidth;
+        const toolbarWidth = toolbarRef.current.offsetWidth;
+
+        // Calculate constraints to keep toolbar within viewport
+        const maxOffset = (windowWidth - toolbarWidth) / 2;
+        const minOffset = -(windowWidth - toolbarWidth) / 2;
+
+        // Clamp the position
+        const clampedPosition = Math.max(
+          minOffset,
+          Math.min(maxOffset, newPosition)
+        );
+        setToolbarPosition(clampedPosition);
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDraggingToolbar(false);
+    };
+
+    if (isDraggingToolbar) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDraggingToolbar, dragStart, toolbarPosition]);
+
   const layers = useMemo(
     () =>
       layerManager.createDeckLayers(
@@ -383,10 +434,25 @@ export default function DeckGlMap() {
 
       {/* Fixed Bottom Toolbar */}
       <div
+        ref={toolbarRef}
         className="absolute bottom-4 left-1/2 z-10"
-        style={{ transform: "translate(calc(-50% + 4rem), 0)" }}
+        style={{
+          transform: `translate(calc(-50% + ${toolbarPosition}px), 0)`,
+          cursor: isDraggingToolbar ? "grabbing" : "auto",
+        }}
       >
         <div className="bg-white rounded-lg shadow-lg px-3 py-2 flex items-center gap-2 text-sm">
+          {/* Drag Handle */}
+          <div
+            className="cursor-grab active:cursor-grabbing px-1 py-1 hover:bg-gray-100 rounded transition-colors"
+            onMouseDown={handleToolbarMouseDown}
+            title="Drag to reposition toolbar"
+          >
+            <GripVertical className="w-4 h-4 text-gray-400" />
+          </div>
+
+          <div className="h-6 w-px bg-gray-300" />
+
           <button
             className={`px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors whitespace-nowrap ${
               mode instanceof DrawRectangleMode
