@@ -179,35 +179,6 @@ export function ScreenshotDialog({
     }
   };
 
-  const calculateAspectRatio = async (imageUrl: string): Promise<string> => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        const width = img.naturalWidth;
-        const height = img.naturalHeight;
-
-        // Calculate GCD to simplify the ratio
-        const gcd = (a: number, b: number): number =>
-          b === 0 ? a : gcd(b, a % b);
-        const divisor = gcd(width, height);
-
-        const ratioWidth = width / divisor;
-        const ratioHeight = height / divisor;
-
-        // Format as "width:height" (e.g., "16:9", "4:3", "1:1")
-        const aspectRatio = `${Math.round(ratioWidth)}:${Math.round(
-          ratioHeight
-        )}`;
-        resolve(aspectRatio);
-      };
-      img.onerror = () => {
-        // Fallback to 16:9 if image fails to load
-        resolve("16:9");
-      };
-      img.src = imageUrl;
-    });
-  };
-
   const generateImage = async (
     baseImageUrl: string,
     prompt: string
@@ -215,25 +186,9 @@ export function ScreenshotDialog({
     const response = await fetch(baseImageUrl);
     const blob = await response.blob();
 
-    // LIMITATION: Don't use 4096 here. It will likely trigger a fallback.
-    // Use 1536 or 2048 if your specific model supports "high res" generation.
-    // Otherwise, stick to 1024 for the best composition.
-    // const generationWidth = 2048;
-    // const generationHeight = 2048;
-
     const formData = new FormData();
     formData.append("image", blob, "screenshot.png");
     formData.append("prompt", prompt);
-
-    // FIX 1: Send flat parameters, not JSON
-    // formData.append("width", generationWidth.toString());
-    // formData.append("height", generationHeight.toString());
-
-    // FIX 2: Some APIs prefer 'resolution' as a string "WxH"
-    // formData.append("resolution", `${generationWidth}x${generationHeight}`);
-
-    // FIX 3: Explicitly tell the model not to preserve the exact input size if possible
-    // formData.append("autosize", "true");
 
     const apiResponse = await fetch("/api/nano_banana", {
       method: "POST",
