@@ -395,7 +395,7 @@ export default function DeckGlMap() {
 
       // More generous feature limits based on zoom level
       const maxFeatures =
-        zoom < 13 ? 1000 : zoom < 14 ? 2500 : zoom < 15 ? 5000 : 10000;
+        zoom < 13 ? 3000 : zoom < 14 ? 7500 : zoom < 15 ? 15000 : 30000;
       const cappedFeatures = visibleFeatures.slice(0, maxFeatures);
 
       console.log(
