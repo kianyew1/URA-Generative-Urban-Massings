@@ -30,6 +30,7 @@ import {
   GripVertical,
   Move,
   ArrowUpDown,
+  Trash2,
 } from "lucide-react";
 import { BERLARYAR_CREEK_PARCELWISE_GENERATION } from "./consts/const";
 
@@ -458,6 +459,7 @@ export default function DeckGlMap() {
     handleBuildingEdit,
     handleBuildingSelect,
     handleBuildingHeightChange,
+    handleBuildingDelete,
     toggleBuildingEditMode,
   } = useLayerOperations({
     layerManager,
@@ -811,6 +813,19 @@ export default function DeckGlMap() {
                   placeholder="Height"
                 />
                 <span className="text-xs text-gray-600">m</span>
+                <button
+                  className="px-2 py-1 rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors flex items-center gap-1"
+                  onClick={() => {
+                    if (selectedBuildingIndexes.length > 0) {
+                      handleBuildingDelete(selectedBuildingIndexes[0]);
+                      setSelectedBuildingHeight(0);
+                    }
+                  }}
+                  title="Delete selected building"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Delete
+                </button>
               </div>
             )}
 
