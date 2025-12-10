@@ -1,9 +1,16 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import DeckGL from "@deck.gl/react";
 import Map from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { LayerControl } from "./LayerControl";
 import { LayerManager } from "./LayerManager";
+import * as turf from "@turf/turf";
 import {
   DrawRectangleMode,
   ViewMode,
@@ -65,6 +72,23 @@ export default function DeckGlMap() {
   const [buildingOutlineData, setBuildingOutlineData] = useState(null);
   const [parcelsData, setParcelsData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Caching for optimized master plan data
+  const masterPlanCacheRef = useRef<{
+    zoom: number;
+    bounds: any;
+    data: any;
+    fullData: any;
+  } | null>(null);
+
+  // Debounced viewport for optimization
+  const [debouncedViewport, setDebouncedViewport] = useState({
+    longitude: viewState.longitude,
+    latitude: viewState.latitude,
+    zoom: viewState.zoom,
+  });
+
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hoverInfo, setHoverInfo] = useState<any>(null);
   const [currentBasemap, setCurrentBasemap] =
@@ -201,6 +225,14 @@ export default function DeckGlMap() {
         const parcelsData = await parcelsResponse.json();
 
         if (!isCancelled) {
+          // Store full data in cache for viewport filtering
+          masterPlanCacheRef.current = {
+            zoom: viewState.zoom,
+            bounds: null,
+            data: null,
+            fullData: masterPlanData,
+          };
+
           setMasterPlanData(masterPlanData);
           setBuildingOutlineData(buildingOutlineData);
           setBuildingEditData(buildingOutlineData); // Initialize edit data
@@ -260,6 +292,137 @@ export default function DeckGlMap() {
       isCancelled = true;
     };
   }, []);
+
+  // Debounce viewport updates to reduce re-renders
+  useEffect(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      setDebouncedViewport({
+        longitude: viewState.longitude,
+        latitude: viewState.latitude,
+        zoom: viewState.zoom,
+      });
+    }, 150); // 150ms debounce
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [viewState.longitude, viewState.latitude, viewState.zoom]);
+
+  // Optimize master plan data based on viewport and zoom
+  const optimizedMasterPlanData = useMemo(() => {
+    if (
+      !masterPlanCacheRef.current?.fullData ||
+      !layerManager.getLayer("master-plan")?.visible
+    ) {
+      return null;
+    }
+
+    const zoom = debouncedViewport.zoom;
+    const fullData = masterPlanCacheRef.current.fullData;
+
+    // At lower zoom levels, don't render at all - too many features
+    if (zoom < 12) {
+      console.log(
+        `Master Plan: Disabled at zoom ${zoom.toFixed(1)} (zoom in to see data)`
+      );
+      return {
+        type: "FeatureCollection",
+        features: [],
+      };
+    }
+
+    // Calculate viewport bounds properly
+    // At zoom level z, the world is 2^z tiles wide
+    // Each tile is 256 pixels, and the world spans 360 degrees of longitude
+    const WORLD_SIZE = 512; // Width of the world in pixels at zoom 0
+    const scale = WORLD_SIZE * Math.pow(2, zoom);
+
+    // Get viewport size (assume typical screen dimensions, adjust with padding)
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate degrees per pixel
+    const degreesPerPixelLng = 360 / scale;
+    const degreesPerPixelLat =
+      360 / scale / Math.cos((debouncedViewport.latitude * Math.PI) / 180);
+
+    // Calculate bounds with generous padding
+    const paddingPixels = 500; // Add 500 pixels of padding on all sides
+    const lngExtent = (viewportWidth / 2 + paddingPixels) * degreesPerPixelLng;
+    const latExtent = (viewportHeight / 2 + paddingPixels) * degreesPerPixelLat;
+
+    const viewport = {
+      minLng: debouncedViewport.longitude - lngExtent,
+      maxLng: debouncedViewport.longitude + lngExtent,
+      minLat: debouncedViewport.latitude - latExtent,
+      maxLat: debouncedViewport.latitude + latExtent,
+    };
+
+    console.log(
+      `Viewport bounds: lng [${viewport.minLng.toFixed(
+        4
+      )}, ${viewport.maxLng.toFixed(4)}], lat [${viewport.minLat.toFixed(
+        4
+      )}, ${viewport.maxLat.toFixed(4)}]`
+    );
+
+    try {
+      // Filter features by viewport bounds - only render what's visible
+      const visibleFeatures = fullData.features.filter((feature: any) => {
+        if (!feature.geometry) return false;
+
+        try {
+          const bbox = turf.bbox(feature);
+          const [minLng, minLat, maxLng, maxLat] = bbox;
+
+          // Check if feature intersects viewport
+          return !(
+            maxLng < viewport.minLng ||
+            minLng > viewport.maxLng ||
+            maxLat < viewport.minLat ||
+            minLat > viewport.maxLat
+          );
+        } catch (e) {
+          return false; // Skip features that fail bbox calculation
+        }
+      });
+
+      // More generous feature limits based on zoom level
+      const maxFeatures =
+        zoom < 13 ? 1000 : zoom < 14 ? 2500 : zoom < 15 ? 5000 : 10000;
+      const cappedFeatures = visibleFeatures.slice(0, maxFeatures);
+
+      console.log(
+        `Master Plan: ${fullData.features.length} → ${
+          visibleFeatures.length
+        } in viewport → ${cappedFeatures.length} rendered (zoom: ${zoom.toFixed(
+          1
+        )}, cap: ${maxFeatures})`
+      );
+
+      return {
+        type: "FeatureCollection",
+        features: cappedFeatures,
+      };
+    } catch (error) {
+      console.error("Error optimizing master plan data:", error);
+      return {
+        type: "FeatureCollection",
+        features: [],
+      };
+    }
+  }, [
+    debouncedViewport.zoom,
+    debouncedViewport.longitude,
+    debouncedViewport.latitude,
+    layerRevision,
+  ]);
 
   // Use the layer operations hook
   const {
@@ -331,7 +494,7 @@ export default function DeckGlMap() {
       layerManager.createDeckLayers(
         {
           "water-background": WATER_BACKGROUND,
-          "master-plan": masterPlanData,
+          "master-plan": optimizedMasterPlanData || masterPlanData,
           "building-outline": buildingOutlineData,
           parcels: parcelsData,
         },
@@ -347,6 +510,7 @@ export default function DeckGlMap() {
     [
       layerManager,
       features,
+      optimizedMasterPlanData,
       masterPlanData,
       buildingOutlineData,
       selectedFeatureIndexes,
