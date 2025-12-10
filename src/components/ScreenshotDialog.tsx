@@ -436,14 +436,11 @@ export function ScreenshotDialog({
   // Reset state when dialog closes
   useEffect(() => {
     if (!isOpen) {
-      // Clean up blob URLs when dialog closes
-      setGeneratedImages((prev) => {
-        if (prev.road) window.URL.revokeObjectURL(prev.road);
-        if (prev.parcelisation) window.URL.revokeObjectURL(prev.parcelisation);
-        if (prev.building) window.URL.revokeObjectURL(prev.building);
-        return { road: null, parcelisation: null, building: null };
-      });
+      // DON'T clean up blob URLs - they're being used by layers on the map
+      // The browser will clean them up when the page unloads
+      // If we revoke them here, the BitmapLayer will fail to load
 
+      setGeneratedImages({ road: null, parcelisation: null, building: null });
       setCurrentStep("road");
       setGenerationMethod("parcel-based");
       setGeneratedBlobs({ road: null, parcelisation: null, building: null });
@@ -619,6 +616,38 @@ export function ScreenshotDialog({
       setGeneratedBlobs((prev) => ({ ...prev, road: blob }));
 
       downloadImage(blob, `road-network-${Date.now()}.png`);
+
+      // Automatically add road layer to map
+      if (boundingBox && boundingBox.coordinates) {
+        const coordinates = boundingBox.coordinates[0];
+        const lngs = coordinates.map((coord: number[]) => coord[0]);
+        const lats = coordinates.map((coord: number[]) => coord[1]);
+
+        const minLng = Math.min(...lngs);
+        const maxLng = Math.max(...lngs);
+        const minLat = Math.min(...lats);
+        const maxLat = Math.max(...lats);
+
+        const layerId = `generated-road-${Date.now()}`;
+        // BitmapLayer expects bounds as [left, bottom, right, top]
+        const bounds = [minLng, minLat, maxLng, maxLat];
+
+        console.log("Adding road layer with bounds:", bounds);
+
+        layerManager.addLayer({
+          id: layerId,
+          name: `Generated Road Network ${new Date().toLocaleTimeString()}`,
+          visible: true,
+          type: "bitmap",
+          category: "user",
+          image: url, // Keep the blob URL
+          bounds: bounds,
+          opacity: 0.8,
+        });
+
+        // Trigger a re-render of layers
+        onSubmit(layerId);
+      }
 
       setCurrentStep("parcelisation");
     } catch (error) {

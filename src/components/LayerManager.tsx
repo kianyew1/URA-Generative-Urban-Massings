@@ -1,5 +1,5 @@
 import { Layer } from "@deck.gl/core";
-import { GeoJsonLayer } from "@deck.gl/layers";
+import { GeoJsonLayer, BitmapLayer } from "@deck.gl/layers";
 import { EditableGeoJsonLayer } from "@deck.gl-community/editable-layers";
 import { GeoJsonFeatureProperties } from "./types/types";
 import { getBuildingColor } from "./consts/const";
@@ -9,12 +9,14 @@ export interface LayerConfig {
   id: string;
   name: string;
   visible: boolean;
-  type: "geojson" | "editable" | "drawn" | "imported";
+  type: "geojson" | "editable" | "drawn" | "imported" | "bitmap";
   category?: "system" | "user"; // system = seeded layers, user = drawn/imported layers
   data?: any;
   geometry?: any;
-  bounds?: any;
+  bounds?: any; // [minLon, minLat, maxLon, maxLat] for bitmap layers
   dimensions?: { width: number; height: number }; // width x height in meters
+  image?: string; // URL for bitmap layer image
+  opacity?: number; // Opacity for bitmap layers (0-1)
   modifiedFeatures?: Map<string, any>; // Track modified building features by feature ID
   isEditable?: boolean; // Flag to make layer editable
 }
@@ -374,6 +376,40 @@ export class LayerManager {
                 highlightColor: [255, 255, 0, 150],
               })
             );
+          }
+          break;
+
+        case "bitmap":
+          if (
+            layer.image &&
+            layer.bounds &&
+            Array.isArray(layer.bounds) &&
+            layer.bounds.length === 4
+          ) {
+            // Validate all bounds are valid numbers
+            const boundsValid = layer.bounds.every(
+              (b: any) => typeof b === "number" && !isNaN(b)
+            );
+            if (boundsValid) {
+              console.log(
+                `Creating BitmapLayer ${layer.id} with bounds:`,
+                layer.bounds
+              );
+              deckLayers.push(
+                new BitmapLayer({
+                  id: layer.id,
+                  bounds: layer.bounds as [number, number, number, number],
+                  image: layer.image,
+                  opacity: layer.opacity ?? 0.8,
+                  pickable: false,
+                })
+              );
+            } else {
+              console.error(
+                `Invalid bounds for bitmap layer ${layer.id}:`,
+                layer.bounds
+              );
+            }
           }
           break;
       }

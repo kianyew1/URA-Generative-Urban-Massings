@@ -282,6 +282,33 @@ export function useLayerOperations({
     ]
   );
 
+  const handleBuildingDelete = useCallback(
+    (featureIndex: number) => {
+      if (!buildingEditData || !setBuildingEditData) return;
+
+      const updatedData = {
+        ...buildingEditData,
+        features: buildingEditData.features.filter(
+          (_: any, idx: number) => idx !== featureIndex
+        ),
+      };
+
+      setBuildingEditData(updatedData);
+
+      if (setSelectedBuildingIndexes) {
+        setSelectedBuildingIndexes([]);
+      }
+
+      setLayerRevision((prev) => prev + 1);
+    },
+    [
+      buildingEditData,
+      setBuildingEditData,
+      setSelectedBuildingIndexes,
+      setLayerRevision,
+    ]
+  );
+
   const toggleBuildingEditMode = useCallback(
     (enabled: boolean, layerId?: string) => {
       // If enabling, use the provided layerId or default to building-outline
@@ -336,6 +363,7 @@ export function useLayerOperations({
     handleBuildingEdit,
     handleBuildingSelect,
     handleBuildingHeightChange,
+    handleBuildingDelete,
     toggleBuildingEditMode,
   };
 }

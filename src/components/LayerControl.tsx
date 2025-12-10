@@ -231,31 +231,29 @@ export function LayerControl({
                                     </pre>
                                   </details>
                                 )}
-                                {layer.bounds && (
-                                  <div className="text-xs text-zinc-950 mt-1 font-mono">
-                                    <div>
-                                      N: {layer.bounds.maxLat.toFixed(6)}
+                                {layer.bounds &&
+                                  Array.isArray(layer.bounds) &&
+                                  layer.bounds.length === 4 &&
+                                  layer.bounds.every(
+                                    (b: any) =>
+                                      typeof b === "number" && !isNaN(b)
+                                  ) && (
+                                    <div className="text-xs text-zinc-950 mt-1 font-mono">
+                                      <div>N: {layer.bounds[3].toFixed(6)}</div>
+                                      <div>S: {layer.bounds[1].toFixed(6)}</div>
+                                      <div>E: {layer.bounds[2].toFixed(6)}</div>
+                                      <div>W: {layer.bounds[0].toFixed(6)}</div>
+                                      {layer.dimensions && (
+                                        <div className="mt-2 pt-2 border-t border-gray-300">
+                                          <span className="font-semibold">
+                                            Dimensions:{" "}
+                                          </span>
+                                          {layer.dimensions.width.toFixed(1)}m ×{" "}
+                                          {layer.dimensions.height.toFixed(1)}m
+                                        </div>
+                                      )}
                                     </div>
-                                    <div>
-                                      S: {layer.bounds.minLat.toFixed(6)}
-                                    </div>
-                                    <div>
-                                      E: {layer.bounds.maxLng.toFixed(6)}
-                                    </div>
-                                    <div>
-                                      W: {layer.bounds.minLng.toFixed(6)}
-                                    </div>
-                                    {layer.dimensions && (
-                                      <div className="mt-2 pt-2 border-t border-gray-300">
-                                        <span className="font-semibold">
-                                          Dimensions:{" "}
-                                        </span>
-                                        {layer.dimensions.width.toFixed(1)}m ×{" "}
-                                        {layer.dimensions.height.toFixed(1)}m
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
+                                  )}
                               </div>
                               <div className="flex flex-col gap-1">
                                 {/* Download button - for all user layers */}

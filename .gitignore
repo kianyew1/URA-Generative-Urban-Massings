@@ -45,3 +45,5 @@ public/MasterPlan2019LandUselayer.geojson
 public/parcels.geojson
 public/sg_building_outline.geojson
 public/buildings_with_height.geojson
+
+api/parcel_gens.py
