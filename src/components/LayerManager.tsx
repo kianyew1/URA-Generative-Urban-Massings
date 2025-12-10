@@ -174,8 +174,14 @@ export class LayerManager {
                   extruded: false,
                   wireframe: false,
                   filled: true,
-                  stroked: true,
+                  stroked: false, // Disable strokes for better performance
                   pickable: true,
+                  // Performance optimizations
+                  binary: true,
+                  // Reduce rendering quality for performance
+                  parameters: {
+                    depthTest: false,
+                  },
                   getFillColor: (f: any) => {
                     // Extract LU_DESC from the HTML description
                     let luDesc = f.properties?.LU_DESC;
@@ -186,15 +192,11 @@ export class LayerManager {
 
                     // Return color based on LU_DESC
                     const color = LAND_USE_COLORS[luDesc] || [
-                      180, 180, 180, 100,
+                      180, 180, 180, 120,
                     ];
                     return color;
                   },
-                  getLineColor: [80, 80, 80, 150],
-                  getLineWidth: 1,
-                  lineWidthMinPixels: 1,
-                  autoHighlight: true,
-                  highlightColor: [255, 255, 0, 150],
+                  autoHighlight: false, // Disable auto-highlight for performance
                   updateTriggers: {
                     getFillColor: layer.visible,
                   },

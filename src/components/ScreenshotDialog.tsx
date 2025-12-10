@@ -106,7 +106,7 @@ const ROAD_STYLE_PRESETS: Array<{
       site_dimensions: "To be filled",
       map_elements: {
         water: "Blue; no roads allowed",
-        land: "White areas; preserve natural parcel irregularity; do not generate new green spaces",
+        land: "White areas; preserve natural parcel irregularity; do not generate new green spaces, do not remove green spaces.",
       },
       road_design: {
         type: "Asymmetric irregular road network",
@@ -763,7 +763,8 @@ export function ScreenshotDialog({
             id: layerId,
             name: `Generated Buildings ${new Date().toLocaleTimeString()}`,
             visible: true,
-            type: "geojson",
+            type: "imported",
+            category: "user",
             data: geojsonData,
           });
 

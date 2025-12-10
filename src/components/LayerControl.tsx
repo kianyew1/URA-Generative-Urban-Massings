@@ -62,6 +62,43 @@ export function LayerControl({
     // TODO: Add your AI generation logic here
   };
 
+  const handleDownloadLayer = (layer: any) => {
+    // Get the layer data - use either data or geometry
+    const layerData =
+      layer.data ||
+      (layer.geometry
+        ? {
+            type: "FeatureCollection",
+            features: [
+              {
+                type: "Feature",
+                geometry: layer.geometry,
+                properties: {},
+              },
+            ],
+          }
+        : null);
+
+    if (!layerData) {
+      console.error("No data available for download");
+      return;
+    }
+
+    // Create a blob from the GeoJSON data
+    const jsonString = JSON.stringify(layerData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+
+    // Create a download link and trigger it
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${layer.name.replace(/\s+/g, "_")}.geojson`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <>
       <div
@@ -221,6 +258,26 @@ export function LayerControl({
                                 )}
                               </div>
                               <div className="flex flex-col gap-1">
+                                {/* Download button - for all user layers */}
+                                <button
+                                  onClick={() => handleDownloadLayer(layer)}
+                                  className="opacity-0 group-hover:opacity-100 p-1.5 text-green-600 hover:bg-green-100 rounded-md transition-all"
+                                  title="Download GeoJSON"
+                                >
+                                  <svg
+                                    className="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                    />
+                                  </svg>
+                                </button>
                                 {/* Screenshot button - only for bounding boxes */}
                                 {layer.type === "drawn" &&
                                   layer.bounds &&
