@@ -683,19 +683,100 @@ export function ScreenshotDialog({
 
     setIsLoading(true);
     try {
-      // TODO: Implement building footprint generation logic here
-      // This function should:
-      // 1. Generate the building image using the parcelisation image
-      // 2. Vectorise the building image
-      // 3. Add the GeoJSON to the map
-      // 4. Download the vectorised GeoJSON
+      const reader = new FileReader();
+      reader.readAsDataURL(generatedBlobs.parcelisation);
 
-      console.log("Building generation logic to be implemented");
-      alert("Building generation logic is not yet implemented.");
+      return new Promise<void>((resolve, reject) => {
+        reader.onloadend = async () => {
+          try {
+            const base64Image = (reader.result as string).split(",")[1];
+
+            const apiUrl =
+              process.env.NEXT_PUBLIC_PYTHON_API_URL || "http://localhost:8000";
+
+            // Prepare request for parcel generate endpoint
+            const requestBody = {
+              image: base64Image,
+              bbox: boundingBox,
+              zone: "residential", // Default to residential; could be made configurable
+              simplify_tolerance_m: 5.0,
+              min_area_ratio: 0.0001,
+              threshold_m: 100, // Distance threshold for water/green adjustment
+              lpm: 5, // Levels per meter for height calculation
+              run_ai: true, // Enable AI generation
+              model: "gemini-3-pro-image-preview", // Gemini model to use
+            };
+
+            const apiResponse = await fetch(
+              `${apiUrl}/api/py/parcel/generate`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestBody),
+              }
+            );
+
+            if (!apiResponse.ok) {
+              const error = await apiResponse.json();
+              throw new Error(error.detail || "Failed to generate buildings");
+            }
+
+            const geojsonData = await apiResponse.json();
+
+            // Add generated buildings to map
+            const layerId = `generated-buildings-${Date.now()}`;
+            layerManager.addLayer({
+              id: layerId,
+              name: `Generated Buildings ${new Date().toLocaleTimeString()}`,
+              visible: true,
+              type: "imported",
+              category: "user",
+              data: geojsonData,
+            });
+
+            // Download the GeoJSON
+            const geojsonBlob = new Blob(
+              [JSON.stringify(geojsonData, null, 2)],
+              {
+                type: "application/json",
+              }
+            );
+            const geojsonUrl = window.URL.createObjectURL(geojsonBlob);
+
+            const a = document.createElement("a");
+            a.href = geojsonUrl;
+            a.download = `generated-parcels-${Date.now()}.geojson`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(geojsonUrl);
+            document.body.removeChild(a);
+
+            // Close dialog and resolve
+            onClose();
+            setIsLoading(false);
+            resolve();
+          } catch (error) {
+            console.error("Error generating and adding buildings:", error);
+            const errorMessage =
+              error instanceof Error ? error.message : "Unknown error occurred";
+            alert(`Failed to generate buildings: ${errorMessage}`);
+            setIsLoading(false);
+            reject(error);
+          }
+        };
+        reader.onerror = () => {
+          const error = new Error("Failed to read parcelisation image");
+          console.error(error);
+          alert("Failed to read parcelisation image");
+          setIsLoading(false);
+          reject(error);
+        };
+      });
     } catch (error) {
-      console.error("Error generating buildings:", error);
-      alert("Failed to generate buildings. Please try again.");
-    } finally {
+      console.error("Error in handleGenerateAndAddBuildings:", error);
+      alert("Failed to process parcelisation image. Please try again.");
       setIsLoading(false);
     }
   };

@@ -8,6 +8,7 @@ from .geometry_utils import (
 )
 from .color_extraction import extract_maps
 from .gemini_client import safe_generate
+from .reference_data import ReferenceDataManager
 
 __all__ = [
     'mask_to_polygons',
@@ -15,4 +16,5 @@ __all__ = [
     'polygon_to_square_image_bytes_rgba',
     'extract_maps',
     'safe_generate',
+    'ReferenceDataManager',
 ]
