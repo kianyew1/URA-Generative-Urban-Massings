@@ -31,6 +31,7 @@ import {
   Move,
   ArrowUpDown,
 } from "lucide-react";
+import { BERLARYAR_CREEK_PARCELWISE_GENERATION } from "./consts/const";
 
 // Initial camera position - Sembawang waterfront area, Singapore
 const INITIAL_VIEW_STATE = {
@@ -123,7 +124,7 @@ export default function DeckGlMap() {
     manager.addLayer({
       id: "water-background",
       name: "Water Background",
-      visible: true,
+      visible: false,
       type: "geojson",
       category: "system",
     });
@@ -153,6 +154,30 @@ export default function DeckGlMap() {
       visible: false,
       type: "geojson",
       category: "system",
+    });
+
+    // Add Berlaryar Creek Parcelwise
+    manager.addLayer({
+      id: "berlaryar-creek",
+      name: "Berlaryar Creek Parcelwise Generation",
+      visible: false,
+      type: "geojson",
+      category: "system",
+    });
+
+    // Add Berlaryar Road Network bitmap layer
+    manager.addLayer({
+      id: "berlaryar-road-network",
+      name: "Berlaryar Road Network",
+      visible: false,
+      type: "bitmap",
+      category: "system",
+      image: "/berlaryar_road_network.png",
+      bounds: [
+        103.80118661426008, 1.262192916646191, 103.81360486018805,
+        1.2727073042235681,
+      ],
+      opacity: 0.8,
     });
     return manager;
   });
@@ -497,6 +522,8 @@ export default function DeckGlMap() {
           "master-plan": optimizedMasterPlanData || masterPlanData,
           "building-outline": buildingOutlineData,
           parcels: parcelsData,
+          "berlaryar-creek": BERLARYAR_CREEK_PARCELWISE_GENERATION,
+          "berlaryar-road-network": null, // Bitmap layer uses image from layer config
         },
         features,
         selectedFeatureIndexes,
