@@ -98,7 +98,7 @@ const ROAD_STYLE_PRESETS: Array<{
 }> = [
   {
     id: "yishun",
-    name: "Yishun Asymmetric Network",
+    name: "Organic Network",
     image: "/styles/road_organic.jpg",
     config: {
       style: "Singapore Urban Planning Zoning Map",
